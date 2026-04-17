@@ -4,6 +4,13 @@
 - **Package Manager**: bun
 - **Add-ons**: prettier, eslint, tailwindcss, mdsvex, mcp
 
+## UI Conventions
+
+- **Icons**: Always use `unplugin-icons` with the `lucide` Iconify collection.
+- **Imports**: Import icons directly from `~icons/lucide/<icon-name>`.
+- **Do Not**: Do not add raw SVG files, emoji, or Unicode arrow glyphs for UI affordances when a Lucide icon exists.
+- **Styling**: Size icons with classes and keep them on `currentColor` unless there is a deliberate accent reason.
+
 ---
 
 You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:

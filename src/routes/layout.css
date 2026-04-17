@@ -1,1 +1,259 @@
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-700.css';
 @import 'tailwindcss';
+
+:root {
+	--font-editorial: 'Inter', 'Helvetica Neue', sans-serif;
+	--surface: #f6f4ee;
+	--surface-container-low: #ece8de;
+	--surface-container-lowest: #fbfaf6;
+	--surface-container-high: #e2dccf;
+	--surface-container-highest: #d5cebfd9;
+	--color-ink: #0a141f;
+	--color-muted: color-mix(in srgb, var(--color-ink) 62%, white 38%);
+	--color-primary: #6b4d12;
+	--color-primary-active: #5b400e;
+	--color-on-primary: #f8f6ef;
+	--color-accent: #d8af4f;
+	--ghost-border: color-mix(in srgb, var(--color-ink) 14%, transparent);
+	--outline-focus: color-mix(in srgb, var(--color-accent) 74%, white 26%);
+	--shadow-floating: 0 18px 38px rgba(10, 20, 31, 0.04);
+}
+
+html {
+	background-color: var(--surface);
+	color-scheme: light;
+	color: var(--color-ink);
+	font-family: var(--font-editorial);
+}
+
+body {
+	min-height: 100vh;
+	background:
+		radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0) 34%),
+		radial-gradient(circle at 85% 12%, rgba(216, 175, 79, 0.06) 0%, rgba(216, 175, 79, 0) 24%),
+		var(--surface);
+	color: var(--color-ink);
+	font-family: var(--font-editorial);
+	margin: 0;
+	text-rendering: optimizeLegibility;
+}
+
+::selection {
+	background: color-mix(in srgb, var(--color-accent) 52%, white 48%);
+	color: var(--color-ink);
+}
+
+a {
+	color: inherit;
+	text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+button,
+input,
+textarea,
+select {
+	font: inherit;
+}
+
+@layer components {
+	.ds-eyebrow {
+		@apply inline-flex items-center gap-2 text-xs font-semibold uppercase;
+		color: var(--color-muted);
+		letter-spacing: 0.18em;
+	}
+
+	.ds-eyebrow__icon {
+		@apply inline-flex size-4 shrink-0 items-center justify-center;
+	}
+
+	.ds-inline-link {
+		@apply inline-flex items-center gap-2 text-xs font-semibold uppercase transition-colors duration-200 ease-out;
+		color: var(--color-muted);
+		letter-spacing: 0.18em;
+		text-decoration: none;
+	}
+
+	.ds-inline-link__icon {
+		@apply size-4 shrink-0;
+		color: var(--color-accent);
+		transition: transform 200ms ease-out;
+	}
+
+	.ds-inline-link:hover {
+		color: var(--color-ink);
+	}
+
+	.ds-inline-link:hover .ds-inline-link__icon {
+		transform: translate(0.12rem, -0.12rem);
+	}
+
+	.ds-inline-link:focus-visible {
+		outline: 2px solid var(--outline-focus);
+		outline-offset: 4px;
+	}
+
+	.ds-button {
+		@apply inline-flex min-h-11 items-center justify-center gap-2.5 px-4 py-3 text-sm font-semibold transition-colors duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-60;
+		border-radius: 0.625rem;
+		letter-spacing: 0.01em;
+		white-space: nowrap;
+	}
+
+	.ds-button:focus-visible {
+		outline: 2px solid var(--outline-focus);
+		outline-offset: 4px;
+	}
+
+	.ds-button__label {
+		@apply inline-flex items-center;
+	}
+
+	.ds-button__icon {
+		@apply inline-flex shrink-0 items-center leading-none;
+	}
+
+	.ds-button[data-variant='primary'] {
+		background: var(--color-primary);
+		color: var(--color-on-primary);
+	}
+
+	.ds-button[data-variant='secondary'] {
+		background-color: var(--surface-container-high);
+		color: var(--color-ink);
+	}
+
+	.ds-button[data-variant='primary']:hover {
+		background: var(--color-primary-active);
+	}
+
+	.ds-button[data-variant='secondary']:hover {
+		background: var(--surface-container-highest);
+	}
+
+	.ds-button[data-variant='tertiary'] {
+		background: transparent;
+		color: var(--color-ink);
+		justify-content: flex-start;
+		padding-inline: 0;
+		text-decoration: none;
+		text-decoration-color: transparent;
+		text-underline-offset: 0.3rem;
+	}
+
+	.ds-button[data-variant='tertiary']:hover {
+		color: var(--color-primary);
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+	}
+
+	.ds-button[data-wide='true'] {
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	.ds-button[data-wide='true'] .ds-button__label {
+		flex: 1 1 auto;
+		text-align: left;
+	}
+
+	.ds-card {
+		@apply p-6 transition-colors duration-200 sm:p-8;
+		background: var(--surface-container-lowest);
+		border-radius: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		min-height: 100%;
+	}
+
+	.ds-card[data-linked='true'] {
+		display: flex;
+		text-decoration: none;
+	}
+
+	.ds-card[data-linked='true']:hover {
+		background: var(--surface-container-high);
+	}
+
+	.ds-card[data-linked='true']:focus-visible {
+		outline: 2px solid var(--outline-focus);
+		outline-offset: 6px;
+	}
+
+	.ds-chip {
+		@apply inline-flex items-center gap-1.5 px-3 py-1 text-[0.68rem] font-semibold whitespace-nowrap uppercase;
+		background: var(--surface-container-high);
+		border-radius: 9999px;
+		color: var(--color-muted);
+		letter-spacing: 0.16em;
+	}
+
+	.ds-chip__icon {
+		@apply inline-flex size-3.5 shrink-0 items-center justify-center;
+	}
+
+	.ds-editorial-list-item {
+		@apply space-y-6 px-5 py-6 sm:px-6 sm:py-7;
+		background: var(--surface-container-lowest);
+		border-radius: 1.25rem;
+	}
+
+	.ds-ghost-input-shell {
+		@apply relative block;
+	}
+
+	.ds-ghost-input {
+		@apply block w-full bg-transparent pt-4 pb-4 text-base leading-7 outline-none placeholder:text-(--color-muted);
+		border-bottom: 1px solid var(--ghost-border);
+		caret-color: var(--color-primary);
+		color: var(--color-ink);
+	}
+
+	.ds-ghost-input-accent {
+		@apply pointer-events-none absolute bottom-0 h-0.5 transition-transform duration-200 ease-out;
+		background: var(--color-accent);
+		inset-inline: 0;
+		transform: scaleX(0);
+		transform-origin: center;
+	}
+
+	.ds-ghost-input-shell:focus-within .ds-ghost-input-accent {
+		transform: scaleX(1);
+	}
+
+	.ds-insight-block {
+		@apply relative grid gap-7 px-6 py-8 sm:px-8 sm:py-10 lg:max-w-[70ch] lg:px-10;
+		background: var(--surface-container-low);
+		border-radius: 1.75rem;
+	}
+
+	.ds-insight-block::before {
+		background: var(--color-accent);
+		border-radius: 9999px;
+		bottom: 1.5rem;
+		content: '';
+		left: 0;
+		position: absolute;
+		top: 1.5rem;
+		width: 0.2rem;
+	}
+
+	@media (min-width: 1024px) {
+		.ds-insight-block {
+			align-items: start;
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			transform: translateX(-1.5rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ds-inline-link__icon,
+		.ds-button,
+		.ds-card,
+		.ds-ghost-input-accent {
+			transition-duration: 0.01ms;
+		}
+	}
+}
