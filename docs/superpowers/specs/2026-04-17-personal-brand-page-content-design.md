@@ -1,25 +1,19 @@
 # Personal Brand Page Content Design
 
-Date: 2026-04-17
-Status: Drafted from approved discussion, pending file review
+Date: 2026-04-18
+Status: Content approved, ready for implementation
 
 ## Goal
 
-Create the initial content specification for a minimal personal page that builds a personal brand around technical excellence in AI.
-
-This page is not a resume, a company homepage, or a product landing page. It should function as a trust-building hub that turns a cold visitor into a warm believer within roughly 90 seconds.
+Produce the exact content for every section of the personal portfolio page at hedderich.pro. This is not a structural spec — it is the final copy, ready to replace all placeholders in the current implementation.
 
 ## Positioning
 
-The page should read as:
-
-`Solo SaaS founder with serious AI systems depth, documented through projects and writing.`
-
-The identity center is founder-builder first, not employee first. Prior roles and education may support credibility, but they must not define the page.
+The page reads as a founder-builder who ships AI-native SaaS products and documents the technical thinking publicly. Day-job roles and academic background appear only as supporting credibility in the background section.
 
 ## Primary Audience
 
-Technically interested visitors who want to evaluate the quality of thinking behind the work:
+Technically interested visitors evaluating the quality of thinking behind the work:
 
 - founders
 - builders
@@ -27,43 +21,14 @@ Technically interested visitors who want to evaluate the quality of thinking beh
 - AI practitioners
 - readers who may follow ongoing work
 
-## Core Trust Question
-
-The page must answer this immediately:
-
-`Why should I trust this person?`
-
-The answer should come from a combination of:
-
-- a specific founder thesis
-- visible technical work
-- public writing that demonstrates judgment
-- current activity signals
-
-## Strategic Principles
-
-1. Lead with a founder thesis, not a job title.
-2. Show proof for projects instead of listing them passively.
-3. Treat writing as a product, not as leftover content.
-4. Maintain one clear page-level CTA.
-5. Keep the page human and specific without drifting into biography.
-6. Favor clarity, restraint, and strong editorial sequencing over visual performance.
-
 ## Page-Level CTA
 
-Primary CTA:
+Primary: `Read the blog` → https://blog.hedderich.pro
+Secondary: `See the projects` → `#work`
 
-`Read technical notes`
-
-Secondary CTA:
-
-`Browse selected work`
-
-The primary CTA should appear in the hero and again near the bottom of the page. Social links must not replace the page-level CTA.
+The primary CTA appears in the hero and repeats in the contact section.
 
 ## Information Architecture
-
-Recommended section order:
 
 1. Hero
 2. Featured Note
@@ -71,210 +36,164 @@ Recommended section order:
 4. Writing
 5. Now
 6. Background
-7. Contact Card
+7. Contact
 
-This order is intentional. Visitors should first understand the thesis, then see proof, then evaluate thinking, then confirm the work is current, and only after that receive background context and contact paths.
+---
 
-## Section Specifications
+## Section Content
 
 ### 1. Hero
 
-Purpose:
-Establish a clear founder-builder identity anchored in AI systems depth.
+**Photo**
+File: `image.png` at repository root — move to `static/images/malte-hedderich.png` before implementation.
+Treatment: circular crop, placed to the right of the name and thesis on desktop, above on mobile.
 
-Required content:
+**Name**
+`Malte Hedderich`
 
-- name
-- one-sentence founder thesis
-- short supporting paragraph of 2 to 3 sentences
-- small anchor navigation linking to `Work`, `Writing`, `Now`, and `Background`
-- primary CTA `Read technical notes`
-- secondary CTA `Browse selected work`
+**Thesis**
+`I build AI-native SaaS products and write about the systems that make them actually work.`
 
-Content rule:
-The thesis must state what is built, for whom, and what belief drives the work.
+**Supporting copy**
+`Genhone is the current project — an AI-native tool for validating SaaS ideas fast. I also write about the production AI systems I build by day: agentic workflows, LLM evaluation, and the engineering decisions that don't make it into tutorials.`
 
-Examples of acceptable framing:
+**Section navigation**
+`Work · Writing · Now · Background`
 
-- what kind of AI products are being built
-- what problem space matters
-- what product or technical principle the work is based on
+**Primary CTA**
+Label: `Read the blog`
+URL: `https://blog.hedderich.pro`
 
-Avoid:
+**Secondary CTA**
+Label: `See the projects`
+URL: `#work`
 
-- job-title-first intros
-- generic innovation language
-- employer-led credibility framing
-- company logos
+---
 
 ### 2. Featured Note
 
-Purpose:
-Put evidence of technical thinking near the top of the page.
+**Eyebrow:** `Featured note`
 
-Required content:
+**Title**
+`Programmatic Prompt Optimization: Building a Spam Filter with DSPy and MIPROv2`
 
-- one featured post, essay, or technical breakdown
-- one short line explaining why it matters
+**URL**
+`https://blog.hedderich.pro/2026/02/09/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2/`
 
-Intent:
-This section should act as `start here if you want to understand how I think`.
+**Anchor line**
+`How to move beyond manual prompt engineering and let data optimize your prompts — the same way you'd optimize model weights.`
 
-Avoid:
+**Read time:** `10 min`
 
-- newsletter-style filler
-- vague thought leadership
-- promotional product copy
+---
 
 ### 3. Selected Work
 
-Purpose:
-Prove range and substance through a small number of meaningful projects.
+**Section intro**
+`Two products built after hours. Both live.`
 
-Required content:
+---
 
-- 3 projects maximum for the first version
-- a short introductory line that gives the portfolio a throughline
-- for each entry:
-  - project name
-  - one-line description
-  - current status
-  - one proof signal
+**Genhone**
 
-Acceptable proof signals:
+Description:
+`An AI-native tool for pressure-testing SaaS ideas before you commit months to building them. Free trial — requires a signup and card on file.`
 
-- revenue
-- users
-- growth
-- months shipped
-- meaningful customer usage
-- technical complexity
-- concrete outcome
+URL: `https://genhone.com`
+Status: `Active — UX improvements in progress`
+Proof: `First commit January 11, 2026 · Launched April 21, 2026`
 
-Project framing rule:
-`Genhone` should appear as current work, but it must not absorb the full page identity. The page represents a broader portfolio.
+---
 
-Avoid:
+**Genwriter**
 
-- side-project dumping
-- equal emphasis for weak and strong work
-- entries without evidence
+Description:
+`Generates tailored cover letters by matching your personal profile against a job ad — output that fits the role, not a generic template.`
+
+URL: `https://genwriter.com`
+Status: `Active`
+Proof: `First commit November 16, 2023 · Launched August 14, 2024`
+
+---
 
 ### 4. Writing
 
-Purpose:
-Show how the founder reasons, not just what has been shipped.
+**Section intro**
+`How I think about building AI systems — in public.`
 
-Required content:
+Note: Post URLs are intentionally omitted from this section. The writing list is not linked — it reads as a table of topics. The Featured Note section (section 2) is the only place a blog URL appears. Post 1 here is the same post as the Featured Note; appearing in both is intentional.
 
-- 3 to 5 featured posts
-- each item includes title plus one line on the core idea or lesson
+---
 
-Prioritize:
+**Post 1**
+Title: `Programmatic Prompt Optimization: Building a Spam Filter with DSPy and MIPROv2`
+Tag: `Technical deep-dive`
+Read time: `10 min`
+Summary: `Moving beyond manual prompt engineering — using data to optimize prompts the same way you'd optimize model weights.`
 
-- technical breakdowns
-- architecture reflections
-- lessons from building LLM or AI systems
-- strong original opinions with substance
+**Post 2**
+Title: `Do You Know What Agents Are?`
+Tag: `Concepts`
+Read time: `6 min`
+Summary: `What actually qualifies as agentic behavior — and why the distinction between a simple LLM call and a real agent matters in production.`
 
-Avoid:
+**Post 3**
+Title: `Running State: Enhancing Short-Term Memory in AI Agents`
+Tag: `Systems`
+Read time: `8 min`
+Summary: `How agents maintain context across complex tasks — and why conversation memory design matters as much as the model.`
 
-- archive dumps
-- generic productivity content
-- vague “thoughts on AI” summaries
+---
 
 ### 5. Now
 
-Purpose:
-Create a live credibility signal and make the page feel current.
+**Freshness marker:** `Updated April 2026`
 
-Required content:
+- **Building:** `UX improvements on Genhone — tightening the idea pressure-testing workflow so it's faster to act on.`
+- **Investigating:** `Custom agent setups in coding CLIs like Claude Code and Codex — specifically how well structured workflows hold up in practice.`
 
-- what is being built now
-- what is being investigated now
-- what is changing in the founder’s thinking now
-- explicit freshness marker such as `Updated April 2026`
-
-Format:
-Either 3 short bullets or one tight paragraph.
-
-Avoid:
-
-- stale evergreen copy
-- vague busyness language
+---
 
 ### 6. Background
 
-Purpose:
-Close credibility gaps without turning the page into a resume.
+**Origin paragraph**
+`ML Engineering Associate Manager at Accenture, leading teams of 6–12 building production LLM applications. Before that, two years at Serviceware shipping intent recognition, search services, and my first production LLM app in early 2023. Master's in Business Informatics from TU Darmstadt — thesis on Open-Source MLOps. A year studying Software Engineering at Tongji University in Shanghai.`
 
-Required content:
+**Belief statement**
+`Standing still is moving backward. I keep looking for the next hard problem and building toward it.`
 
-- one short origin paragraph
-- one explicit belief statement about building AI products
+---
 
-Supporting references may include:
+### 7. Contact
 
-- Accenture
-- Serviceware
-- TU Darmstadt
+**Heading**
+`Find me where the work keeps moving.`
 
-These references must appear in prose only. No logos, no employer strip, no timeline grid, and no credential-heavy treatment.
+**Channels**
+- Email: `malte@hedderich.pro`
+- LinkedIn: `https://www.linkedin.com/in/hedderich/`
+- GitHub: `https://github.com/maltehedderich`
+- X: `https://x.com/hedderichpro`
 
-The section should explain how prior experience informs the current builder perspective.
+**Repeated CTA**
+Label: `Read the blog`
+URL: `https://blog.hedderich.pro`
 
-Avoid:
-
-- resume tone
-- passive accomplishment language
-- full chronology
-
-### 7. Contact Card
-
-Purpose:
-Give readers a clean, low-friction way to continue the relationship.
-
-Required content:
-
-- a short line such as `Find me where I share work and ideas`
-- links to LinkedIn, X, and GitHub
-- repeated primary CTA nearby
-
-Design intent:
-This should be quiet, compact, and text-led. It should feel like an index of channels, not a loud conversion block.
+---
 
 ## Editorial Rules
 
 - Sound like a technical builder with conviction, not a corporate operator.
 - Prefer specific nouns and outcomes over adjectives.
-- Keep copy tight and high-signal.
-- Use first-person language where it increases clarity and ownership.
-- Every section should route outward to something concrete: a post, project, repository, or profile.
-
-## Anti-Patterns To Avoid
-
-- company logos or logo strips
-- resume-shaped accomplishment lists
-- vague claims of innovation or leadership
-- product listings without proof
-- too many equally weighted projects
-- multiple competing page-level CTAs
-- writing buried so deep that visitors never see how the founder thinks
-
-## Success Criteria
-
-The page succeeds if a technically literate visitor can understand all of the following in under 90 seconds:
-
-- what this founder builds
-- why the work is credible
-- what projects matter most
-- how this founder thinks in public
-- where to go next
+- Use first-person language where it increases clarity.
+- Every section routes outward to something concrete: a post, project, or profile.
+- No logos, no employer strips, no timeline grids.
+- Accenture and Serviceware appear in prose only, in the background section only.
 
 ## Out Of Scope For This Spec
 
-- visual layout implementation details
-- final copywriting
+- Visual layout implementation details
+- Photo editing beyond circular crop
 - CMS or content source decisions
-- blog system design
-- analytics or conversion instrumentation
+- Blog system design
+- Analytics or conversion instrumentation
