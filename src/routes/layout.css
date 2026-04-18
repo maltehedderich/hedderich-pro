@@ -41,6 +41,41 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+.skip-link {
+	background: var(--surface-container-lowest);
+	border-radius: 9999px;
+	box-shadow: var(--shadow-floating);
+	color: var(--color-ink);
+	font-size: 0.95rem;
+	font-weight: 600;
+	left: 1rem;
+	padding: 0.8rem 1rem;
+	position: absolute;
+	text-decoration: none;
+	top: 1rem;
+	transform: translateY(-180%);
+	transition: transform 180ms ease;
+	z-index: 20;
+}
+
+.skip-link:focus-visible {
+	outline: 2px solid var(--outline-focus);
+	outline-offset: 4px;
+	transform: translateY(0);
+}
+
+.sr-only {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
 ::selection {
 	background: color-mix(in srgb, var(--color-accent) 52%, white 48%);
 	color: var(--color-ink);
@@ -265,6 +300,10 @@ select {
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.skip-link {
+			transition-duration: 0.01ms;
+		}
+
 		.ds-inline-link__icon,
 		.ds-button,
 		.ds-card,

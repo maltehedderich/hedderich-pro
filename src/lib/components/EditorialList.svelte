@@ -21,8 +21,8 @@
 	}: Props<Item> = $props();
 </script>
 
-<section class={['space-y-10', className]}>
-	{#if title || intro}
+{#if title || intro}
+	<section class={['space-y-10', className]}>
 		<header class="max-w-2xl space-y-4">
 			{#if title}
 				<h2 class="text-3xl font-semibold tracking-[-0.05em] text-(--color-ink) sm:text-4xl">
@@ -36,13 +36,23 @@
 				</p>
 			{/if}
 		</header>
-	{/if}
 
-	<div class="space-y-5 sm:space-y-6">
-		{#each items as item (getKey(item))}
-			<article class="ds-editorial-list-item">
-				{@render row(item)}
-			</article>
-		{/each}
+		<div class="space-y-5 sm:space-y-6">
+			{#each items as item (getKey(item))}
+				<article class="ds-editorial-list-item">
+					{@render row(item)}
+				</article>
+			{/each}
+		</div>
+	</section>
+{:else}
+	<div class={['space-y-10', className]}>
+		<div class="space-y-5 sm:space-y-6">
+			{#each items as item (getKey(item))}
+				<article class="ds-editorial-list-item">
+					{@render row(item)}
+				</article>
+			{/each}
+		</div>
 	</div>
-</section>
+{/if}

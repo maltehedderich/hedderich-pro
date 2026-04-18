@@ -48,6 +48,13 @@
 		value: string;
 	};
 
+	const siteUrl = 'https://hedderich.pro';
+	const pageUrl = `${siteUrl}/`;
+	const pageTitle = 'Malte Hedderich | AI Engineer & Architect';
+	const pageDescription =
+		'Malte Hedderich builds SaaS products that use LLMs, leads teams shipping production AI systems, and writes about evaluation, agent design, and reliable product execution.';
+	const pageImage = `${siteUrl}/images/malte-hedderich.png`;
+
 	const obfuscatedEmail: EncryptedEmailData = {
 		ciphertext: 'NqoKSjF7vYp67Dcx9G7gBczblm9L5raq7OmKSw4tvfLO4OI=',
 		iv: 'eFpvbsnoikxfY5DJ'
@@ -57,7 +64,8 @@
 		{ id: 'projects', href: '#projects', label: 'Projects' },
 		{ id: 'writing', href: '#writing', label: 'Writing' },
 		{ id: 'now', href: '#now', label: 'Now' },
-		{ id: 'experience', href: '#experience', label: 'Experience' }
+		{ id: 'experience', href: '#experience', label: 'Experience' },
+		{ id: 'contact', href: '#contact', label: 'Contact' }
 	];
 
 	const projects: Project[] = [
@@ -154,19 +162,102 @@
 			value: '@hedderichpro'
 		}
 	];
+
+	const structuredData = JSON.stringify({
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@id': `${pageUrl}#person`,
+				'@type': 'Person',
+				name: 'Malte Hedderich',
+				url: pageUrl,
+				image: pageImage,
+				description: pageDescription,
+				jobTitle: 'ML Engineering Associate Manager',
+				worksFor: {
+					'@type': 'Organization',
+					name: 'Accenture'
+				},
+				alumniOf: [
+					{
+						'@type': 'CollegeOrUniversity',
+						name: 'Technical University of Darmstadt'
+					},
+					{
+						'@type': 'CollegeOrUniversity',
+						name: 'Tongji University'
+					}
+				],
+				knowsAbout: [
+					'LLM applications',
+					'SaaS product development',
+					'Evaluation systems',
+					'Agent design',
+					'ML engineering'
+				],
+				sameAs: channels.map((channel) => channel.href)
+			},
+			{
+				'@id': `${pageUrl}#website`,
+				'@type': 'WebSite',
+				url: pageUrl,
+				name: 'Malte Hedderich',
+				description: pageDescription,
+				publisher: {
+					'@id': `${pageUrl}#person`
+				}
+			},
+			{
+				'@id': `${pageUrl}#webpage`,
+				'@type': 'WebPage',
+				url: pageUrl,
+				name: pageTitle,
+				description: pageDescription,
+				about: {
+					'@id': `${pageUrl}#person`
+				},
+				isPartOf: {
+					'@id': `${pageUrl}#website`
+				}
+			}
+		]
+	});
 </script>
 
 <svelte:head>
-	<title>Malte Hedderich</title>
-	<meta
-		name="description"
-		content="Malte Hedderich builds SaaS products that use LLMs to solve business problems and writes about evaluation, agent design, and what holds up in production."
-	/>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<meta name="author" content="Malte Hedderich" />
+	<meta name="robots" content="index,follow,max-image-preview:large" />
+	<link rel="canonical" href={pageUrl} />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="Malte Hedderich" />
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:url" content={pageUrl} />
+	<meta property="og:image" content={pageImage} />
+	<meta property="og:image:width" content="1250" />
+	<meta property="og:image:height" content="1250" />
+	<meta property="og:image:alt" content="Portrait of Malte Hedderich" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@hedderichpro" />
+	<meta name="twitter:creator" content="@hedderichpro" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={pageImage} />
+	<meta name="twitter:image:alt" content="Portrait of Malte Hedderich" />
+	<svelte:element this={'script'} type="application/ld+json">{structuredData}</svelte:element>
 </svelte:head>
 
-<main class="brand-page px-5 pt-8 pb-28 sm:px-8 sm:pt-10 lg:px-12 lg:pb-40">
+<main
+	class="brand-page px-5 pt-8 pb-28 sm:px-8 sm:pt-10 lg:px-12 lg:pb-40"
+	id="main-content"
+	tabindex="-1"
+>
 	<div class="mx-auto max-w-304 space-y-24 sm:space-y-28 lg:space-y-36">
 		<section
+			aria-describedby="hero-support"
 			aria-labelledby="hero-name"
 			class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-14"
 		>
@@ -192,7 +283,7 @@
 					<p class="hero-thesis">
 						I build SaaS products that use LLMs and write about what holds up in production.
 					</p>
-					<p class="hero-support">
+					<p class="hero-support" id="hero-support">
 						Right now I'm building Genhone, which pressure-tests SaaS ideas before you burn months
 						on the wrong one. By day I lead teams shipping LLM applications. I write about
 						evaluation, agent design, and the choices you regret at scale.
@@ -238,38 +329,43 @@
 				<p class="section-copy">Two products built after hours. Both are live.</p>
 			</div>
 
-			<div class="grid gap-6 xl:grid-cols-2">
+			<ul class="project-grid grid gap-6 xl:grid-cols-2" role="list">
 				{#each projects as project (project.id)}
-					<Card
-						class="project-card min-h-64 sm:min-h-72 xl:min-h-80"
-						href={project.url}
-						title={project.title}
-					>
-						{#snippet footer()}
-							<span class="project-url min-w-0 leading-6 break-all">{project.url}</span>
-							<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-accent)" />
-						{/snippet}
+					<li class="min-h-full">
+						<Card
+							class="project-card min-h-64 sm:min-h-72 xl:min-h-80"
+							href={project.url}
+							title={project.title}
+						>
+							{#snippet footer()}
+								<span class="project-url min-w-0 leading-6 break-all">{project.url}</span>
+								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-accent)" />
+							{/snippet}
 
-						<p>{project.description}</p>
+							<p>{project.description}</p>
 
-						<div class="space-y-2 pt-2">
-							<span class="project-status">{project.status}</span>
-							<p class="text-sm leading-6 text-(--color-muted)">{project.proof}</p>
-						</div>
-					</Card>
+							<div class="space-y-2 pt-2">
+								<span class="project-status">{project.status}</span>
+								<p class="text-sm leading-6 text-(--color-muted)">{project.proof}</p>
+							</div>
+						</Card>
+					</li>
 				{/each}
-			</div>
+			</ul>
 		</section>
 
 		<section aria-labelledby="writing-title" class="section-shell scroll-mt-24" id="writing">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="writing-title">Writing</h2>
+				<p class="section-copy">
+					Essays on evaluation, agent design, prompt optimization, and production LLM systems.
+				</p>
 			</div>
 
 			<EditorialList items={posts}>
 				{#snippet row(post)}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-					<a class="writing-link" href={post.href}>
+					<a aria-label={`Read ${post.title}`} class="writing-link" href={post.href}>
 						<div class="space-y-5">
 							<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 								<div class="min-w-0 flex-1 space-y-4">
@@ -302,17 +398,17 @@
 		<section aria-labelledby="now-title" class="section-shell scroll-mt-24" id="now">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="now-title">Now</h2>
-				<p class="section-meta">Updated April 2026</p>
+				<p class="section-meta"><time datetime="2026-04">Updated April 2026</time></p>
 			</div>
 
-			<div class="now-list">
+			<ul class="now-list" role="list">
 				{#each nowItems as item (item.id)}
-					<article class="now-item">
+					<li class="now-item">
 						<p class="now-label">{item.label}</p>
 						<p class="now-copy">{item.value}</p>
-					</article>
+					</li>
 				{/each}
-			</div>
+			</ul>
 		</section>
 
 		<section aria-labelledby="experience-title" class="section-shell scroll-mt-24" id="experience">
@@ -337,27 +433,58 @@
 			</div>
 
 			<address class="not-italic">
-				<div class="contact-links">
-					<EmailObfuscator
-						encryptedData={obfuscatedEmail}
-						fallbackHref="#contact"
-						label={emailChannel.label}
-						loadingText={emailChannel.loadingText}
-					>
-						{#snippet children(state)}
+				<ul class="contact-links" role="list">
+					<li>
+						<EmailObfuscator
+							encryptedData={obfuscatedEmail}
+							fallbackHref="#contact"
+							label={emailChannel.label}
+							loadingText={emailChannel.loadingText}
+						>
+							{#snippet children(state)}
+								<!-- eslint-disable svelte/no-navigation-without-resolve -->
+								<a
+									aria-label={state.ariaLabel}
+									aria-busy={!state.ready}
+									class="contact-link"
+									data-channel={emailChannel.id}
+									href={state.href}
+								>
+									<span aria-hidden="true" class="contact-link__icon">
+										<emailChannel.icon class="contact-link__glyph" />
+									</span>
+
+									<span class="contact-link__body">
+										<span class="contact-link__label">{emailChannel.label}</span>
+										<span aria-live="polite" class="contact-link__value">{state.text}</span>
+									</span>
+
+									<span aria-hidden="true" class="contact-link__arrow">
+										<ArrowUpRight class="size-4" />
+									</span>
+								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
+							{/snippet}
+						</EmailObfuscator>
+					</li>
+
+					{#each channels as channel (channel.id)}
+						<li>
 							<!-- eslint-disable svelte/no-navigation-without-resolve -->
 							<a
-								aria-label={state.ariaLabel}
+								aria-label={`${channel.label}: ${channel.value}`}
 								class="contact-link"
-								data-channel={emailChannel.id}
-								href={state.href}
+								data-channel={channel.id}
+								href={channel.href}
+								rel="me"
 							>
 								<span aria-hidden="true" class="contact-link__icon">
-									<emailChannel.icon class="contact-link__glyph" />
+									<channel.icon class="contact-link__glyph" />
 								</span>
 
 								<span class="contact-link__body">
-									<span class="contact-link__value">{state.text}</span>
+									<span class="contact-link__label">{channel.label}</span>
+									<span class="contact-link__value">{channel.value}</span>
 								</span>
 
 								<span aria-hidden="true" class="contact-link__arrow">
@@ -365,32 +492,9 @@
 								</span>
 							</a>
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
-						{/snippet}
-					</EmailObfuscator>
-
-					{#each channels as channel (channel.id)}
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-						<a
-							aria-label={`${channel.label}: ${channel.value}`}
-							class="contact-link"
-							data-channel={channel.id}
-							href={channel.href}
-							rel="external"
-						>
-							<span aria-hidden="true" class="contact-link__icon">
-								<channel.icon class="contact-link__glyph" />
-							</span>
-
-							<span class="contact-link__body">
-								<span class="contact-link__value">{channel.value}</span>
-							</span>
-
-							<span aria-hidden="true" class="contact-link__arrow">
-								<ArrowUpRight class="size-4" />
-							</span>
-						</a>
+						</li>
 					{/each}
-				</div>
+				</ul>
 			</address>
 		</section>
 	</div>
@@ -555,6 +659,12 @@
 		max-width: 14ch;
 	}
 
+	.project-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
 	.project-url {
 		font-size: 0.93rem;
 	}
@@ -614,7 +724,10 @@
 	.now-list {
 		display: grid;
 		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
 		max-width: 52rem;
+		padding: 0;
 	}
 
 	.now-item {
@@ -660,6 +773,9 @@
 	.contact-links {
 		display: grid;
 		gap: 1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
 	}
 
 	.contact-link {
@@ -713,8 +829,18 @@
 
 	.contact-link__body {
 		display: flex;
-		align-items: center;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.18rem;
 		min-width: 0;
+	}
+
+	.contact-link__label {
+		color: var(--color-muted);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
 	}
 
 	.contact-link__value {

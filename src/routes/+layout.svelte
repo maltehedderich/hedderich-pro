@@ -13,7 +13,11 @@
 	<link rel="manifest" href="/site.webmanifest" />
 	<meta name="application-name" content="Malte Hedderich" />
 	<meta name="apple-mobile-web-app-title" content="Malte Hedderich" />
+	<meta name="color-scheme" content="light" />
 	<meta name="theme-color" content="#f6f4ee" />
 	<meta name="msapplication-TileColor" content="#f6f4ee" />
 </svelte:head>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 {@render children()}
