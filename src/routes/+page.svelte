@@ -51,13 +51,13 @@
 		{ id: 'projects', href: '#projects', label: 'Projects' },
 		{ id: 'writing', href: '#writing', label: 'Writing' },
 		{ id: 'now', href: '#now', label: 'Now' },
-		{ id: 'background', href: '#background', label: 'Background' }
+		{ id: 'experience', href: '#experience', label: 'Experience' }
 	];
 
 	const projects: Project[] = [
 		{
 			description:
-				'Pressure-tests SaaS ideas before you commit months to building them. Free trial. Signup and card on file.',
+				'Pressure-tests SaaS ideas before you spend months on one. Free trial, with signup and card on file.',
 			id: 'genhone',
 			proof: 'First commit January 11, 2026 · Launched April 21, 2026',
 			status: 'Active',
@@ -66,7 +66,7 @@
 		},
 		{
 			description:
-				'Matches your profile against a job ad and writes a cover letter that fits the role. Not a template with your name dropped in.',
+				'Matches your profile to a job ad and writes a cover letter for that role. Not a template with your name pasted in.',
 			id: 'genwriter',
 			proof: 'First commit November 16, 2023 · Launched August 14, 2024',
 			status: 'Active',
@@ -108,14 +108,13 @@
 		{
 			id: 'building',
 			label: 'Building',
-			value:
-				'UX work on Genhone. Tightening the pressure-testing flow so you can act on the result faster.'
+			value: "Improving Genhone's UX. The goal is to get you from idea to a clear next step faster."
 		},
 		{
 			id: 'investigating',
 			label: 'Investigating',
 			value:
-				'Custom agent setups in coding CLIs like Claude Code and Codex. Whether structured workflows actually hold up in practice.'
+				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm testing whether structured workflows hold up once you leave the demo."
 		}
 	];
 
@@ -155,7 +154,7 @@
 	<title>Malte Hedderich</title>
 	<meta
 		name="description"
-		content="I build SaaS products on top of LLMs and write about what makes them work in production."
+		content="Malte Hedderich builds SaaS products with LLMs and writes about evaluation, agent design, and what holds up in production."
 	/>
 </svelte:head>
 
@@ -185,12 +184,13 @@
 				<div class="space-y-5">
 					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
 					<p class="hero-thesis">
-						I build SaaS products on top of LLMs and write about what makes them work in production.
+						I build SaaS products with LLMs and write about what holds up in production.
 					</p>
 					<p class="hero-support">
-						Genhone is the current project. It pressure-tests SaaS ideas before you commit months to
-						building them. By day I build production AI systems and write about what tutorials skip:
-						agent design, LLM evaluation, the calls you only learn by making them.
+						Right now I'm building Genhone, which pressure-tests SaaS ideas before you spend months
+						on one. By day I lead teams shipping LLM applications in production. On the blog I write
+						about the parts most tutorials skip: evaluation, agent design, and the judgment calls
+						you only learn by shipping.
 					</p>
 				</div>
 
@@ -230,7 +230,7 @@
 		<section aria-labelledby="projects-title" class="section-shell scroll-mt-24" id="projects">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="projects-title">Projects</h2>
-				<p class="section-copy">Two products built after hours. Both live.</p>
+				<p class="section-copy">Two products built after hours. Both are live.</p>
 			</div>
 
 			<div class="grid gap-6 xl:grid-cols-2">
@@ -259,7 +259,6 @@
 		<section aria-labelledby="writing-title" class="section-shell scroll-mt-24" id="writing">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="writing-title">Writing</h2>
-				<p class="section-copy">How I think about building AI systems, in public.</p>
 			</div>
 
 			<EditorialList items={posts}>
@@ -311,19 +310,18 @@
 			</div>
 		</section>
 
-		<section aria-labelledby="background-title" class="section-shell scroll-mt-24" id="background">
+		<section aria-labelledby="experience-title" class="section-shell scroll-mt-24" id="experience">
 			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="background-title">Background</h2>
-				<p class="section-copy">The engineering context behind the products and writing.</p>
+				<h2 class="section-heading" id="experience-title">Background</h2>
 			</div>
 
 			<article class="background-panel">
 				<p class="background-copy">
-					ML Engineering Associate Manager at Accenture, leading teams of 6–12 building production
-					LLM applications. Before that, I spent two years at Serviceware shipping intent
-					recognition, search services, and an early production LLM app in 2023. I studied Business
-					Informatics at TU Darmstadt, wrote my thesis on Open-Source MLOps, and spent a year
-					studying Software Engineering at Tongji University in Shanghai.
+					At Accenture, I'm an ML Engineering Associate Manager leading teams of 6 to 12 building
+					production LLM applications. Before that, I spent two years at Serviceware shipping intent
+					recognition, semantic search services, and a production LLM app in 2023. I studied
+					Business Informatics at TU Darmstadt, wrote my thesis on open-source MLOps, and spent a
+					year at Tongji University in Shanghai studying Software Engineering.
 				</p>
 			</article>
 		</section>
@@ -331,7 +329,6 @@
 		<section aria-labelledby="contact-title" class="section-shell scroll-mt-24" id="contact">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="contact-title">Reach me</h2>
-				<p class="section-copy">Email first. The rest is here if a different channel is easier.</p>
 			</div>
 
 			<address class="not-italic">
