@@ -15,7 +15,7 @@ This repo is configured for a fully static Cloudflare Pages deployment through G
 - Create a real `Pages` project, not a `Workers`/`Workers Builds` project
 - Connect that Pages project to this GitHub repository
 - Set `main` as the production branch
-- Set `bun run build` as the build command
+- Set `bun run build:cloudflare` as the build command
 - Set `build` as the build output directory
 - Set `BUN_VERSION=1.3.9` in Pages environment variables to match the local Bun version used in this repo
 - Optionally set `WRANGLER_SEND_METRICS=false`, though Pages-only deployment should not require Wrangler in the repo
@@ -30,7 +30,7 @@ This repo is configured for a fully static Cloudflare Pages deployment through G
 6. If you already connected this repository to a Worker or Workers Build, do not reuse that deploy path. Create a separate Pages project for this repo.
 7. If Cloudflare suggests the default `SvelteKit` preset, override it. That preset expects `.svelte-kit/cloudflare`, which is only correct for the Cloudflare runtime adapter. This repo outputs static files to `build/`.
 8. Set the production branch to `main`.
-9. Set the build command to `bun run build`.
+9. Set the build command to `bun run build:cloudflare`.
 10. Set the build output directory to `build`.
 11. Add the environment variable `BUN_VERSION` with the value `1.3.9`.
 12. Save and deploy.
@@ -48,8 +48,10 @@ This repo is configured for a fully static Cloudflare Pages deployment through G
 
 - This repo intentionally does not commit `wrangler.jsonc`. That avoids accidentally turning a Pages deployment into a Worker deployment path.
 - If your current Cloudflare deployment log shows `wrangler deploy`, you are not using a Pages-only deploy path yet.
+- The `build:cloudflare` script runs `bun install --frozen-lockfile` before `vite build`. Use it in Pages because your current build log shows Cloudflare is skipping automatic dependency installation.
 - If you already created a non-Pages Cloudflare project for this repo, the clean fix is to create a new Pages project and connect the same GitHub repository there.
 - Cloudflare documents that existing Direct Upload Pages apps cannot later add Git integration. If you need Git integration and do not already have a Git-integrated Pages project, create a new Pages app.
+- If Pages still skips dependency installation after using `bun run build:cloudflare`, reauthorize the Cloudflare Pages GitHub integration. Cloudflare calls out Git integration setup problems as a cause of build initialization failures.
 
 ## Optional: local Wrangler use
 

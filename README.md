@@ -24,5 +24,6 @@ This repo targets fully static deployment on Cloudflare Pages through GitHub int
 See [docs/cloudflare-pages.md](docs/cloudflare-pages.md) for:
 
 - the exact Cloudflare Pages build settings
+- the Cloudflare-specific build command
 - the step-by-step setup flow
 - what is required in the repo versus what stays optional, like Wrangler

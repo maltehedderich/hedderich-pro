@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"build:cloudflare": "bun install --frozen-lockfile && bun run build",
 		"preview": "vite preview",
 		"obfuscate:email": "bun run scripts/create-encrypted-email.ts",
 		"prepare": "svelte-kit sync || echo ''",
