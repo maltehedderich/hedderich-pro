@@ -7,7 +7,8 @@
 	import TwitterX from '~icons/bxl/twitter-x';
 	import Clock3 from '~icons/lucide/clock-3';
 
-	import { Card, EditorialList } from '$lib';
+	import { Card, EditorialList, EmailObfuscator } from '$lib';
+	import type { EncryptedEmailData } from '$lib/email-obfuscation';
 
 	type NavItem = {
 		id: string;
@@ -45,6 +46,11 @@
 		id: string;
 		label: string;
 		value: string;
+	};
+
+	const obfuscatedEmail: EncryptedEmailData = {
+		ciphertext: 'NqoKSjF7vYp67Dcx9G7gBczblm9L5raq7OmKSw4tvfLO4OI=',
+		iv: 'eFpvbsnoikxfY5DJ'
 	};
 
 	const navigation: NavItem[] = [
@@ -108,24 +114,24 @@
 		{
 			id: 'building',
 			label: 'Building',
-			value: "Improving Genhone's UX. The goal is to get you from idea to a clear next step faster."
+			value: "Working on Genhone's UX and adding idea improvement features."
 		},
 		{
 			id: 'investigating',
 			label: 'Investigating',
 			value:
-				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm testing whether structured workflows hold up once you leave the demo."
+				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm testing where these really add value over the built-in agents and skills."
 		}
 	];
 
+	const emailChannel = {
+		icon: Mail,
+		id: 'email',
+		label: 'Email',
+		loadingText: 'Loading...'
+	} as const;
+
 	const channels: Channel[] = [
-		{
-			href: 'mailto:malte@hedderich.pro',
-			icon: Mail,
-			id: 'email',
-			label: 'Email',
-			value: 'malte@hedderich.pro'
-		},
 		{
 			href: 'https://www.linkedin.com/in/hedderich/',
 			icon: Linkedin,
@@ -154,7 +160,7 @@
 	<title>Malte Hedderich</title>
 	<meta
 		name="description"
-		content="Malte Hedderich builds SaaS products with LLMs and writes about evaluation, agent design, and what holds up in production."
+		content="Malte Hedderich builds SaaS products that use LLMs to solve business problems and writes about evaluation, agent design, and what holds up in production."
 	/>
 </svelte:head>
 
@@ -184,13 +190,12 @@
 				<div class="space-y-5">
 					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
 					<p class="hero-thesis">
-						I build SaaS products with LLMs and write about what holds up in production.
+						I build SaaS products that use LLMs and write about what holds up in production.
 					</p>
 					<p class="hero-support">
 						Right now I'm building Genhone, which pressure-tests SaaS ideas before you spend months
 						on one. By day I lead teams shipping LLM applications in production. I write about
-						evaluation, agent design, and the architectures that survive contact with real
-						systems.
+						evaluation, agent design, and the architectures that survive contact with real systems.
 					</p>
 				</div>
 
@@ -333,6 +338,36 @@
 
 			<address class="not-italic">
 				<div class="contact-links">
+					<EmailObfuscator
+						encryptedData={obfuscatedEmail}
+						fallbackHref="#contact"
+						label={emailChannel.label}
+						loadingText={emailChannel.loadingText}
+					>
+						{#snippet children(state)}
+							<!-- eslint-disable svelte/no-navigation-without-resolve -->
+							<a
+								aria-label={state.ariaLabel}
+								class="contact-link"
+								data-channel={emailChannel.id}
+								href={state.href}
+							>
+								<span aria-hidden="true" class="contact-link__icon">
+									<emailChannel.icon class="contact-link__glyph" />
+								</span>
+
+								<span class="contact-link__body">
+									<span class="contact-link__value">{state.text}</span>
+								</span>
+
+								<span aria-hidden="true" class="contact-link__arrow">
+									<ArrowUpRight class="size-4" />
+								</span>
+							</a>
+							<!-- eslint-enable svelte/no-navigation-without-resolve -->
+						{/snippet}
+					</EmailObfuscator>
+
 					{#each channels as channel (channel.id)}
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 						<a
