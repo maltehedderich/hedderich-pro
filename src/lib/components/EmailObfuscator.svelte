@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PUBLIC_EMAIL_OBFUSCATION_KEY } from '$env/static/public';
 	import { decryptEmail, type EncryptedEmailData } from '$lib/email-obfuscation';
+	import { EMAIL_OBFUSCATION_KEY } from '$lib/public-config';
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
 
@@ -33,15 +33,8 @@
 		let cancelled = false;
 
 		const loadEmail = async () => {
-			if (!PUBLIC_EMAIL_OBFUSCATION_KEY) {
-				console.warn(
-					'Missing PUBLIC_EMAIL_OBFUSCATION_KEY. The obfuscated email cannot be restored.'
-				);
-				return;
-			}
-
 			try {
-				const email = await decryptEmail(encryptedData, PUBLIC_EMAIL_OBFUSCATION_KEY);
+				const email = await decryptEmail(encryptedData, EMAIL_OBFUSCATION_KEY);
 
 				if (!cancelled) {
 					decryptedEmail = email;

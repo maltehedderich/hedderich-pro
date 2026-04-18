@@ -1,7 +1,9 @@
 import { createEncryptedEmail } from '../src/lib/email-obfuscation';
+import { EMAIL_OBFUSCATION_KEY } from '../src/lib/public-config';
 
 const [email, explicitKey] = Bun.argv.slice(2);
-const obfuscationKey = explicitKey ?? process.env.PUBLIC_EMAIL_OBFUSCATION_KEY;
+const obfuscationKey =
+	explicitKey ?? process.env.PUBLIC_EMAIL_OBFUSCATION_KEY ?? EMAIL_OBFUSCATION_KEY;
 
 if (!email) {
 	console.error('Usage: bun run obfuscate:email -- you@example.com [base64AesKey]');

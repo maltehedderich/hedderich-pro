@@ -1,0 +1,8 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	// Keep this in sync with the actual Cloudflare Pages project name.
+	"name": "hedderich-pro",
+	"pages_build_output_dir": "./build",
+	"compatibility_date": "2026-04-18",
+	"send_metrics": false
+}
