@@ -49,6 +49,7 @@ This repo is configured for a fully static Cloudflare Pages deployment through G
 - This repo intentionally does not commit `wrangler.jsonc`. That avoids accidentally turning a Pages deployment into a Worker deployment path.
 - If your current Cloudflare deployment log shows `wrangler deploy`, you are not using a Pages-only deploy path yet.
 - The `build:cloudflare` script runs `bun install --frozen-lockfile` before `vite build`. Use it in Pages because your current build log shows Cloudflare is skipping automatic dependency installation.
+- If the build succeeds but Pages fails with `Output directory ".svelte-kit/cloudflare" not found`, your Pages project is still using Cloudflare's default SvelteKit preset output directory. Change the Pages build output directory in the dashboard to `build`.
 - If you already created a non-Pages Cloudflare project for this repo, the clean fix is to create a new Pages project and connect the same GitHub repository there.
 - Cloudflare documents that existing Direct Upload Pages apps cannot later add Git integration. If you need Git integration and do not already have a Git-integrated Pages project, create a new Pages app.
 - If Pages still skips dependency installation after using `bun run build:cloudflare`, reauthorize the Cloudflare Pages GitHub integration. Cloudflare calls out Git integration setup problems as a cause of build initialization failures.
