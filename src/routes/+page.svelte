@@ -188,9 +188,9 @@
 					</p>
 					<p class="hero-support">
 						Right now I'm building Genhone, which pressure-tests SaaS ideas before you spend months
-						on one. By day I lead teams shipping LLM applications in production. On the blog I write
-						about the parts most tutorials skip: evaluation, agent design, and the judgment calls
-						you only learn by shipping.
+						on one. By day I lead teams shipping LLM applications in production. I write about
+						evaluation, agent design, and the architectures that survive contact with real
+						systems.
 					</p>
 				</div>
 
