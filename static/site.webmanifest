@@ -1,7 +1,7 @@
 {
-	"name": "Digital Curator Design System",
-	"short_name": "Digital Curator",
-	"description": "A minimal editorial design system in Svelte 5 with buttons, chips, cards, field notes, a ghost input, and an insight block.",
+	"name": "Malte Hedderich",
+	"short_name": "Malte Hedderich",
+	"description": "I build SaaS products on top of LLMs and write about what makes them work in production.",
 	"start_url": "/",
 	"scope": "/",
 	"display": "standalone",

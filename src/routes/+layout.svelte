@@ -11,8 +11,8 @@
 	<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 	<link rel="manifest" href="/site.webmanifest" />
-	<meta name="application-name" content="Digital Curator" />
-	<meta name="apple-mobile-web-app-title" content="Digital Curator" />
+	<meta name="application-name" content="Malte Hedderich" />
+	<meta name="apple-mobile-web-app-title" content="Malte Hedderich" />
 	<meta name="theme-color" content="#f6f4ee" />
 	<meta name="msapplication-TileColor" content="#f6f4ee" />
 </svelte:head>
