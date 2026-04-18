@@ -193,9 +193,9 @@
 						I build SaaS products that use LLMs and write about what holds up in production.
 					</p>
 					<p class="hero-support">
-						Right now I'm building Genhone, which pressure-tests SaaS ideas before you spend months
-						on one. By day I lead teams shipping LLM applications in production. I write about
-						evaluation, agent design, and the architectures that survive contact with real systems.
+						Right now I'm building Genhone, which pressure-tests SaaS ideas before you burn months
+						on the wrong one. By day I lead teams shipping LLM applications. I write about
+						evaluation, agent design, and the choices you regret at scale.
 					</p>
 				</div>
 
