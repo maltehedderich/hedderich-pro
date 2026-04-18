@@ -119,7 +119,7 @@ Proof: `First commit November 16, 2023 · Launched August 14, 2024`
 ### 4. Writing
 
 **Section intro**
-`How I think about building AI systems, in public.`
+`How I think about building AI systems.`
 
 Note: Post URLs are intentionally omitted from this section. The writing list is not linked. It reads as a table of topics. The Featured Note section (section 2) is the only place a blog URL appears. Post 1 here is the same post as the Featured Note; appearing in both is intentional.
 
@@ -170,6 +170,7 @@ Summary: `How agents carry context through complex tasks, and why memory design 
 `Reach me here.`
 
 **Channels**
+
 - Email: `malte@hedderich.pro`
 - LinkedIn: `https://www.linkedin.com/in/hedderich/`
 - GitHub: `https://github.com/maltehedderich`
