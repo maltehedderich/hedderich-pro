@@ -122,13 +122,14 @@
 		{
 			id: 'building',
 			label: 'Building',
-			value: "Working on Genhone's UX and adding idea improvement features."
+			value:
+				"Working on Genhone's UX and building new features to improve ideas based on the evaluation."
 		},
 		{
 			id: 'investigating',
 			label: 'Investigating',
 			value:
-				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm testing where these really add value over the built-in agents and skills."
+				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm trying where these really work well and how to orchestrate workflows with multiple agents."
 		}
 	];
 
