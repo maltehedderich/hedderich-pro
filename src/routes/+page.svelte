@@ -8,6 +8,7 @@
 	import Clock3 from '~icons/lucide/clock-3';
 
 	import { Button, Card, EditorialList, EmailObfuscator } from '$lib';
+	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
 	import type { PageProps } from './$types';
 
@@ -45,7 +46,7 @@
 	const pageTitle = 'Malte Hedderich | AI Engineer & Architect';
 	const pageDescription =
 		'Malte Hedderich builds SaaS products that use LLMs, leads teams shipping production AI systems, and writes about evaluation, agent design, and reliable product execution.';
-	const pageImage = `${siteUrl}/images/malte-hedderich.png`;
+	const pageImage = new URL(profileImageAsset, siteUrl).toString();
 	const initialVisiblePosts = 3;
 
 	const obfuscatedEmail: EncryptedEmailData = {
@@ -242,15 +243,14 @@
 			<figure class="portrait-shell order-first self-start lg:order-last lg:justify-self-end">
 				<div aria-hidden="true" class="portrait-halo"></div>
 				<div class="portrait-frame">
-					<img
+					<enhanced:img
 						alt="Portrait of Malte Hedderich"
 						class="portrait-image"
 						decoding="async"
 						fetchpriority="high"
-						height="1250"
 						loading="eager"
-						src="/images/malte-hedderich.png"
-						width="1250"
+						sizes="(min-width: 1280px) 248px, (min-width: 1024px) 232px, (min-width: 640px) 128px, 96px"
+						src="../lib/assets/malte-hedderich.png?w=496;248;192;128;96"
 					/>
 				</div>
 			</figure>
@@ -600,6 +600,10 @@
 		box-shadow: var(--shadow-floating);
 		padding: 0.45rem;
 		position: relative;
+	}
+
+	.portrait-frame :global(picture) {
+		display: block;
 	}
 
 	.portrait-image {
