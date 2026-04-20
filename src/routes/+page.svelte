@@ -7,8 +7,9 @@
 	import TwitterX from '~icons/bxl/twitter-x';
 	import Clock3 from '~icons/lucide/clock-3';
 
-	import { Card, EditorialList, EmailObfuscator } from '$lib';
+	import { Button, Card, EditorialList, EmailObfuscator } from '$lib';
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
+	import type { PageProps } from './$types';
 
 	type NavItem = {
 		id: string;
@@ -23,15 +24,6 @@
 		status: string;
 		title: string;
 		url: string;
-	};
-
-	type WritingPost = {
-		href: string;
-		id: string;
-		readTime: string;
-		summary: string;
-		tag: string;
-		title: string;
 	};
 
 	type CurrentFocus = {
@@ -54,10 +46,24 @@
 	const pageDescription =
 		'Malte Hedderich builds SaaS products that use LLMs, leads teams shipping production AI systems, and writes about evaluation, agent design, and reliable product execution.';
 	const pageImage = `${siteUrl}/images/malte-hedderich.png`;
+	const initialVisiblePosts = 3;
 
 	const obfuscatedEmail: EncryptedEmailData = {
 		ciphertext: 'NqoKSjF7vYp67Dcx9G7gBczblm9L5raq7OmKSw4tvfLO4OI=',
 		iv: 'eFpvbsnoikxfY5DJ'
+	};
+
+	let { data }: PageProps = $props();
+	let showAllPosts = $state(false);
+
+	let visiblePosts = $derived(showAllPosts ? data.posts : data.posts.slice(0, initialVisiblePosts));
+	let hiddenPostCount = $derived(Math.max(data.posts.length - initialVisiblePosts, 0));
+	let visiblePostCountLabel = $derived(
+		`${visiblePosts.length} of ${data.posts.length} post${data.posts.length === 1 ? '' : 's'}`
+	);
+
+	const togglePostVisibility = () => {
+		showAllPosts = !showAllPosts;
 	};
 
 	const navigation: NavItem[] = [
@@ -86,35 +92,6 @@
 			status: 'Active',
 			title: 'Genwriter',
 			url: 'https://genwriter.com'
-		}
-	];
-
-	const posts: WritingPost[] = [
-		{
-			href: 'https://blog.hedderich.pro/2026/02/09/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2/',
-			id: 'prompt-optimization',
-			readTime: '10 min',
-			summary: 'Treat prompts like model weights. Optimize them with data instead of intuition.',
-			tag: 'Technical deep-dive',
-			title: 'Programmatic Prompt Optimization: Building a Spam Filter with DSPy and MIPROv2'
-		},
-		{
-			href: 'https://blog.hedderich.pro/2025/08/22/do-you-know-what-agents-are/',
-			id: 'agents',
-			readTime: '6 min',
-			summary:
-				'What actually counts as an agent, and why confusing one with a plain LLM call breaks things in production.',
-			tag: 'Concepts',
-			title: 'Do You Know What Agents Are?'
-		},
-		{
-			href: 'https://blog.hedderich.pro/2024/06/30/running-state-enhancing-short-term-memory-in-ai-agents/',
-			id: 'memory',
-			readTime: '8 min',
-			summary:
-				'How agents carry context through complex tasks, and why memory design matters as much as the model choice.',
-			tag: 'Systems',
-			title: 'Running State: Enhancing Short-Term Memory in AI Agents'
 		}
 	];
 
@@ -359,41 +336,63 @@
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="writing-title">Writing</h2>
 				<p class="section-copy">
-					Essays on evaluation, agent design, prompt optimization, and production LLM systems.
+					The full archive from blog.hedderich.pro, with the latest essays visible first.
 				</p>
 			</div>
 
-			<EditorialList items={posts}>
-				{#snippet row(post)}
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-					<a aria-label={`Read ${post.title}`} class="writing-link" href={post.href}>
-						<div class="space-y-5">
-							<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-								<div class="min-w-0 flex-1 space-y-4">
-									<div class="flex flex-wrap items-center gap-2.5">
-										<span class="meta-pill">{post.tag}</span>
-										<span class="meta-pill meta-pill--quiet">
-											<Clock3 aria-hidden="true" class="size-3.5 shrink-0" />
-											{post.readTime}
-										</span>
+			<div class="space-y-5">
+				<div id="writing-post-list">
+					<EditorialList items={visiblePosts}>
+						{#snippet row(post)}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+							<a aria-label={`Read ${post.title}`} class="writing-link" href={post.href}>
+								<div class="space-y-5">
+									<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+										<div class="min-w-0 flex-1 space-y-4">
+											<div class="flex flex-wrap items-center gap-2.5">
+												<span class="meta-pill">{post.tag}</span>
+												<span class="meta-pill meta-pill--quiet">
+													<Clock3 aria-hidden="true" class="size-3.5 shrink-0" />
+													{post.readTime}
+												</span>
+											</div>
+
+											<div class="writing-link__header">
+												<h3 class="writing-title">{post.title}</h3>
+												<span aria-hidden="true" class="writing-link__arrow">
+													<ArrowUpRight class="size-4" />
+												</span>
+											</div>
+										</div>
 									</div>
 
-									<div class="writing-link__header">
-										<h3 class="writing-title">{post.title}</h3>
-										<span aria-hidden="true" class="writing-link__arrow">
-											<ArrowUpRight class="size-4" />
-										</span>
-									</div>
+									<p class="text-base leading-7 text-(--color-muted) sm:text-lg">
+										{post.summary}
+									</p>
 								</div>
-							</div>
+							</a>
+						{/snippet}
+					</EditorialList>
+				</div>
 
-							<p class="text-base leading-7 text-(--color-muted) sm:text-lg">
-								{post.summary}
-							</p>
-						</div>
-					</a>
-				{/snippet}
-			</EditorialList>
+				{#if hiddenPostCount > 0}
+					<div class="writing-controls">
+						<p class="writing-count">Showing {visiblePostCountLabel}</p>
+
+						<Button
+							aria-controls="writing-post-list"
+							aria-expanded={showAllPosts}
+							class="writing-toggle"
+							onclick={togglePostVisibility}
+							variant="secondary"
+						>
+							{showAllPosts
+								? 'Show fewer posts'
+								: `Show ${hiddenPostCount} more post${hiddenPostCount === 1 ? '' : 's'}`}
+						</Button>
+					</div>
+				{/if}
+			</div>
 		</section>
 
 		<section aria-labelledby="now-title" class="section-shell scroll-mt-24" id="now">
@@ -720,6 +719,24 @@
 		font-weight: 600;
 		letter-spacing: -0.045em;
 		line-height: 0.98;
+	}
+
+	.writing-controls {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.9rem;
+		justify-content: space-between;
+	}
+
+	.writing-count {
+		color: var(--color-muted);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	:global(.writing-toggle) {
+		min-width: 12rem;
 	}
 
 	.now-list {
