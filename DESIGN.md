@@ -59,7 +59,7 @@ In this system, depth is a product of **Tonal Layering**, not structural lines.
 
 ### Buttons
 
-- **Primary:** High-contrast `primary` background with `on_primary` text. No border. Slightly rounded (`0.375rem`) to feel modern but stable.
+- **Primary:** High-contrast `primary` background with `on_primary` text. No border. Fully rounded (`9999px`) for a pill silhouette that still reads as deliberate rather than decorative.
 - **Secondary:** `surface_container_high` background. This variant is for secondary actions that shouldn't distract from the main narrative.
 - **Tertiary:** Text-only with an underline appearing only on hover. Use for "Read More" links within body text.
 
