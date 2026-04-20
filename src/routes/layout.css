@@ -156,7 +156,7 @@ select {
 		background: linear-gradient(
 			135deg,
 			var(--color-primary) 0%,
-			color-mix(in srgb, var(--color-primary) 74%, var(--color-accent) 26%) 100%
+			color-mix(in srgb, var(--color-primary) 84%, var(--color-accent) 16%) 100%
 		);
 		color: var(--surface-container-lowest);
 	}
@@ -176,7 +176,7 @@ select {
 		background: linear-gradient(
 			135deg,
 			var(--color-primary-active) 0%,
-			color-mix(in srgb, var(--color-primary-active) 78%, var(--color-accent) 22%) 100%
+			color-mix(in srgb, var(--color-primary-active) 82%, var(--color-accent) 18%) 100%
 		);
 	}
 
