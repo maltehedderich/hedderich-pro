@@ -419,11 +419,11 @@
 
 			<article class="background-panel">
 				<p class="background-copy">
-					At Accenture, I'm an ML Engineering Associate Manager leading teams of 6 to 12 building
-					production LLM applications. Before that, I spent two years at Serviceware shipping intent
-					recognition, semantic search services, and a production LLM app in 2023. I studied
-					Business Informatics at TU Darmstadt, wrote my thesis on open-source MLOps, and spent a
-					year at Tongji University in Shanghai studying Software Engineering.
+					ML Engineering Associate Manager at Accenture, leading teams that build production LLM
+					applications. Before that, two years at Serviceware, where I shipped intent recognition,
+					semantic search, and a production LLM app in 2023. I studied Business Informatics at TU
+					Darmstadt, wrote my thesis on open-source MLOps, and spent a year at Tongji University in
+					Shanghai studying Software Engineering.
 				</p>
 			</article>
 		</section>
