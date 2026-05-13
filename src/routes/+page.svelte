@@ -70,7 +70,7 @@
 	const navigation: NavItem[] = [
 		{ id: 'projects', href: '#projects', label: 'Projects' },
 		{ id: 'writing', href: '#writing', label: 'Writing' },
-		{ id: 'now', href: '#now', label: 'Now' },
+		{ id: 'now', href: '#now', label: 'May Update' },
 		{ id: 'experience', href: '#experience', label: 'Experience' },
 		{ id: 'contact', href: '#contact', label: 'Contact' }
 	];
@@ -101,13 +101,19 @@
 			id: 'building',
 			label: 'Building',
 			value:
-				"Working on Genhone's UX and building new features to improve ideas based on the evaluation."
+				'Adding idea-improvement features to Genhone, so an evaluation can turn into a stronger version of the idea instead of stopping at a score.'
 		},
 		{
-			id: 'investigating',
-			label: 'Investigating',
+			id: 'starting',
+			label: 'Starting',
 			value:
-				"Custom agent setups in coding CLIs like Claude Code and Codex. I'm trying where these really work well and how to orchestrate workflows with multiple agents."
+				'Started a new project alongside Genhone. It is early, still more problem-shaping than launch-shaping.'
+		},
+		{
+			id: 'tools',
+			label: 'Tools',
+			value:
+				'Still experimenting with Codex subagents. Claude has mostly left my daily loop; I only open it to try the Claude Design feature.'
 		}
 	];
 
@@ -397,8 +403,8 @@
 
 		<section aria-labelledby="now-title" class="section-shell scroll-mt-24" id="now">
 			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="now-title">Now</h2>
-				<p class="section-meta"><time datetime="2026-04">Updated April 2026</time></p>
+				<h2 class="section-heading" id="now-title">May Update</h2>
+				<p class="section-meta"><time datetime="2026-05">Updated May 2026</time></p>
 			</div>
 
 			<ul class="now-list" role="list">
