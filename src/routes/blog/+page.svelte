@@ -5,10 +5,16 @@
 	import Clock3 from '~icons/lucide/clock-3';
 
 	import { EditorialList } from '$lib';
+	import {
+		createAbsoluteUrl,
+		SITE_AUTHOR,
+		SITE_LANGUAGE,
+		SITE_NAME,
+		SITE_SOCIAL_HANDLE
+	} from '$lib/site';
 	import type { PageProps } from './$types';
 
-	const siteUrl = 'https://hedderich.pro';
-	const pageUrl = `${siteUrl}/blog/`;
+	const pageUrl = createAbsoluteUrl('/blog/');
 	const pageTitle = 'Blog | Malte Hedderich';
 	const pageDescription =
 		'Essays by Malte Hedderich on LLM applications, AI agents, evaluation, prompt optimization, and machine learning engineering.';
@@ -18,16 +24,23 @@
 	let structuredData = $derived(
 		JSON.stringify({
 			'@context': 'https://schema.org',
+			'@id': `${pageUrl}#blog`,
 			'@type': 'Blog',
 			description: pageDescription,
-			name: 'Malte Hedderich Blog',
+			inLanguage: SITE_LANGUAGE,
+			name: `${SITE_NAME} Blog`,
+			publisher: {
+				'@type': 'Person',
+				name: SITE_AUTHOR,
+				url: createAbsoluteUrl('/')
+			},
 			url: pageUrl,
 			blogPost: data.posts.map((post) => ({
 				'@type': 'BlogPosting',
 				datePublished: post.publishedAt,
 				description: post.summary,
 				headline: post.title,
-				url: new URL(post.href, siteUrl).toString()
+				url: createAbsoluteUrl(post.href)
 			}))
 		})
 	);
@@ -36,18 +49,19 @@
 <svelte:head>
 	<title>{pageTitle}</title>
 	<meta name="description" content={pageDescription} />
-	<meta name="author" content="Malte Hedderich" />
+	<meta name="author" content={SITE_AUTHOR} />
 	<meta name="robots" content="index,follow,max-image-preview:large" />
 	<link rel="canonical" href={pageUrl} />
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="Malte Hedderich" />
+	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:title" content={pageTitle} />
 	<meta property="og:description" content={pageDescription} />
 	<meta property="og:url" content={pageUrl} />
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@hedderichpro" />
-	<meta name="twitter:creator" content="@hedderichpro" />
+	<meta name="twitter:site" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:creator" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:url" content={pageUrl} />
 	<meta name="twitter:title" content={pageTitle} />
 	<meta name="twitter:description" content={pageDescription} />
 	<svelte:element this={'script'} type="application/ld+json">{structuredData}</svelte:element>

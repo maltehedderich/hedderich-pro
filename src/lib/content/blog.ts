@@ -7,7 +7,8 @@ import { renderToString as renderKatexToString } from 'katex';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 
-const SITE_URL = 'https://hedderich.pro';
+import { createAbsoluteUrl, SITE_LANGUAGE, SITE_NAME } from '$lib/site';
+
 const BLOG_PATH_PREFIX = '/blog/';
 const BLOG_IMAGE_PATH_PREFIX = '/blog/images/';
 const FRONTMATTER_PATTERN = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
@@ -295,13 +296,15 @@ function toBlogPostItem(post: BlogPost): BlogPostItem {
 }
 
 function createCanonicalUrl(pathname: string): string {
-	return new URL(pathname, SITE_URL).toString();
+	return createAbsoluteUrl(pathname);
 }
 
 function createBlogPostStructuredData(
 	frontmatter: BlogPostFrontmatter,
 	canonicalHref: string
 ): string {
+	const authorUrl = createAbsoluteUrl('/');
+
 	return JSON.stringify({
 		'@context': 'https://schema.org',
 		'@id': `${canonicalHref}#article`,
@@ -309,15 +312,16 @@ function createBlogPostStructuredData(
 		author: {
 			'@type': 'Person',
 			name: frontmatter.author,
-			url: SITE_URL
+			url: authorUrl
 		},
 		dateModified: frontmatter.date,
 		datePublished: frontmatter.date,
 		description: frontmatter.metaDescription,
 		headline: frontmatter.title,
+		inLanguage: SITE_LANGUAGE,
 		isPartOf: {
 			'@type': 'Blog',
-			name: 'Malte Hedderich',
+			name: SITE_NAME,
 			url: createCanonicalUrl(BLOG_PATH_PREFIX)
 		},
 		keywords: [...frontmatter.categories, ...frontmatter.tags],
@@ -325,8 +329,9 @@ function createBlogPostStructuredData(
 		publisher: {
 			'@type': 'Person',
 			name: frontmatter.author,
-			url: SITE_URL
-		}
+			url: authorUrl
+		},
+		url: canonicalHref
 	});
 }
 

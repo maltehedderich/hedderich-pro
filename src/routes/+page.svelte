@@ -10,6 +10,14 @@
 	import { Button, Card, EditorialList, EmailObfuscator } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
+	import {
+		createAbsoluteUrl,
+		SITE_AUTHOR,
+		SITE_LANGUAGE,
+		SITE_NAME,
+		SITE_SOCIAL_HANDLE,
+		SITE_URL
+	} from '$lib/site';
 	import type { PageProps } from './$types';
 
 	type NavItem = {
@@ -41,12 +49,12 @@
 		value: string;
 	};
 
-	const siteUrl = 'https://hedderich.pro';
-	const pageUrl = `${siteUrl}/`;
-	const pageTitle = 'Malte Hedderich | AI Engineer & Architect';
+	const pageUrl = createAbsoluteUrl('/');
+	const blogUrl = createAbsoluteUrl('/blog/');
+	const pageTitle = 'Malte Hedderich | AI Engineer for LLM Products';
 	const pageDescription =
-		'Malte Hedderich builds SaaS products that use LLMs, leads teams shipping production AI systems, and writes about evaluation, agent design, and reliable product execution.';
-	const pageImage = new URL(profileImageAsset, siteUrl).toString();
+		'AI engineer Malte Hedderich builds LLM SaaS products, production AI systems, evaluation workflows, and practical AI agents.';
+	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
 	const initialVisiblePosts = 3;
 
 	const obfuscatedEmail: EncryptedEmailData = {
@@ -154,9 +162,17 @@
 			{
 				'@id': `${pageUrl}#person`,
 				'@type': 'Person',
-				name: 'Malte Hedderich',
+				name: SITE_AUTHOR,
+				givenName: 'Malte',
+				familyName: 'Hedderich',
 				url: pageUrl,
-				image: pageImage,
+				image: {
+					'@type': 'ImageObject',
+					url: pageImage,
+					width: 1250,
+					height: 1250,
+					caption: 'Portrait of Malte Hedderich'
+				},
 				description: pageDescription,
 				jobTitle: 'ML Engineering Associate Manager',
 				worksFor: {
@@ -186,23 +202,40 @@
 				'@id': `${pageUrl}#website`,
 				'@type': 'WebSite',
 				url: pageUrl,
-				name: 'Malte Hedderich',
+				name: SITE_NAME,
 				description: pageDescription,
+				inLanguage: SITE_LANGUAGE,
 				publisher: {
 					'@id': `${pageUrl}#person`
+				},
+				hasPart: {
+					'@id': `${blogUrl}#blog`,
+					'@type': 'Blog',
+					name: `${SITE_NAME} Blog`,
+					url: blogUrl
 				}
 			},
 			{
 				'@id': `${pageUrl}#webpage`,
-				'@type': 'WebPage',
+				'@type': 'ProfilePage',
 				url: pageUrl,
 				name: pageTitle,
 				description: pageDescription,
+				inLanguage: SITE_LANGUAGE,
 				about: {
+					'@id': `${pageUrl}#person`
+				},
+				mainEntity: {
 					'@id': `${pageUrl}#person`
 				},
 				isPartOf: {
 					'@id': `${pageUrl}#website`
+				},
+				primaryImageOfPage: {
+					'@type': 'ImageObject',
+					url: pageImage,
+					width: 1250,
+					height: 1250
 				}
 			}
 		]
@@ -212,22 +245,27 @@
 <svelte:head>
 	<title>{pageTitle}</title>
 	<meta name="description" content={pageDescription} />
-	<meta name="author" content="Malte Hedderich" />
+	<meta name="author" content={SITE_AUTHOR} />
 	<meta name="robots" content="index,follow,max-image-preview:large" />
 	<link rel="canonical" href={pageUrl} />
 	<meta property="og:locale" content="en_US" />
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="Malte Hedderich" />
+	<meta property="og:type" content="profile" />
+	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:title" content={pageTitle} />
 	<meta property="og:description" content={pageDescription} />
 	<meta property="og:url" content={pageUrl} />
 	<meta property="og:image" content={pageImage} />
+	<meta property="og:image:secure_url" content={pageImage} />
+	<meta property="og:image:type" content="image/png" />
 	<meta property="og:image:width" content="1250" />
 	<meta property="og:image:height" content="1250" />
 	<meta property="og:image:alt" content="Portrait of Malte Hedderich" />
+	<meta property="profile:first_name" content="Malte" />
+	<meta property="profile:last_name" content="Hedderich" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:site" content="@hedderichpro" />
-	<meta name="twitter:creator" content="@hedderichpro" />
+	<meta name="twitter:site" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:creator" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:url" content={pageUrl} />
 	<meta name="twitter:title" content={pageTitle} />
 	<meta name="twitter:description" content={pageDescription} />
 	<meta name="twitter:image" content={pageImage} />

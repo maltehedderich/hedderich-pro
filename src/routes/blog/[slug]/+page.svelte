@@ -8,10 +8,11 @@
 
 	import type { Attachment } from 'svelte/attachments';
 
+	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE } from '$lib/site';
 	import type { PageProps } from './$types';
 
-	const siteUrl = 'https://hedderich.pro';
 	const copyFeedbackDuration = 1800;
+	const authorUrl = createAbsoluteUrl('/');
 
 	let { data }: PageProps = $props();
 	let post = $derived(data.post);
@@ -130,12 +131,12 @@
 	<link rel="canonical" href={post.canonicalHref} />
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="article" />
-	<meta property="og:site_name" content="Malte Hedderich" />
+	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:title" content={post.title} />
 	<meta property="og:description" content={post.frontmatter.metaDescription} />
 	<meta property="og:url" content={post.canonicalHref} />
 	<meta property="article:published_time" content={post.publishedAt} />
-	<meta property="article:author" content={new URL('/', siteUrl).toString()} />
+	<meta property="article:author" content={authorUrl} />
 	{#each post.categories as category (category)}
 		<meta property="article:section" content={category} />
 	{/each}
@@ -143,8 +144,9 @@
 		<meta property="article:tag" content={tag} />
 	{/each}
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@hedderichpro" />
-	<meta name="twitter:creator" content="@hedderichpro" />
+	<meta name="twitter:site" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:creator" content={SITE_SOCIAL_HANDLE} />
+	<meta name="twitter:url" content={post.canonicalHref} />
 	<meta name="twitter:title" content={post.title} />
 	<meta name="twitter:description" content={post.frontmatter.metaDescription} />
 	<svelte:element this={'script'} type="application/ld+json">{post.structuredData}</svelte:element>
