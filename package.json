@@ -13,6 +13,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
+		"test": "vitest run",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
@@ -40,9 +41,15 @@
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.1",
 		"unplugin-icons": "^23.0.1",
-		"vite": "^8.0.7"
+		"vite": "^8.0.7",
+		"vitest": "^4.1.6"
 	},
 	"dependencies": {
-		"@fontsource/inter": "^5.2.8"
+		"@fontsource/inter": "^5.2.8",
+		"highlight.js": "^11.11.1",
+		"katex": "^0.16.45",
+		"marked": "^18.0.3",
+		"yaml": "^2.9.0",
+		"zod": "^4.4.3"
 	}
 }

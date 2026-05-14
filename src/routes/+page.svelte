@@ -290,7 +290,8 @@
 				</nav>
 
 				<div class="hero-actions">
-					<a class="ds-button" data-variant="primary" href="https://blog.hedderich.pro">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+					<a class="ds-button" data-variant="primary" href="/blog/">
 						<span class="ds-button__label">Read the blog</span>
 						<span aria-hidden="true" class="ds-button__icon">
 							<ArrowUpRight class="size-4" />
@@ -342,7 +343,7 @@
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="writing-title">Writing</h2>
 				<p class="section-copy">
-					The full archive from blog.hedderich.pro, with the latest essays visible first.
+					The full archive, now published here with the latest essays visible first.
 				</p>
 			</div>
 
