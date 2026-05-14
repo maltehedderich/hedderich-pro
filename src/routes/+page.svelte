@@ -107,7 +107,7 @@
 			id: 'starting',
 			label: 'Starting',
 			value:
-				'Started a new project alongside Genhone. It is early, still more problem-shaping than launch-shaping.'
+				'Started a new project alongside Genhone. It is still early, closer to clarifying the problem than preparing a launch.'
 		},
 		{
 			id: 'tools',
