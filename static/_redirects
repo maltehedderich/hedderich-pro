@@ -1,0 +1,35 @@
+# Legacy WordPress-style post URLs
+/2023/10/28/tabular-q-learning /blog/tabular-q-learning/ 301
+/2023/10/28/tabular-q-learning/ /blog/tabular-q-learning/ 301
+/2024/02/11/scikit-learn-pipelines /blog/scikit-learn-pipelines/ 301
+/2024/02/11/scikit-learn-pipelines/ /blog/scikit-learn-pipelines/ 301
+/2024/06/30/running-state-enhancing-short-term-memory-in-ai-agents /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+/2024/06/30/running-state-enhancing-short-term-memory-in-ai-agents/ /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+/2025/08/22/do-you-know-what-agents-are /blog/do-you-know-what-agents-are/ 301
+/2025/08/22/do-you-know-what-agents-are/ /blog/do-you-know-what-agents-are/ 301
+/2026/02/09/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2 /blog/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2/ 301
+/2026/02/09/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2/ /blog/programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2/ 301
+
+# Legacy malformed post URLs seen by Google
+/06/30/running-state-enhancing-short-term-memory-in-ai-agents /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+/06/30/running-state-enhancing-short-term-memory-in-ai-agents/ /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+/2026/06/30/running-state-enhancing-short-term-memory-in-ai-agents /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+/2026/06/30/running-state-enhancing-short-term-memory-in-ai-agents/ /blog/running-state-enhancing-short-term-memory-in-ai-agents/ 301
+
+# Legacy collection URLs
+/about / 301
+/about/ / 301
+/archive/2024 /blog/ 301
+/archive/2024/ /blog/ 301
+/archive/2025 /blog/ 301
+/archive/2025/ /blog/ 301
+/category/agents /blog/ 301
+/category/agents/ /blog/ 301
+/category/llm /blog/ 301
+/category/llm/ /blog/ 301
+/category/machine-learning /blog/ 301
+/category/machine-learning/ /blog/ 301
+/category/optimization /blog/ 301
+/category/optimization/ /blog/ 301
+/category/q-learning /blog/ 301
+/category/q-learning/ /blog/ 301
