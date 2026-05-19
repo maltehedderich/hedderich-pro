@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import type { Pathname } from '$app/types';
 	import ArrowLeft from '~icons/lucide/arrow-left';
 	import ArrowRight from '~icons/lucide/arrow-right';
 	import CalendarDays from '~icons/lucide/calendar-days';
 	import Clock3 from '~icons/lucide/clock-3';
+	import ExternalLink from '~icons/lucide/external-link';
 
 	import { EditorialList } from '$lib';
 	import {
@@ -95,16 +98,18 @@
 		<section aria-labelledby="archive-title" class="section-shell">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="archive-title">Archive</h2>
-				<p class="section-copy">{data.posts.length} essays, newest first.</p>
+				<p class="section-copy">{data.posts.length} pieces, newest first.</p>
 			</div>
 
 			<EditorialList items={data.posts}>
 				{#snippet row(post)}
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-					<a aria-label={`Read ${post.title}`} class="blog-index-link" href={post.href}>
+					{#snippet blogIndexLinkContent()}
 						<div class="space-y-5">
 							<div class="flex flex-wrap items-center gap-2.5">
 								<span class="meta-pill">{post.tag}</span>
+								{#if post.sourceLabel}
+									<span class="meta-pill meta-pill--quiet">{post.sourceLabel}</span>
+								{/if}
 								<span class="meta-pill meta-pill--quiet">
 									<CalendarDays aria-hidden="true" class="size-3.5 shrink-0" />
 									<time datetime={post.publishedAt}>{post.dateLabel}</time>
@@ -118,13 +123,37 @@
 							<div class="blog-index-link__header">
 								<h3 class="blog-index-link__title">{post.title}</h3>
 								<span aria-hidden="true" class="blog-index-link__arrow">
-									<ArrowRight class="size-4" />
+									{#if post.isExternal}
+										<ExternalLink class="size-4" />
+									{:else}
+										<ArrowRight class="size-4" />
+									{/if}
 								</span>
 							</div>
 
 							<p class="blog-index-link__summary">{post.summary}</p>
 						</div>
-					</a>
+					{/snippet}
+
+					{#if post.isExternal}
+						<a
+							aria-label={`Read ${post.title} on ${post.sourceLabel ?? 'external site'}`}
+							class="blog-index-link"
+							href={post.href}
+							rel="external noreferrer noopener"
+							target="_blank"
+						>
+							{@render blogIndexLinkContent()}
+						</a>
+					{:else}
+						<a
+							aria-label={`Read ${post.title}`}
+							class="blog-index-link"
+							href={resolve(post.href as Pathname)}
+						>
+							{@render blogIndexLinkContent()}
+						</a>
+					{/if}
 				{/snippet}
 			</EditorialList>
 		</section>

@@ -4,6 +4,7 @@ import {
 	getBlogPostByRouteSlug,
 	getBlogPostEntries,
 	getPublishedBlogPostItems,
+	getPublishedWritingItems,
 	renderBlogMarkdown
 } from './blog';
 
@@ -26,10 +27,29 @@ describe('blog content registry', () => {
 		});
 	});
 
+	it('adds the Medium article to the combined writing list newest first', () => {
+		const writingItems = getPublishedWritingItems();
+
+		expect(writingItems).toHaveLength(6);
+		expect(writingItems[0]).toMatchObject({
+			href: 'https://generativeai.pub/how-i-build-ai-agents-from-masterclass-guides-not-prompt-templates-75069b891110',
+			id: 'how-i-build-ai-agents-from-masterclass-guides-not-prompt-templates',
+			isExternal: true,
+			publishedAt: '2026-05-18',
+			readTime: '9 min',
+			sourceLabel: 'Medium',
+			tag: 'AI Agents',
+			title: 'How I Build AI Agents From Masterclass Guides, Not Prompt Templates'
+		});
+	});
+
 	it('exports static route entries for every published post', () => {
 		expect(getBlogPostEntries()).toEqual(
 			getPublishedBlogPostItems().map((post) => ({ slug: post.id }))
 		);
+		expect(getBlogPostEntries()).not.toContainEqual({
+			slug: 'how-i-build-ai-agents-from-masterclass-guides-not-prompt-templates'
+		});
 	});
 
 	it('renders a migrated post with stable headings, assets, and external link attributes', () => {

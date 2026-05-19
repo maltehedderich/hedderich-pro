@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import type { Pathname } from '$app/types';
 	import ArrowRight from '~icons/lucide/arrow-right';
 	import ArrowUpRight from '~icons/lucide/arrow-up-right';
 	import Mail from '~icons/lucide/mail';
@@ -6,6 +8,7 @@
 	import Linkedin from '~icons/bxl/linkedin';
 	import TwitterX from '~icons/bxl/twitter-x';
 	import Clock3 from '~icons/lucide/clock-3';
+	import ExternalLink from '~icons/lucide/external-link';
 
 	import { Button, Card, EditorialList, EmailObfuscator } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
@@ -68,7 +71,7 @@
 	let visiblePosts = $derived(showAllPosts ? data.posts : data.posts.slice(0, initialVisiblePosts));
 	let hiddenPostCount = $derived(Math.max(data.posts.length - initialVisiblePosts, 0));
 	let visiblePostCountLabel = $derived(
-		`${visiblePosts.length} of ${data.posts.length} post${data.posts.length === 1 ? '' : 's'}`
+		`${visiblePosts.length} of ${data.posts.length} piece${data.posts.length === 1 ? '' : 's'}`
 	);
 
 	const togglePostVisibility = () => {
@@ -381,7 +384,7 @@
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="writing-title">Writing</h2>
 				<p class="section-copy">
-					The full archive, now published here with the latest essays visible first.
+					Essays published here and elsewhere, with the latest pieces visible first.
 				</p>
 			</div>
 
@@ -389,13 +392,15 @@
 				<div id="writing-post-list">
 					<EditorialList items={visiblePosts}>
 						{#snippet row(post)}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-							<a aria-label={`Read ${post.title}`} class="writing-link" href={post.href}>
+							{#snippet writingLinkContent()}
 								<div class="space-y-5">
 									<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 										<div class="min-w-0 flex-1 space-y-4">
 											<div class="flex flex-wrap items-center gap-2.5">
 												<span class="meta-pill">{post.tag}</span>
+												{#if post.sourceLabel}
+													<span class="meta-pill meta-pill--quiet">{post.sourceLabel}</span>
+												{/if}
 												<span class="meta-pill meta-pill--quiet">
 													<Clock3 aria-hidden="true" class="size-3.5 shrink-0" />
 													{post.readTime}
@@ -405,7 +410,11 @@
 											<div class="writing-link__header">
 												<h3 class="writing-title">{post.title}</h3>
 												<span aria-hidden="true" class="writing-link__arrow">
-													<ArrowUpRight class="size-4" />
+													{#if post.isExternal}
+														<ExternalLink class="size-4" />
+													{:else}
+														<ArrowUpRight class="size-4" />
+													{/if}
 												</span>
 											</div>
 										</div>
@@ -415,7 +424,27 @@
 										{post.summary}
 									</p>
 								</div>
-							</a>
+							{/snippet}
+
+							{#if post.isExternal}
+								<a
+									aria-label={`Read ${post.title} on ${post.sourceLabel ?? 'external site'}`}
+									class="writing-link"
+									href={post.href}
+									rel="external noreferrer noopener"
+									target="_blank"
+								>
+									{@render writingLinkContent()}
+								</a>
+							{:else}
+								<a
+									aria-label={`Read ${post.title}`}
+									class="writing-link"
+									href={resolve(post.href as Pathname)}
+								>
+									{@render writingLinkContent()}
+								</a>
+							{/if}
 						{/snippet}
 					</EditorialList>
 				</div>
@@ -432,8 +461,8 @@
 							variant="secondary"
 						>
 							{showAllPosts
-								? 'Show fewer posts'
-								: `Show ${hiddenPostCount} more post${hiddenPostCount === 1 ? '' : 's'}`}
+								? 'Show fewer pieces'
+								: `Show ${hiddenPostCount} more piece${hiddenPostCount === 1 ? '' : 's'}`}
 						</Button>
 					</div>
 				{/if}

@@ -55,6 +55,11 @@ export interface BlogPostItem {
 	title: string;
 }
 
+export interface WritingItem extends BlogPostItem {
+	isExternal: boolean;
+	sourceLabel?: string;
+}
+
 export interface BlogPost extends BlogPostItem {
 	canonicalHref: string;
 	contentHtml: string;
@@ -120,12 +125,37 @@ const blogPosts = Object.entries(blogModules)
 	.map(([sourcePath, source]) => parseBlogPost(source, sourcePath))
 	.sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
 
+const externalWritingItems: WritingItem[] = [
+	{
+		categories: ['AI Agents', 'Workflow', 'Artificial Intelligence'],
+		dateLabel: formatPostDate('2026-05-18'),
+		href: 'https://generativeai.pub/how-i-build-ai-agents-from-masterclass-guides-not-prompt-templates-75069b891110',
+		id: 'how-i-build-ai-agents-from-masterclass-guides-not-prompt-templates',
+		isExternal: true,
+		publishedAt: '2026-05-18',
+		readTime: '9 min',
+		sourceLabel: 'Medium',
+		summary:
+			'A practical pipeline for turning expert judgment into reusable agents and skills that survive real work.',
+		tag: 'AI Agents',
+		tags: ['Agent Skills', 'Medium', 'Software Development'],
+		title: 'How I Build AI Agents From Masterclass Guides, Not Prompt Templates'
+	}
+];
+
 export function getPublishedBlogPosts(): BlogPost[] {
 	return blogPosts.filter((post) => !post.frontmatter.draft);
 }
 
 export function getPublishedBlogPostItems(): BlogPostItem[] {
 	return getPublishedBlogPosts().map(toBlogPostItem);
+}
+
+export function getPublishedWritingItems(): WritingItem[] {
+	return [
+		...getPublishedBlogPostItems().map(toWritingItem),
+		...externalWritingItems.map((item) => ({ ...item }))
+	].sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
 }
 
 export function getBlogPostByRouteSlug(slug: string): BlogPost | undefined {
@@ -292,6 +322,13 @@ function toBlogPostItem(post: BlogPost): BlogPostItem {
 		tag: post.tag,
 		tags: post.tags,
 		title: post.title
+	};
+}
+
+function toWritingItem(post: BlogPostItem): WritingItem {
+	return {
+		...post,
+		isExternal: false
 	};
 }
 
