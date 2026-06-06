@@ -1,4 +1,8 @@
-import { getBlogPostByRouteSlug, getBlogPostEntries } from '$lib/content/blog';
+import {
+	getBlogPostByRouteSlug,
+	getBlogPostEntries,
+	getPublishedBlogPostItems
+} from '$lib/content/blog';
 import { error } from '@sveltejs/kit';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
@@ -11,5 +15,12 @@ export const load: PageServerLoad = ({ params }) => {
 		error(404, { message: 'Blog post not found' });
 	}
 
-	return { post };
+	const posts = getPublishedBlogPostItems();
+	const postIndex = posts.findIndex((item) => item.id === params.slug);
+
+	return {
+		post,
+		newerPost: postIndex > 0 ? posts[postIndex - 1] : null,
+		olderPost: postIndex >= 0 ? (posts[postIndex + 1] ?? null) : null
+	};
 };

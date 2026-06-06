@@ -1,6 +1,6 @@
 ---
 title: 'Programmatic Prompt Optimization: Building a Spam Filter with DSPy and MIPROv2'
-titleTag: 'Programmatic Prompt Optimization: Building a Spam Filter with DSPy and MIPROv2 | Malte Hedderich'
+titleTag: 'DSPy Prompt Optimization | Malte Hedderich'
 metaDescription: 'Why prompt engineering by intuition stops working in production, and how DSPy plus MIPROv2 let you optimize prompts against explicit metrics.'
 slug: 'programmatic-prompt-optimization-building-a-spam-filter-with-dspy-and-miprov2'
 date: '2026-02-09'

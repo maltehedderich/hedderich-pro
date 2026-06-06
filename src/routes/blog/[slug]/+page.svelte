@@ -1,21 +1,30 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import type { Pathname } from '$app/types';
 	import { mount, unmount } from 'svelte';
 
 	import ArrowLeft from '~icons/lucide/arrow-left';
+	import ArrowRight from '~icons/lucide/arrow-right';
 	import CalendarDays from '~icons/lucide/calendar-days';
 	import Clock3 from '~icons/lucide/clock-3';
 	import CopyIcon from '~icons/lucide/copy';
+	import House from '~icons/lucide/house';
 
 	import type { Attachment } from 'svelte/attachments';
 
-	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE } from '$lib/site';
+	import profileImageAsset from '$lib/assets/malte-hedderich.png';
+	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE, SITE_URL } from '$lib/site';
 	import type { PageProps } from './$types';
 
 	const copyFeedbackDuration = 1800;
 	const authorUrl = createAbsoluteUrl('/');
+	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
+	const pageImageAlt = 'Portrait of Malte Hedderich';
 
 	let { data }: PageProps = $props();
 	let post = $derived(data.post);
+	let newerPost = $derived(data.newerPost);
+	let olderPost = $derived(data.olderPost);
 	let hasLongTitle = $derived(post.title.length > 60);
 
 	const copyCode: Attachment<HTMLDivElement> = (node) => {
@@ -135,6 +144,12 @@
 	<meta property="og:title" content={post.title} />
 	<meta property="og:description" content={post.frontmatter.metaDescription} />
 	<meta property="og:url" content={post.canonicalHref} />
+	<meta property="og:image" content={pageImage} />
+	<meta property="og:image:secure_url" content={pageImage} />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="1250" />
+	<meta property="og:image:height" content="1250" />
+	<meta property="og:image:alt" content={pageImageAlt} />
 	<meta property="article:published_time" content={post.publishedAt} />
 	<meta property="article:author" content={authorUrl} />
 	{#each post.categories as category (category)}
@@ -143,12 +158,14 @@
 	{#each post.tags as tag (tag)}
 		<meta property="article:tag" content={tag} />
 	{/each}
-	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content={SITE_SOCIAL_HANDLE} />
 	<meta name="twitter:creator" content={SITE_SOCIAL_HANDLE} />
 	<meta name="twitter:url" content={post.canonicalHref} />
 	<meta name="twitter:title" content={post.title} />
 	<meta name="twitter:description" content={post.frontmatter.metaDescription} />
+	<meta name="twitter:image" content={pageImage} />
+	<meta name="twitter:image:alt" content={pageImageAlt} />
 	<svelte:element this={'script'} type="application/ld+json">{post.structuredData}</svelte:element>
 </svelte:head>
 
@@ -192,6 +209,43 @@
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html post.contentHtml}
 			</div>
+
+			<nav aria-label="Article navigation" class="blog-post-nav">
+				<a class="blog-post-nav__home" href={resolve('/' as Pathname)}>
+					<House aria-hidden="true" class="size-4" />
+					<span>Home</span>
+				</a>
+
+				<div class="blog-post-nav__grid">
+					{#if newerPost}
+						<a
+							aria-label={`Read newer article: ${newerPost.title}`}
+							class="blog-post-nav__link"
+							href={resolve(newerPost.href as Pathname)}
+						>
+							<span class="blog-post-nav__label">
+								<ArrowLeft aria-hidden="true" class="size-4" />
+								Newer
+							</span>
+							<span class="blog-post-nav__title">{newerPost.title}</span>
+						</a>
+					{/if}
+
+					{#if olderPost}
+						<a
+							aria-label={`Read older article: ${olderPost.title}`}
+							class="blog-post-nav__link"
+							href={resolve(olderPost.href as Pathname)}
+						>
+							<span class="blog-post-nav__label">
+								Older
+								<ArrowRight aria-hidden="true" class="size-4" />
+							</span>
+							<span class="blog-post-nav__title">{olderPost.title}</span>
+						</a>
+					{/if}
+				</div>
+			</nav>
 		</div>
 	</article>
 </main>
@@ -245,7 +299,7 @@
 
 	.blog-post-layout {
 		display: grid;
-		gap: 3rem;
+		gap: 4rem;
 	}
 
 	.meta-pill {
@@ -624,6 +678,85 @@
 		padding: 0.35rem 0;
 	}
 
+	.blog-post-nav {
+		display: grid;
+		gap: 1rem;
+		max-width: 52rem;
+	}
+
+	.blog-post-nav__home,
+	.blog-post-nav__link {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.blog-post-nav__home {
+		align-items: center;
+		color: var(--color-primary);
+		display: inline-flex;
+		font-size: 0.92rem;
+		font-weight: 700;
+		gap: 0.5rem;
+		justify-self: start;
+		line-height: 1.2;
+	}
+
+	.blog-post-nav__grid {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.blog-post-nav__link {
+		background: color-mix(
+			in srgb,
+			var(--surface-container-lowest) 78%,
+			var(--surface-container-low) 22%
+		);
+		border-radius: 0.5rem;
+		display: grid;
+		gap: 0.75rem;
+		min-height: 8.5rem;
+		padding: 1.15rem;
+		transition:
+			background-color 180ms ease,
+			color 180ms ease;
+	}
+
+	.blog-post-nav__link:hover {
+		background: color-mix(
+			in srgb,
+			var(--surface-container-high) 52%,
+			var(--surface-container-lowest) 48%
+		);
+	}
+
+	.blog-post-nav__home:focus-visible,
+	.blog-post-nav__link:focus-visible {
+		outline: 2px solid var(--outline-focus);
+		outline-offset: 4px;
+	}
+
+	.blog-post-nav__label {
+		align-items: center;
+		color: var(--color-primary);
+		display: inline-flex;
+		font-size: 0.75rem;
+		font-weight: 700;
+		gap: 0.4rem;
+		letter-spacing: 0.12em;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	.blog-post-nav__title {
+		color: var(--color-ink);
+		font-size: 1.08rem;
+		font-weight: 600;
+		letter-spacing: -0.045em;
+		line-height: 1.18;
+		max-width: 22ch;
+	}
+
 	@media (min-width: 640px) {
 		.blog-post-title {
 			font-size: 4.75rem;
@@ -648,6 +781,10 @@
 
 		.blog-content :global(.blog-content__code) {
 			padding-bottom: 1.35rem;
+		}
+
+		.blog-post-nav__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 
@@ -676,6 +813,10 @@
 		}
 
 		.blog-content {
+			grid-column: 2;
+		}
+
+		.blog-post-nav {
 			grid-column: 2;
 		}
 	}

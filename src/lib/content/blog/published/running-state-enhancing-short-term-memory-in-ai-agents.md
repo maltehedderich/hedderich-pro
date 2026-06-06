@@ -1,6 +1,6 @@
 ---
 title: 'Running State: Enhancing Short-Term Memory in AI Agents'
-titleTag: 'Running State: Enhancing Short-Term Memory in AI Agents | Malte Hedderich'
+titleTag: 'Running State for AI Agents | Malte Hedderich'
 metaDescription: 'How agents carry context through complex tasks, and why memory design matters as much as the model choice.'
 slug: 'running-state-enhancing-short-term-memory-in-ai-agents'
 date: '2024-06-30'
