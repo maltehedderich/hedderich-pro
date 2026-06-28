@@ -38,12 +38,6 @@
 		url: string;
 	};
 
-	type CurrentFocus = {
-		id: string;
-		label: string;
-		value: string;
-	};
-
 	type Channel = {
 		href: string;
 		icon: typeof Mail;
@@ -81,7 +75,6 @@
 	const navigation: NavItem[] = [
 		{ id: 'projects', href: '#projects', label: 'Projects' },
 		{ id: 'writing', href: '#writing', label: 'Writing' },
-		{ id: 'now', href: '#now', label: 'May Update' },
 		{ id: 'experience', href: '#experience', label: 'Experience' },
 		{ id: 'contact', href: '#contact', label: 'Contact' }
 	];
@@ -104,27 +97,6 @@
 			status: 'Active',
 			title: 'Genwriter',
 			url: 'https://genwriter.com'
-		}
-	];
-
-	const nowItems: CurrentFocus[] = [
-		{
-			id: 'building',
-			label: 'Building',
-			value:
-				'Adding idea-improvement features to Genhone, so an evaluation can turn into a stronger version of the idea instead of stopping at a score.'
-		},
-		{
-			id: 'starting',
-			label: 'Starting',
-			value:
-				'Started a new project alongside Genhone. It is still early, closer to clarifying the problem than preparing a launch.'
-		},
-		{
-			id: 'tools',
-			label: 'Tools',
-			value:
-				'Still experimenting with Codex subagents. Claude has mostly left my daily loop; I only open it to try the Claude Design feature.'
 		}
 	];
 
@@ -469,22 +441,6 @@
 			</div>
 		</section>
 
-		<section aria-labelledby="now-title" class="section-shell scroll-mt-24" id="now">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="now-title">May Update</h2>
-				<p class="section-meta"><time datetime="2026-05">Updated May 2026</time></p>
-			</div>
-
-			<ul class="now-list" role="list">
-				{#each nowItems as item (item.id)}
-					<li class="now-item">
-						<p class="now-label">{item.label}</p>
-						<p class="now-copy">{item.value}</p>
-					</li>
-				{/each}
-			</ul>
-		</section>
-
 		<section aria-labelledby="experience-title" class="section-shell scroll-mt-24" id="experience">
 			<div class="section-rail space-y-4 lg:pt-3">
 				<h2 class="section-heading" id="experience-title">Background</h2>
@@ -707,8 +663,7 @@
 		line-height: 0.94;
 	}
 
-	.section-copy,
-	.section-meta {
+	.section-copy {
 		color: var(--color-muted);
 		font-size: 1rem;
 		line-height: 1.68;
@@ -815,36 +770,6 @@
 
 	:global(.writing-toggle) {
 		min-width: 12rem;
-	}
-
-	.now-list {
-		display: grid;
-		gap: 1.5rem;
-		list-style: none;
-		margin: 0;
-		max-width: 52rem;
-		padding: 0;
-	}
-
-	.now-item {
-		display: grid;
-		gap: 0.45rem;
-	}
-
-	.now-label {
-		color: var(--color-muted);
-		font-size: 0.72rem;
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-	}
-
-	.now-copy {
-		color: var(--color-ink);
-		font-size: clamp(1rem, 1.7vw, 1.32rem);
-		letter-spacing: -0.025em;
-		line-height: 1.5;
-		max-width: 42rem;
 	}
 
 	.background-panel {
@@ -986,12 +911,6 @@
 			align-items: start;
 			gap: 3.5rem;
 			grid-template-columns: 14rem minmax(0, 1fr);
-		}
-
-		.now-item {
-			align-items: start;
-			column-gap: 1.5rem;
-			grid-template-columns: 7.5rem minmax(0, 1fr);
 		}
 
 		.portrait-shell {
