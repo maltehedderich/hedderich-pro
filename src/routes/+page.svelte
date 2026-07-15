@@ -331,7 +331,7 @@
 				{#each projects as project (project.id)}
 					<li class="min-h-full">
 						<Card
-							class="project-card min-h-64 sm:min-h-72 xl:min-h-80"
+							class="project-card h-full min-h-64 sm:min-h-72 xl:min-h-80"
 							href={project.url}
 							title={project.title}
 						>
