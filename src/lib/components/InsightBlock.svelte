@@ -34,20 +34,24 @@
 		</p>
 
 		<blockquote
-			class="max-w-[18ch] text-3xl leading-[1.05] font-semibold tracking-[-0.05em] text-(--color-ink) sm:text-[3rem]"
+			class="max-w-[18ch] text-(length:--text-section) leading-[1.05] font-semibold tracking-[-0.05em] text-(--color-ink)"
 		>
 			{quote}
 		</blockquote>
 
 		{#if attribution}
-			<p class="text-sm font-medium tracking-[0.14em] text-(--color-muted) uppercase">
+			<p
+				class="text-(length:--text-micro) font-medium tracking-[0.14em] text-(--color-muted) uppercase"
+			>
 				{attribution}
 			</p>
 		{/if}
 	</div>
 
 	{#if children}
-		<div class="max-w-xl text-base leading-7 text-(--color-muted) lg:col-span-5 lg:pt-10">
+		<div
+			class="max-w-xl text-(length:--text-body) leading-7 text-(--color-muted) lg:col-span-5 lg:pt-10"
+		>
 			{@render children()}
 		</div>
 	{/if}

@@ -23,7 +23,9 @@
 </script>
 
 <label class={['block space-y-3', className]} for={id}>
-	<span class="block text-xs font-semibold tracking-[0.18em] text-(--color-muted) uppercase">
+	<span
+		class="block text-(length:--text-micro) font-semibold tracking-[0.18em] text-(--color-muted) uppercase"
+	>
 		{label}
 	</span>
 
@@ -39,7 +41,7 @@
 	</span>
 
 	{#if hint}
-		<span id={hintId} class="block text-sm leading-6 text-(--color-muted)">
+		<span id={hintId} class="block text-(length:--text-meta) leading-6 text-(--color-muted)">
 			{hint}
 		</span>
 	{/if}

@@ -321,10 +321,10 @@
 			</div>
 		</section>
 
-		<section aria-labelledby="projects-title" class="section-shell scroll-mt-24" id="projects">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="projects-title">Projects</h2>
-				<p class="section-copy">Two products built after hours. Both are live.</p>
+		<section aria-labelledby="projects-title" class="ds-section scroll-mt-24" id="projects">
+			<div class="ds-section__rail space-y-4 lg:pt-3">
+				<h2 class="ds-section__heading" id="projects-title">Projects</h2>
+				<p class="ds-section__copy">Two products built after hours. Both are live.</p>
 			</div>
 
 			<ul class="project-grid grid gap-6 xl:grid-cols-2" role="list">
@@ -343,8 +343,10 @@
 							<p>{project.description}</p>
 
 							<div class="space-y-2 pt-2">
-								<span class="project-status">{project.status}</span>
-								<p class="text-sm leading-6 text-(--color-muted)">{project.proof}</p>
+								<span class="ds-chip">{project.status}</span>
+								<p class="text-(length:--text-meta) leading-6 text-(--color-muted)">
+									{project.proof}
+								</p>
 							</div>
 						</Card>
 					</li>
@@ -352,10 +354,10 @@
 			</ul>
 		</section>
 
-		<section aria-labelledby="writing-title" class="section-shell scroll-mt-24" id="writing">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="writing-title">Writing</h2>
-				<p class="section-copy">
+		<section aria-labelledby="writing-title" class="ds-section scroll-mt-24" id="writing">
+			<div class="ds-section__rail space-y-4 lg:pt-3">
+				<h2 class="ds-section__heading" id="writing-title">Writing</h2>
+				<p class="ds-section__copy">
 					Essays published here and elsewhere, with the latest pieces visible first.
 				</p>
 			</div>
@@ -368,13 +370,13 @@
 								<div class="space-y-5">
 									<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
 										<div class="min-w-0 flex-1 space-y-4">
-											<div class="flex flex-wrap items-center gap-2.5">
-												<span class="meta-pill">{post.tag}</span>
+											<div class="flex flex-wrap items-center gap-3">
+												<span class="ds-chip">{post.tag}</span>
 												{#if post.sourceLabel}
-													<span class="meta-pill meta-pill--quiet">{post.sourceLabel}</span>
+													<span class="ds-chip" data-tone="quiet">{post.sourceLabel}</span>
 												{/if}
-												<span class="meta-pill meta-pill--quiet">
-													<Clock3 aria-hidden="true" class="size-3.5 shrink-0" />
+												<span class="ds-chip" data-tone="quiet">
+													<Clock3 aria-hidden="true" class="size-3 shrink-0" />
 													{post.readTime}
 												</span>
 											</div>
@@ -392,7 +394,9 @@
 										</div>
 									</div>
 
-									<p class="text-base leading-7 text-(--color-muted) sm:text-lg">
+									<p
+										class="max-w-(--measure-prose) text-(length:--text-body) leading-[1.65] text-(--color-muted)"
+									>
 										{post.summary}
 									</p>
 								</div>
@@ -441,9 +445,9 @@
 			</div>
 		</section>
 
-		<section aria-labelledby="experience-title" class="section-shell scroll-mt-24" id="experience">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="experience-title">Background</h2>
+		<section aria-labelledby="experience-title" class="ds-section scroll-mt-24" id="experience">
+			<div class="ds-section__rail space-y-4 lg:pt-3">
+				<h2 class="ds-section__heading" id="experience-title">Background</h2>
 			</div>
 
 			<article class="background-panel">
@@ -457,9 +461,9 @@
 			</article>
 		</section>
 
-		<section aria-labelledby="contact-title" class="section-shell scroll-mt-24" id="contact">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="contact-title">Reach me</h2>
+		<section aria-labelledby="contact-title" class="ds-section scroll-mt-24" id="contact">
+			<div class="ds-section__rail space-y-4 lg:pt-3">
+				<h2 class="ds-section__heading" id="contact-title">Reach me</h2>
 			</div>
 
 			<address class="not-italic">
@@ -536,7 +540,7 @@
 	}
 
 	.hero-name {
-		font-size: clamp(3rem, 11vw, 6.75rem);
+		font-size: var(--text-hero);
 		font-weight: 600;
 		letter-spacing: -0.08em;
 		line-height: 0.9;
@@ -545,7 +549,7 @@
 
 	.hero-thesis {
 		color: var(--color-ink);
-		font-size: clamp(1.45rem, 5vw, 3rem);
+		font-size: var(--text-hero-thesis);
 		font-weight: 500;
 		letter-spacing: -0.055em;
 		line-height: 1.04;
@@ -554,7 +558,7 @@
 
 	.hero-support {
 		color: color-mix(in srgb, var(--color-ink) 70%, white 30%);
-		font-size: clamp(1rem, 1.25vw, 1.12rem);
+		font-size: var(--text-body);
 		line-height: 1.8;
 		max-width: 37rem;
 	}
@@ -562,7 +566,7 @@
 	.hero-nav {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.65rem 1.1rem;
+		gap: var(--space-xs) var(--space-sm);
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -572,35 +576,44 @@
 		align-items: center;
 		color: var(--color-muted);
 		display: inline-flex;
-		gap: 1rem;
+		/* On the li, not the a — the "·" separators are siblings of the link, so sizing the
+		   link alone left them inheriting the root 16px next to 14px labels. */
+		font-size: var(--text-meta);
+		gap: var(--space-sm);
 	}
 
 	.hero-nav a {
+		align-items: center;
 		color: inherit;
-		font-size: 0.96rem;
+		display: inline-flex;
 		font-weight: 500;
 		letter-spacing: -0.01em;
+		min-height: 1.5rem;
 		text-decoration: none;
-		transition: color 180ms ease;
+		transition: color var(--motion-fast) var(--motion-ease);
 	}
 
 	.hero-nav a:hover {
 		color: var(--color-ink);
 	}
 
+	.hero-nav a:active {
+		color: var(--color-primary-active);
+	}
+
 	.hero-nav a:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 4px;
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.hero-actions {
 		display: grid;
-		gap: 0.8rem;
+		gap: var(--space-xs);
 		max-width: 24rem;
 	}
 
 	.hero-actions .ds-button {
-		gap: 0.7rem;
+		gap: var(--space-xs);
 		justify-content: center;
 		min-width: 11.75rem;
 		width: 100%;
@@ -614,7 +627,7 @@
 	.portrait-halo {
 		aspect-ratio: 1;
 		background: radial-gradient(circle, rgba(216, 175, 79, 0.12) 0%, rgba(216, 175, 79, 0) 72%);
-		border-radius: 9999px;
+		border-radius: var(--radius-full);
 		filter: blur(10px);
 		inset: auto -4% -4% -4%;
 		position: absolute;
@@ -626,9 +639,9 @@
 			color-mix(in srgb, var(--surface-container-low) 82%, white 18%) 0%,
 			var(--surface-container-lowest) 100%
 		);
-		border-radius: 9999px;
+		border-radius: var(--radius-full);
 		box-shadow: var(--shadow-floating);
-		padding: 0.45rem;
+		padding: var(--space-2xs);
 		position: relative;
 	}
 
@@ -638,54 +651,12 @@
 
 	.portrait-image {
 		aspect-ratio: 1;
-		border-radius: 9999px;
+		border-radius: var(--radius-full);
 		display: block;
 		object-fit: cover;
 		object-position: center 20%;
 		position: relative;
 		width: 100%;
-	}
-
-	.section-shell {
-		display: grid;
-		gap: 1.35rem;
-	}
-
-	.section-rail {
-		max-width: 15rem;
-	}
-
-	.section-heading {
-		color: var(--color-ink);
-		font-size: clamp(1.7rem, 3vw, 2.35rem);
-		font-weight: 600;
-		letter-spacing: -0.06em;
-		line-height: 0.94;
-	}
-
-	.section-copy {
-		color: var(--color-muted);
-		font-size: 1rem;
-		line-height: 1.68;
-		max-width: 18rem;
-	}
-
-	.meta-pill {
-		align-items: center;
-		background: color-mix(in srgb, var(--surface-container-high) 86%, white 14%);
-		border-radius: 9999px;
-		color: var(--color-ink);
-		display: inline-flex;
-		font-size: 0.83rem;
-		font-weight: 500;
-		gap: 0.45rem;
-		line-height: 1;
-		padding: 0.6rem 0.9rem;
-	}
-
-	.meta-pill--quiet {
-		background: color-mix(in srgb, var(--surface-container-low) 76%, white 24%);
-		color: color-mix(in srgb, var(--color-ink) 64%, white 36%);
 	}
 
 	:global(.project-card h3) {
@@ -699,19 +670,7 @@
 	}
 
 	.project-url {
-		font-size: 0.93rem;
-	}
-
-	.project-status {
-		align-items: center;
-		background: color-mix(in srgb, var(--surface-container-high) 84%, white 16%);
-		border-radius: 9999px;
-		color: var(--color-ink);
-		display: inline-flex;
-		font-size: 0.82rem;
-		font-weight: 600;
-		line-height: 1;
-		padding: 0.5rem 0.8rem;
+		font-size: var(--text-meta);
 	}
 
 	.writing-link {
@@ -719,23 +678,22 @@
 		text-decoration: none;
 	}
 
+	/* Ring is drawn by .ds-editorial-list-item:has(a:focus-visible) so it traces the card. */
 	.writing-link:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 6px;
-		border-radius: 1rem;
+		outline: none;
 	}
 
 	.writing-link__header {
 		align-items: start;
 		display: flex;
-		gap: 0.9rem;
+		gap: var(--space-sm);
 		justify-content: space-between;
 	}
 
 	.writing-link__arrow {
 		color: var(--color-accent);
 		flex: 0 0 auto;
-		transition: transform 180ms ease;
+		transition: transform var(--motion-base) var(--motion-ease);
 	}
 
 	.writing-link:hover .writing-title {
@@ -746,25 +704,34 @@
 		transform: translate(0.14rem, -0.14rem);
 	}
 
+	.writing-link:active .writing-title {
+		color: var(--color-primary-active);
+	}
+
+	.writing-link:active .writing-link__arrow {
+		transform: none;
+	}
+
 	.writing-title {
 		color: var(--color-ink);
-		font-size: clamp(1.45rem, 3vw, 2.25rem);
+		font-size: var(--text-title);
 		font-weight: 600;
 		letter-spacing: -0.045em;
 		line-height: 0.98;
+		max-width: var(--measure-prose);
 	}
 
 	.writing-controls {
 		align-items: center;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.9rem;
+		gap: var(--space-sm);
 		justify-content: space-between;
 	}
 
 	.writing-count {
 		color: var(--color-muted);
-		font-size: 0.95rem;
+		font-size: var(--text-meta);
 		line-height: 1.6;
 	}
 
@@ -778,14 +745,16 @@
 			var(--surface-container-low) 0%,
 			color-mix(in srgb, var(--surface-container-low) 78%, white 22%) 100%
 		);
-		border-radius: 1.75rem;
+		border-radius: var(--radius-2xl);
 		box-shadow: var(--shadow-floating);
-		padding: clamp(1.5rem, 4vw, 2.75rem);
+		/* Fluid, but both endpoints land on the spacing scale — 2.75rem was the last
+		   fractional-rem value left in the app. */
+		padding: clamp(var(--space-md), 4vw, var(--space-xl));
 	}
 
 	.background-copy {
 		color: color-mix(in srgb, var(--color-ink) 82%, white 18%);
-		font-size: clamp(1.12rem, 2.1vw, 1.55rem);
+		font-size: var(--text-title-sm);
 		letter-spacing: -0.03em;
 		line-height: 1.55;
 		max-width: 54rem;
@@ -793,7 +762,7 @@
 
 	.contact-links {
 		display: grid;
-		gap: 1rem;
+		gap: var(--space-sm);
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -802,16 +771,16 @@
 	.contact-link {
 		align-items: center;
 		background: color-mix(in srgb, var(--surface-container-lowest) 84%, white 16%);
-		border-radius: 1.25rem;
+		border-radius: var(--radius-lg);
 		display: grid;
-		gap: 0.95rem;
+		gap: var(--space-sm);
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		min-height: 4.5rem;
-		padding: 0.95rem 1rem;
+		padding: var(--space-sm);
 		text-decoration: none;
 		transition:
-			background-color 180ms ease,
-			transform 180ms ease;
+			background-color var(--motion-base) var(--motion-ease),
+			transform var(--motion-base) var(--motion-ease);
 	}
 
 	.contact-link:hover {
@@ -819,9 +788,14 @@
 		transform: translateY(-0.08rem);
 	}
 
+	.contact-link:active {
+		background: var(--surface-container-low);
+		transform: none;
+	}
+
 	.contact-link:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 6px;
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.contact-link__icon {
@@ -852,13 +826,13 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.18rem;
+		gap: var(--space-3xs);
 		min-width: 0;
 	}
 
 	.contact-link__label {
 		color: var(--color-muted);
-		font-size: 0.72rem;
+		font-size: var(--text-micro);
 		font-weight: 600;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
@@ -866,7 +840,7 @@
 
 	.contact-link__value {
 		color: var(--color-ink);
-		font-size: 1.06rem;
+		font-size: var(--text-body);
 		font-weight: 500;
 		line-height: 1.45;
 		overflow-wrap: anywhere;
@@ -875,11 +849,15 @@
 	.contact-link__arrow {
 		color: var(--color-accent);
 		flex: 0 0 auto;
-		transition: transform 180ms ease;
+		transition: transform var(--motion-base) var(--motion-ease);
 	}
 
 	.contact-link:hover .contact-link__arrow {
 		transform: translate(0.14rem, -0.14rem);
+	}
+
+	.contact-link:active .contact-link__arrow {
+		transform: none;
 	}
 
 	@media (min-width: 640px) {
@@ -887,7 +865,7 @@
 			align-items: center;
 			display: flex;
 			flex-wrap: wrap;
-			gap: 0.85rem;
+			gap: var(--space-sm);
 			max-width: none;
 		}
 
@@ -896,7 +874,7 @@
 		}
 
 		.portrait-frame {
-			padding: 0.6rem;
+			padding: var(--space-xs);
 		}
 	}
 
@@ -907,22 +885,16 @@
 	}
 
 	@media (min-width: 1024px) {
-		.section-shell {
-			align-items: start;
-			gap: 3.5rem;
-			grid-template-columns: 14rem minmax(0, 1fr);
-		}
-
 		.portrait-shell {
 			width: 14.5rem;
 		}
 
 		.portrait-frame {
-			padding: 0.85rem;
+			padding: var(--space-sm);
 		}
 
 		.contact-links {
-			gap: 1.25rem;
+			gap: var(--space-md);
 		}
 	}
 
@@ -938,6 +910,18 @@
 		.contact-link,
 		.contact-link__arrow {
 			transition-duration: 0.01ms;
+		}
+
+		.contact-link:hover,
+		.contact-link:active {
+			transform: none;
+		}
+
+		.writing-link:hover .writing-link__arrow,
+		.writing-link:active .writing-link__arrow,
+		.contact-link:hover .contact-link__arrow,
+		.contact-link:active .contact-link__arrow {
+			transform: none;
 		}
 	}
 </style>

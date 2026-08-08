@@ -107,27 +107,27 @@
 			</div>
 		</header>
 
-		<section aria-labelledby="archive-title" class="section-shell">
-			<div class="section-rail space-y-4 lg:pt-3">
-				<h2 class="section-heading" id="archive-title">Archive</h2>
-				<p class="section-copy">{data.posts.length} pieces, newest first.</p>
+		<section aria-labelledby="archive-title" class="ds-section">
+			<div class="ds-section__rail space-y-4 lg:pt-3">
+				<h2 class="ds-section__heading" id="archive-title">Archive</h2>
+				<p class="ds-section__copy">{data.posts.length} pieces, newest first.</p>
 			</div>
 
 			<EditorialList items={data.posts}>
 				{#snippet row(post)}
 					{#snippet blogIndexLinkContent()}
 						<div class="space-y-5">
-							<div class="flex flex-wrap items-center gap-2.5">
-								<span class="meta-pill">{post.tag}</span>
+							<div class="flex flex-wrap items-center gap-3">
+								<span class="ds-chip">{post.tag}</span>
 								{#if post.sourceLabel}
-									<span class="meta-pill meta-pill--quiet">{post.sourceLabel}</span>
+									<span class="ds-chip" data-tone="quiet">{post.sourceLabel}</span>
 								{/if}
-								<span class="meta-pill meta-pill--quiet">
-									<CalendarDays aria-hidden="true" class="size-3.5 shrink-0" />
+								<span class="ds-chip" data-tone="quiet">
+									<CalendarDays aria-hidden="true" class="size-3 shrink-0" />
 									<time datetime={post.publishedAt}>{post.dateLabel}</time>
 								</span>
-								<span class="meta-pill meta-pill--quiet">
-									<Clock3 aria-hidden="true" class="size-3.5 shrink-0" />
+								<span class="ds-chip" data-tone="quiet">
+									<Clock3 aria-hidden="true" class="size-3 shrink-0" />
 									{post.readTime}
 								</span>
 							</div>
@@ -179,7 +179,7 @@
 
 	.blog-index-hero {
 		display: grid;
-		gap: 3rem;
+		gap: var(--space-xl);
 	}
 
 	.blog-index-hero__back-icon {
@@ -192,12 +192,12 @@
 
 	.blog-index-hero__body {
 		display: grid;
-		gap: 1.35rem;
+		gap: var(--space-md);
 		max-width: 48rem;
 	}
 
 	.blog-index-title {
-		font-size: 3.25rem;
+		font-size: var(--text-display);
 		font-weight: 600;
 		letter-spacing: -0.08em;
 		line-height: 0.9;
@@ -205,56 +205,9 @@
 
 	.blog-index-intro {
 		color: color-mix(in srgb, var(--color-ink) 70%, white 30%);
-		font-size: 1.08rem;
+		font-size: var(--text-lead);
 		line-height: 1.75;
-		max-width: 42rem;
-	}
-
-	.section-shell {
-		display: grid;
-		gap: 2.5rem;
-	}
-
-	.section-rail {
-		max-width: 16rem;
-	}
-
-	.section-heading {
-		color: var(--color-ink);
-		font-size: 1rem;
-		font-weight: 700;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-	}
-
-	.section-copy {
-		color: var(--color-muted);
-		font-size: 0.95rem;
-		line-height: 1.7;
-	}
-
-	.meta-pill {
-		align-items: center;
-		background: var(--surface-container-high);
-		border-radius: 9999px;
-		color: var(--color-muted);
-		display: inline-flex;
-		font-size: 0.68rem;
-		font-weight: 700;
-		gap: 0.4rem;
-		letter-spacing: 0.14em;
-		line-height: 1.1;
-		padding: 0.46rem 0.68rem;
-		text-transform: uppercase;
-	}
-
-	.meta-pill--quiet {
-		background: color-mix(
-			in srgb,
-			var(--surface-container-lowest) 82%,
-			var(--surface-container-low) 18%
-		);
-		color: color-mix(in srgb, var(--color-ink) 58%, white 42%);
+		max-width: var(--measure-prose);
 	}
 
 	.blog-index-link {
@@ -263,97 +216,81 @@
 		text-decoration: none;
 	}
 
+	/* Ring is drawn by .ds-editorial-list-item:has(a:focus-visible) so it traces the card. */
 	.blog-index-link:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 6px;
+		outline: none;
 	}
 
 	.blog-index-link__header {
 		align-items: flex-start;
 		display: flex;
-		gap: 1rem;
+		gap: var(--space-sm);
 		justify-content: space-between;
 	}
 
 	.blog-index-link__title {
 		color: var(--color-ink);
-		font-size: 1.45rem;
+		font-size: var(--text-title);
 		font-weight: 600;
 		letter-spacing: -0.055em;
 		line-height: 1.05;
-		max-width: 19ch;
+		/* Shares the summary's edge. At 24ch this headline was set 40% narrower than its
+		   own body copy and wrapped to three lines against a half-empty card. */
+		max-width: var(--measure-prose);
 	}
 
 	.blog-index-link__arrow {
 		align-items: center;
 		background: var(--surface-container-low);
-		border-radius: 9999px;
+		border-radius: var(--radius-full);
 		color: var(--color-primary);
 		display: inline-flex;
 		flex: 0 0 auto;
 		height: 2.25rem;
 		justify-content: center;
 		transition:
-			background 180ms ease,
-			transform 180ms ease;
+			background var(--motion-base) var(--motion-ease),
+			transform var(--motion-base) var(--motion-ease);
 		width: 2.25rem;
 	}
 
 	.blog-index-link:hover .blog-index-link__arrow {
 		background: color-mix(in srgb, var(--surface-container-high) 82%, white 18%);
-		transform: translateX(0.16rem);
+		transform: translateX(var(--space-3xs));
+	}
+
+	.blog-index-link:active .blog-index-link__arrow {
+		background: var(--surface-container-high);
+		transform: none;
 	}
 
 	.blog-index-link__summary {
 		color: var(--color-muted);
-		font-size: 1rem;
-		line-height: 1.75;
-		max-width: 43rem;
+		font-size: var(--text-body);
+		line-height: 1.65;
+		max-width: var(--measure-prose);
 	}
 
 	@media (min-width: 1024px) {
 		.blog-index-hero {
-			grid-template-columns: minmax(9rem, 0.3fr) minmax(0, 1fr);
-			padding-top: 1rem;
+			grid-template-columns: 15rem minmax(0, 1fr);
+			padding-top: var(--space-sm);
 		}
 
 		.blog-index-hero .ds-inline-link {
 			align-self: start;
-			margin-top: 0.9rem;
-		}
-
-		.section-shell {
-			grid-template-columns: minmax(9rem, 0.3fr) minmax(0, 1fr);
-		}
-	}
-
-	@media (min-width: 640px) {
-		.blog-index-title {
-			font-size: 5rem;
-		}
-
-		.blog-index-intro {
-			font-size: 1.22rem;
-		}
-
-		.blog-index-link__title {
-			font-size: 2rem;
-		}
-	}
-
-	@media (min-width: 1280px) {
-		.blog-index-title {
-			font-size: 7rem;
-		}
-
-		.blog-index-link__title {
-			font-size: 2.4rem;
+			margin-top: var(--space-sm);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.blog-index-link__arrow {
 			transition-duration: 0.01ms;
+		}
+
+		.blog-index-link:hover .blog-index-link__arrow,
+		.blog-index-link:active .blog-index-link__arrow {
+			transform: none;
 		}
 	}
 </style>

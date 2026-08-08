@@ -32,19 +32,19 @@
 
 		{#if title}
 			<h3
-				class="mt-4 max-w-[18ch] text-2xl leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
+				class="mt-4 max-w-[18ch] text-(length:--text-title-sm) leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
 			>
 				{title}
 			</h3>
 		{/if}
 
-		<div class="mt-4 flex-1 space-y-4 text-base leading-7 text-(--color-muted)">
+		<div class="mt-4 flex-1 space-y-4 text-(length:--text-body) leading-7 text-(--color-muted)">
 			{@render children?.()}
 		</div>
 
 		{#if footer}
 			<div
-				class="mt-8 flex items-center justify-between gap-3 text-sm font-medium text-(--color-ink)"
+				class="mt-8 flex items-center justify-between gap-3 text-(length:--text-meta) font-medium text-(--color-ink)"
 			>
 				{@render footer()}
 			</div>
@@ -66,19 +66,19 @@
 
 		{#if title}
 			<h3
-				class="mt-4 max-w-[18ch] text-2xl leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
+				class="mt-4 max-w-[18ch] text-(length:--text-title-sm) leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
 			>
 				{title}
 			</h3>
 		{/if}
 
-		<div class="mt-4 flex-1 space-y-4 text-base leading-7 text-(--color-muted)">
+		<div class="mt-4 flex-1 space-y-4 text-(length:--text-body) leading-7 text-(--color-muted)">
 			{@render children?.()}
 		</div>
 
 		{#if footer}
 			<div
-				class="mt-8 flex items-center justify-between gap-3 text-sm font-medium text-(--color-ink)"
+				class="mt-8 flex items-center justify-between gap-3 text-(length:--text-meta) font-medium text-(--color-ink)"
 			>
 				{@render footer()}
 			</div>

@@ -25,13 +25,15 @@
 	<section class={['space-y-10', className]}>
 		<header class="max-w-2xl space-y-4">
 			{#if title}
-				<h2 class="text-3xl font-semibold tracking-[-0.05em] text-(--color-ink) sm:text-4xl">
+				<h2 class="text-(length:--text-title) font-semibold tracking-[-0.05em] text-(--color-ink)">
 					{title}
 				</h2>
 			{/if}
 
 			{#if intro}
-				<p class="max-w-xl text-base leading-7 text-(--color-muted) sm:text-lg">
+				<p
+					class="max-w-(--measure-prose) text-(length:--text-lead) leading-[1.75] text-(--color-muted)"
+				>
 					{intro}
 				</p>
 			{/if}

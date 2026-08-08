@@ -6,6 +6,7 @@
 @import 'tailwindcss';
 
 :root {
+	/* Brand */
 	--font-editorial: 'Inter', 'Helvetica Neue', sans-serif;
 	--surface: #f6f4ee;
 	--surface-container-low: #ece8de;
@@ -19,8 +20,73 @@
 	--color-on-primary: #f8f6ef;
 	--color-accent: #fbc75d;
 	--ghost-border: color-mix(in srgb, var(--color-ink) 14%, transparent);
-	--outline-focus: color-mix(in srgb, var(--color-accent) 74%, white 26%);
 	--shadow-floating: 0 20px 40px rgba(10, 20, 31, 0.05);
+
+	/* Type scale — every font-size in the app maps to one of these roles */
+	--text-micro: 0.6875rem; /* 11px — uppercase micro labels: chips, eyebrows, kickers, table th, nav labels */
+	--text-meta: 0.875rem; /* 14px — metadata, counts, URLs, button/nav labels, code */
+	--text-body: 1.0625rem; /* 17px — reading text: article body, card copy, summaries, section copy */
+	--text-lead: 1.25rem; /* 20px — decks, page intros, h4, blockquote */
+	/* Fluid so it stays under --text-title at every width. Flat 1.5rem collided with
+	   --text-title's own floor, which rendered article h3 at or above its own h2 below
+	   1200px. Its floor meets --text-lead at 20px, which is fine: the two never sit
+	   adjacent (heading rank vs. body emphasis) and they separate as the viewport grows. */
+	--text-title-sm: clamp(1.25rem, 1.5vw, 1.5rem); /* 20→24px — article h3, card titles */
+	/* These two are locked in a constant 1.25 ratio — min, slope and max all scale
+	   together (30/24, 2.5vw/2vw, 40/32), so both clamps break at the same viewports
+	   and a section heading out-ranks its item titles by exactly 1.25x at every width.
+	   Picking the two independently lets the slopes cross: an earlier pair collapsed to
+	   1.08x at 1280px, which is the hierarchy defect this scale exists to fix. */
+	--text-title: clamp(1.5rem, 2vw, 2rem); /* 24→32px — item titles, article h2 */
+	--text-section: clamp(1.875rem, 2.5vw, 2.5rem); /* 30→40px — section headings */
+	--text-display: clamp(
+		2.75rem,
+		7.5vw,
+		5.5rem
+	); /* 44→88px — page titles: blog index h1, post h1, 404 h1 */
+	--text-hero: clamp(3rem, 11vw, 6.75rem); /* 48→108px — home hero name only */
+	--text-hero-thesis: clamp(1.45rem, 5vw, 3rem); /* 23→48px — home hero thesis only */
+
+	/* The site's text edge. Every run of prose caps here — article deck and body, card
+	   titles and summaries — so a post has one text edge and a card has one text edge.
+	   Figures, code frames and the table scroller keep the wider .blog-content frame.
+	   608px measures ~69 characters at --text-body, sampled over 110 rendered lines rather
+	   than estimated. The 42rem this replaces was derived from a glyph width of 9.67px;
+	   Inter actually averages ~9.1px at --text-body, so 42rem ran to 76 and overshot the
+	   45–75 target it was picked to hit. A title capped here runs ~39 characters at
+	   --text-title, which is a headline measure and keeps it from being set narrower than
+	   the summary underneath it. */
+	--measure-prose: 38rem;
+
+	/* Spacing scale — 4px grid */
+	--space-3xs: 0.25rem; /* 4 */
+	--space-2xs: 0.5rem; /* 8 */
+	--space-xs: 0.75rem; /* 12 */
+	--space-sm: 1rem; /* 16 */
+	--space-md: 1.5rem; /* 24 */
+	--space-lg: 2rem; /* 32 */
+	--space-xl: 3rem; /* 48 */
+	--space-2xl: 4rem; /* 64 */
+	--space-3xl: 6rem; /* 96 */
+
+	/* Radius scale */
+	--radius-xs: 0.5rem; /* 8  — inline code */
+	--radius-sm: 0.75rem; /* 12 — small interactive surfaces */
+	--radius-md: 1rem; /* 16 — media inside frames */
+	--radius-lg: 1.25rem; /* 20 — editorial list items, code frames, post-nav cards */
+	--radius-xl: 1.5rem; /* 24 — cards, blockquote, figure */
+	--radius-2xl: 1.75rem; /* 28 — panels, insight block */
+	--radius-full: 9999px; /* pills, avatars, chips, buttons */
+
+	/* Focus — one ring, one offset, everywhere */
+	--outline-focus: var(--color-primary);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 3px;
+
+	/* Motion */
+	--motion-fast: 160ms;
+	--motion-base: 200ms;
+	--motion-ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
 html {
@@ -44,25 +110,32 @@ body {
 
 .skip-link {
 	background: var(--surface-container-lowest);
-	border-radius: 9999px;
+	border-radius: var(--radius-full);
 	box-shadow: var(--shadow-floating);
 	color: var(--color-ink);
-	font-size: 0.95rem;
+	font-size: var(--text-meta);
 	font-weight: 600;
-	left: 1rem;
-	padding: 0.8rem 1rem;
+	left: var(--space-sm);
+	padding: var(--space-xs) var(--space-sm);
 	position: absolute;
 	text-decoration: none;
-	top: 1rem;
+	top: var(--space-sm);
 	transform: translateY(-180%);
-	transition: transform 180ms ease;
+	transition: transform var(--motion-base) var(--motion-ease);
 	z-index: 20;
 }
 
 .skip-link:focus-visible {
-	outline: 2px solid var(--outline-focus);
-	outline-offset: 4px;
+	outline: var(--focus-ring-width) solid var(--outline-focus);
+	outline-offset: var(--focus-ring-offset);
 	transform: translateY(0);
+}
+
+/* .skip-link is unlayered, so its reduced-motion override has to be unlayered too. */
+@media (prefers-reduced-motion: reduce) {
+	.skip-link {
+		transition-duration: 0.01ms;
+	}
 }
 
 .sr-only {
@@ -82,21 +155,29 @@ body {
 	color: var(--color-ink);
 }
 
-a {
-	color: inherit;
-	text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
-}
+/* Layered, not bare. Unlayered rules outrank every @layer regardless of specificity, so
+   these element resets were beating the component classes they are supposed to sit under:
+   `font: inherit` rendered every <button> at the root 16px while an <a> carrying the same
+   .ds-button class rendered 14px, and `color: inherit` suppressed .ds-inline-link's colour
+   and .ds-button[data-variant='primary']'s on-primary colour on every <a>. In @layer base
+   they still reset the UA defaults but component classes can now win, which is the point. */
+@layer base {
+	a {
+		color: inherit;
+		text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+	}
 
-button,
-input,
-textarea,
-select {
-	font: inherit;
+	button,
+	input,
+	textarea,
+	select {
+		font: inherit;
+	}
 }
 
 @layer components {
 	.ds-eyebrow {
-		@apply inline-flex items-center gap-2 text-xs font-semibold uppercase;
+		@apply inline-flex items-center gap-2 text-(length:--text-micro) font-semibold uppercase;
 		color: var(--color-muted);
 		letter-spacing: 0.18em;
 	}
@@ -106,16 +187,18 @@ select {
 	}
 
 	.ds-inline-link {
-		@apply inline-flex items-center gap-2 text-xs font-semibold uppercase transition-colors duration-200 ease-out;
+		@apply inline-flex items-center gap-2 text-(length:--text-micro) font-semibold uppercase;
 		color: var(--color-muted);
 		letter-spacing: 0.18em;
+		min-height: 1.5rem;
 		text-decoration: none;
+		transition: color var(--motion-fast) var(--motion-ease);
 	}
 
 	.ds-inline-link__icon {
 		@apply size-4 shrink-0;
 		color: var(--color-accent);
-		transition: transform 200ms ease-out;
+		transition: transform var(--motion-base) var(--motion-ease);
 	}
 
 	.ds-inline-link:hover {
@@ -123,26 +206,35 @@ select {
 	}
 
 	.ds-inline-link:hover .ds-inline-link__icon {
-		transform: translate(0.12rem, -0.12rem);
+		transform: translate(var(--space-3xs), calc(var(--space-3xs) * -1));
+	}
+
+	.ds-inline-link:active {
+		color: var(--color-primary-active);
 	}
 
 	.ds-inline-link:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 4px;
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.ds-button {
-		@apply inline-flex min-h-12 items-center justify-center gap-2.5 px-[1.05rem] py-[0.85rem] text-[0.95rem] font-semibold transition-colors duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-60;
-		border-radius: 9999px;
+		@apply inline-flex min-h-12 items-center justify-center gap-3 text-(length:--text-meta) font-semibold disabled:cursor-not-allowed disabled:opacity-60;
+		border-radius: var(--radius-full);
 		letter-spacing: -0.01em;
 		line-height: 1.1;
+		padding: var(--space-sm);
 		text-decoration: none;
+		transition:
+			background-color var(--motion-fast) var(--motion-ease),
+			color var(--motion-fast) var(--motion-ease),
+			transform var(--motion-fast) var(--motion-ease);
 		white-space: nowrap;
 	}
 
 	.ds-button:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 4px;
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.ds-button__label {
@@ -159,13 +251,7 @@ select {
 			var(--color-primary) 0%,
 			color-mix(in srgb, var(--color-primary) 84%, var(--color-accent) 16%) 100%
 		);
-		color: var(--surface-container-lowest);
-	}
-
-	a.ds-button[data-variant='primary'],
-	a.ds-button[data-variant='primary'] .ds-button__label,
-	a.ds-button[data-variant='primary'] .ds-button__icon {
-		color: var(--surface-container-lowest);
+		color: var(--color-on-primary);
 	}
 
 	.ds-button[data-variant='secondary'] {
@@ -181,8 +267,22 @@ select {
 		);
 	}
 
+	.ds-button[data-variant='primary']:active {
+		background: linear-gradient(
+			135deg,
+			color-mix(in srgb, var(--color-primary-active) 88%, black 12%) 0%,
+			var(--color-primary-active) 100%
+		);
+		transform: translateY(1px);
+	}
+
 	.ds-button[data-variant='secondary']:hover {
 		background: color-mix(in srgb, var(--surface-container-high) 82%, white 18%);
+	}
+
+	.ds-button[data-variant='secondary']:active {
+		background: var(--surface-container-high);
+		transform: translateY(1px);
 	}
 
 	.ds-button[data-variant='tertiary'] {
@@ -192,13 +292,20 @@ select {
 		padding-inline: 0;
 		text-decoration: none;
 		text-decoration-color: transparent;
-		text-underline-offset: 0.3rem;
+		text-underline-offset: var(--space-3xs);
 	}
 
 	.ds-button[data-variant='tertiary']:hover {
 		color: var(--color-primary);
 		text-decoration: underline;
 		text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+	}
+
+	.ds-button[data-variant='tertiary']:active {
+		color: var(--color-primary-active);
+		text-decoration: underline;
+		text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+		transform: translateY(1px);
 	}
 
 	.ds-button[data-wide='true'] {
@@ -212,12 +319,13 @@ select {
 	}
 
 	.ds-card {
-		@apply p-6 transition-colors duration-200 sm:p-8;
+		@apply p-6 sm:p-8;
 		background: var(--surface-container-lowest);
-		border-radius: 1.5rem;
+		border-radius: var(--radius-xl);
 		display: flex;
 		flex-direction: column;
 		min-height: 100%;
+		transition: background-color var(--motion-fast) var(--motion-ease);
 	}
 
 	.ds-card[data-linked='true'] {
@@ -229,17 +337,39 @@ select {
 		background: var(--surface-container-high);
 	}
 
+	.ds-card[data-linked='true']:active {
+		background: var(--surface-container-highest);
+		transform: none;
+	}
+
 	.ds-card[data-linked='true']:focus-visible {
-		outline: 2px solid var(--outline-focus);
-		outline-offset: 6px;
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.ds-chip {
-		@apply inline-flex items-center gap-1.5 px-3 py-1 text-[0.68rem] font-semibold whitespace-nowrap uppercase;
+		align-items: center;
 		background: var(--surface-container-high);
-		border-radius: 9999px;
+		border-radius: var(--radius-full);
 		color: var(--color-muted);
-		letter-spacing: 0.16em;
+		display: inline-flex;
+		font-size: var(--text-micro);
+		font-weight: 700;
+		gap: var(--space-2xs);
+		letter-spacing: 0.14em;
+		line-height: 1.1;
+		padding: var(--space-2xs) var(--space-xs);
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+
+	.ds-chip[data-tone='quiet'] {
+		background: color-mix(
+			in srgb,
+			var(--surface-container-lowest) 82%,
+			var(--surface-container-low) 18%
+		);
+		color: var(--color-muted);
 	}
 
 	.ds-chip__icon {
@@ -249,7 +379,16 @@ select {
 	.ds-editorial-list-item {
 		@apply space-y-6 px-5 py-6 sm:px-6 sm:py-7;
 		background: var(--surface-container-lowest);
-		border-radius: 1.25rem;
+		border-radius: var(--radius-lg);
+	}
+
+	/* The row link fills this item's content box, so a ring on the link drew a second
+	   rounded rect just inside the card edge — 16px corners against the card's 20px on
+	   home, square corners on the archive. The card is the thing being focused, so the
+	   ring traces the card and inherits its radius. Links inside keep no ring of their own. */
+	.ds-editorial-list-item:has(a:focus-visible) {
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 
 	.ds-ghost-input-shell {
@@ -257,18 +396,22 @@ select {
 	}
 
 	.ds-ghost-input {
-		@apply block w-full bg-transparent pt-4 pb-4 text-base leading-7 outline-none placeholder:text-(--color-muted);
+		@apply block w-full bg-transparent pt-4 pb-4 text-(length:--text-body) leading-7 outline-none placeholder:text-(--color-muted);
 		border-bottom: 1px solid var(--ghost-border);
 		caret-color: var(--color-primary);
 		color: var(--color-ink);
 	}
 
 	.ds-ghost-input-accent {
-		@apply pointer-events-none absolute bottom-0 h-0.5 transition-transform duration-200 ease-out;
-		background: var(--color-accent);
+		/* This bar is the input's only focus indicator (the field sets outline-none), so it
+		   carries the 3:1 non-text minimum on its own. --color-accent measured 1.7:1 here;
+		   --color-primary is 5.84:1 and is what DESIGN.md's input spec actually names. */
+		@apply pointer-events-none absolute bottom-0 h-0.5;
+		background: var(--color-primary);
 		inset-inline: 0;
 		transform: scaleX(0);
 		transform-origin: center;
+		transition: transform var(--motion-base) var(--motion-ease);
 	}
 
 	.ds-ghost-input-shell:focus-within .ds-ghost-input-accent {
@@ -278,17 +421,17 @@ select {
 	.ds-insight-block {
 		@apply relative grid gap-7 px-6 py-8 sm:px-8 sm:py-10 lg:max-w-[70ch] lg:px-10;
 		background: var(--surface-container-low);
-		border-radius: 1.75rem;
+		border-radius: var(--radius-2xl);
 	}
 
 	.ds-insight-block::before {
 		background: var(--color-accent);
-		border-radius: 9999px;
-		bottom: 1.5rem;
+		border-radius: var(--radius-full);
+		bottom: var(--space-md);
 		content: '';
 		left: 0;
 		position: absolute;
-		top: 1.5rem;
+		top: var(--space-md);
 		width: 0.2rem;
 	}
 
@@ -296,20 +439,56 @@ select {
 		.ds-insight-block {
 			align-items: start;
 			grid-template-columns: repeat(12, minmax(0, 1fr));
-			transform: translateX(-1.5rem);
+			transform: translateX(calc(var(--space-md) * -1));
+		}
+	}
+
+	.ds-section {
+		display: grid;
+		gap: var(--space-md);
+	}
+
+	.ds-section__rail {
+		max-width: 15rem;
+	}
+
+	.ds-section__heading {
+		color: var(--color-ink);
+		font-size: var(--text-section);
+		font-weight: 600;
+		letter-spacing: -0.055em;
+		line-height: 0.96;
+	}
+
+	.ds-section__copy {
+		color: var(--color-muted);
+		font-size: var(--text-body);
+		line-height: 1.65;
+		max-width: 18rem;
+	}
+
+	@media (min-width: 1024px) {
+		.ds-section {
+			align-items: start;
+			gap: var(--space-xl);
+			grid-template-columns: 15rem minmax(0, 1fr);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.skip-link {
-			transition-duration: 0.01ms;
-		}
-
+		.ds-inline-link,
 		.ds-inline-link__icon,
 		.ds-button,
 		.ds-card,
 		.ds-ghost-input-accent {
 			transition-duration: 0.01ms;
+		}
+
+		.ds-inline-link:hover .ds-inline-link__icon,
+		.ds-button[data-variant='primary']:active,
+		.ds-button[data-variant='secondary']:active,
+		.ds-button[data-variant='tertiary']:active {
+			transform: none;
 		}
 	}
 }

@@ -6,23 +6,98 @@
 		<meta name="robots" content="noindex,follow" />
 		<title>Page not found | Malte Hedderich</title>
 		<style>
+			/*
+			 * Standalone document: Cloudflare Pages serves this file directly, so it cannot
+			 * import src/routes/layout.css. Keep it in sync with :root there.
+			 *
+			 * Derived tokens are copied as their EXPRESSION, not as a frozen hex. The hexes
+			 * they replace had drifted — --color-primary-active was pinned at #654700 while
+			 * the app painted rgb(106, 77, 0) — and a frozen value silently stops tracking
+			 * the moment its input changes. Only the literals below are literals in the app.
+			 *
+			 * One difference is not fixable here: Inter is bundled through @fontsource under
+			 * a content-hashed filename this file cannot reference, so it names Inter first
+			 * and falls back to the system sans on machines without it. That is why `ch`
+			 * measures below are deliberately paired with a wrap that survives either font.
+			 */
+			/* Tailwind's preflight applies this app-wide. Without it `section` stayed
+			   content-box, so the 16rem padding-inline-end added on top of the 58rem cap
+			   instead of sitting inside it — the section outgrew its grid area and fell
+			   out of centre, putting the whole page ~100px left of where the app draws it. */
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
 			:root {
 				color-scheme: light;
+
+				/* Brand */
 				--surface: #f6f4ee;
 				--surface-container-low: #ece8de;
 				--surface-container-high: #e2dccf;
 				--surface-container-lowest: #fbfaf6;
 				--color-ink: #0a141f;
-				--color-muted: #5f6670;
+				--color-muted: color-mix(in srgb, var(--color-ink) 68%, white 32%);
 				--color-primary: #7b5900;
-				--color-primary-active: #654700;
+				--color-primary-active: color-mix(in srgb, var(--color-primary) 86%, black 14%);
 				--color-on-primary: #f8f6ef;
 				--color-accent: #fbc75d;
-				--outline-focus: #f8d989;
+
+				/* Type scale — mirrors :root in src/routes/layout.css, which is the source of
+				   truth. This file is served as a static asset and cannot import it, so any
+				   change there must be copied here. --text-title/--text-section must stay in
+				   their locked 1.25 ratio (min, slope and max all scaling together). */
+				--text-micro: 0.6875rem;
+				--text-meta: 0.875rem;
+				--text-body: 1.0625rem;
+				--text-lead: 1.25rem;
+				--text-title-sm: clamp(1.25rem, 1.5vw, 1.5rem);
+				--text-title: clamp(1.5rem, 2vw, 2rem);
+				--text-section: clamp(1.875rem, 2.5vw, 2.5rem);
+				--text-display: clamp(2.75rem, 7.5vw, 5.5rem);
+
+				/* Prose measure — ~69 characters at --text-body */
+				--measure-prose: 38rem;
+
+				/* Spacing scale — 4px grid */
+				--space-3xs: 0.25rem;
+				--space-2xs: 0.5rem;
+				--space-xs: 0.75rem;
+				--space-sm: 1rem;
+				--space-md: 1.5rem;
+				--space-lg: 2rem;
+				--space-xl: 3rem;
+				--space-2xl: 4rem;
+				--space-3xl: 6rem;
+
+				/* Radius scale */
+				--radius-xs: 0.5rem;
+				--radius-sm: 0.75rem;
+				--radius-md: 1rem;
+				--radius-lg: 1.25rem;
+				--radius-xl: 1.5rem;
+				--radius-2xl: 1.75rem;
+				--radius-full: 9999px;
+
+				/* Focus */
+				--outline-focus: var(--color-primary);
+				--focus-ring-width: 2px;
+				--focus-ring-offset: 3px;
+
+				/* Motion */
+				--motion-fast: 160ms;
+				--motion-base: 200ms;
+				--motion-ease: cubic-bezier(0.2, 0, 0, 1);
+
 				font-family:
 					Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 				background: var(--surface);
 				color: var(--color-ink);
+				/* Tailwind's preflight sets this on the app root. Without it the kicker fell
+				   to the font's `normal` leading and set 3.3px tighter than the app's. */
+				line-height: 1.5;
 			}
 
 			body {
@@ -50,29 +125,33 @@
 				width: 100%;
 			}
 
-			p {
+			/* Scoped, not a bare `p`. The kicker is also a <p>, so a bare selector leaked
+			   this leading onto it — which the kicker's own line-height had been silently
+			   absorbing. In the app these are two classes and never collide. */
+			p:not(.kicker) {
 				color: var(--color-muted);
-				font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-				line-height: 1.7;
-				margin: clamp(1.25rem, 3vw, 1.75rem) 0 0;
-				max-width: 39rem;
+				font-size: var(--text-lead);
+				line-height: 1.75;
+				margin: var(--space-md) 0 0;
+				max-width: var(--measure-prose);
 			}
 
 			.kicker {
 				color: var(--color-primary);
-				font-size: 0.78rem;
+				font-size: var(--text-micro);
 				font-weight: 700;
 				letter-spacing: 0.18em;
-				line-height: 1.2;
-				margin: 0 0 clamp(1rem, 2.2vw, 1.4rem);
+				margin: 0 0 var(--space-sm);
 				text-transform: uppercase;
 			}
 
 			h1 {
-				font-size: clamp(4.4rem, 13vw, 10.5rem);
-				font-weight: 700;
-				letter-spacing: 0;
-				line-height: 0.88;
+				/* Matches the app's .blog-index-title / .blog-post-title: 600 at -0.08em.
+				   The old 700/0 was part of this file's drift from the system. */
+				font-size: var(--text-display);
+				font-weight: 600;
+				letter-spacing: -0.08em;
+				line-height: 0.9;
 				margin: 0;
 				max-width: 8ch;
 			}
@@ -80,34 +159,60 @@
 			nav {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 0.85rem;
-				margin-top: clamp(2rem, 4vw, 2.75rem);
+				gap: var(--space-sm);
+				margin-top: var(--space-lg);
 			}
 
 			a {
 				align-items: center;
-				border-radius: 9999px;
+				border-radius: var(--radius-full);
 				box-sizing: border-box;
 				color: inherit;
 				display: inline-flex;
-				font-weight: 700;
+				font-size: var(--text-meta);
+				/* .ds-button is font-semibold at -0.01em. The 700 with no tracking this
+				   replaces was drift, and it sat next to the app's own 600 on /blog/. */
+				font-weight: 600;
 				justify-content: center;
+				letter-spacing: -0.01em;
 				line-height: 1.1;
 				min-height: 3rem;
-				padding: 0.9rem 1.1rem;
+				padding: var(--space-sm);
 				text-decoration: none;
 				transition:
-					background-color 180ms ease,
-					color 180ms ease;
+					background-color var(--motion-fast) var(--motion-ease),
+					color var(--motion-fast) var(--motion-ease),
+					transform var(--motion-fast) var(--motion-ease);
 			}
 
+			/* Gradient stops are computed, not hand-picked, so they cannot drift from the app
+			   the way the frozen #8f6812 / #78560e pair had (both were ~3 units off the
+			   values .ds-button actually paints). --color-on-primary clears 4.5:1 against
+			   every stop below; the tightest is the rest gradient's light end at 4.54:1. */
 			a[data-variant="primary"] {
-				background: linear-gradient(135deg, var(--color-primary) 0%, #8f6812 100%);
+				background: linear-gradient(
+					135deg,
+					var(--color-primary) 0%,
+					color-mix(in srgb, var(--color-primary) 84%, var(--color-accent) 16%) 100%
+				);
 				color: var(--color-on-primary);
 			}
 
 			a[data-variant="primary"]:hover {
-				background: linear-gradient(135deg, var(--color-primary-active) 0%, #78560e 100%);
+				background: linear-gradient(
+					135deg,
+					var(--color-primary-active) 0%,
+					color-mix(in srgb, var(--color-primary-active) 82%, var(--color-accent) 18%) 100%
+				);
+			}
+
+			a[data-variant="primary"]:active {
+				background: linear-gradient(
+					135deg,
+					color-mix(in srgb, var(--color-primary-active) 88%, black 12%) 0%,
+					var(--color-primary-active) 100%
+				);
+				transform: translateY(1px);
 			}
 
 			a[data-variant="secondary"] {
@@ -119,9 +224,14 @@
 				background: color-mix(in srgb, var(--surface-container-high) 82%, white 18%);
 			}
 
+			a[data-variant="secondary"]:active {
+				background: var(--surface-container-high);
+				transform: translateY(1px);
+			}
+
 			a:focus-visible {
-				outline: 2px solid var(--outline-focus);
-				outline-offset: 4px;
+				outline: var(--focus-ring-width) solid var(--outline-focus);
+				outline-offset: var(--focus-ring-offset);
 			}
 
 			@media (min-width: 64rem) {
@@ -139,6 +249,17 @@
 				a {
 					justify-content: flex-start;
 					width: 100%;
+				}
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				a {
+					transition-duration: 0.01ms;
+				}
+
+				a[data-variant="primary"]:active,
+				a[data-variant="secondary"]:active {
+					transform: none;
 				}
 			}
 		</style>
