@@ -82,6 +82,15 @@
 	const projects: Project[] = [
 		{
 			description:
+				'Describe a badge, choose an art direction, and get a transparent 1024 × 1024 PNG.',
+			id: 'emblemry',
+			proof: 'First commit August 2, 2026 · Launched August 10, 2026',
+			status: 'Active',
+			title: 'Emblemry',
+			url: 'https://emblemry.com'
+		},
+		{
+			description:
 				'Pressure-tests SaaS ideas before you spend months on one. Free trial, with signup and card on file.',
 			id: 'genhone',
 			proof: 'First commit January 11, 2026 · Launched April 21, 2026',
@@ -324,10 +333,10 @@
 		<section aria-labelledby="projects-title" class="ds-section scroll-mt-24" id="projects">
 			<div class="ds-section__rail space-y-4 lg:pt-3">
 				<h2 class="ds-section__heading" id="projects-title">Projects</h2>
-				<p class="ds-section__copy">Two products built after hours. Both are live.</p>
+				<p class="ds-section__copy">Three products built after hours. All are live.</p>
 			</div>
 
-			<ul class="project-grid grid gap-6 xl:grid-cols-2" role="list">
+			<ul class="project-grid grid gap-6 xl:grid-cols-3" role="list">
 				{#each projects as project (project.id)}
 					<li class="min-h-full">
 						<Card
