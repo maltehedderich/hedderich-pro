@@ -10,7 +10,7 @@
 
 	import type { Attachment } from 'svelte/attachments';
 
-	import { PostMeta } from '$lib';
+	import { PostMeta, ThemeToggle } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE, SITE_URL } from '$lib/site';
 	import type { PageProps } from './$types';
@@ -181,6 +181,7 @@
 				</span>
 				Back to archive
 			</a>
+			<ThemeToggle class="blog-post-hero__theme" />
 
 			<div class="blog-post-hero__body">
 				<PostMeta {post} />
@@ -241,8 +242,22 @@
 
 <style>
 	.blog-post-hero {
+		align-items: start;
 		display: grid;
-		gap: var(--layout-gap);
+		gap: var(--layout-gap) var(--space-md);
+		grid-template-areas:
+			'back theme'
+			'body body';
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.blog-post-hero .ds-inline-link {
+		grid-area: back;
+		justify-self: start;
+	}
+
+	:global(.blog-post-hero__theme) {
+		grid-area: theme;
 	}
 
 	.blog-post-hero__back-icon {
@@ -256,11 +271,17 @@
 	.blog-post-hero__body {
 		display: grid;
 		gap: var(--space-lg);
+		grid-area: body;
 		max-width: 58rem;
 	}
 
+	/* Centre the metadata row on the 44px back link and theme control. */
+	.blog-post-hero__body :global(.ds-metadata) {
+		min-height: 2.75rem;
+	}
+
 	.blog-post-title {
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-size: var(--text-display);
 		font-weight: var(--weight-display);
 		letter-spacing: var(--tracking-display);
@@ -286,7 +307,7 @@
 	}
 
 	.blog-content {
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-size: var(--text-body);
 		line-height: 1.8;
 		overflow-wrap: anywhere;
@@ -307,7 +328,7 @@
 	.blog-content :global(h2),
 	.blog-content :global(h3),
 	.blog-content :global(h4) {
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-weight: var(--weight-display);
 		letter-spacing: var(--tracking-display);
 		line-height: var(--leading-heading);
@@ -355,7 +376,7 @@
 	}
 
 	.blog-content :global(strong) {
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-weight: 700;
 	}
 
@@ -389,8 +410,17 @@
 	}
 
 	.blog-content :global(blockquote) {
+		/* A light context in both themes, like .ds-surface[data-mode='signal']. Inline code
+		   takes the paper strip that signal surfaces use. */
+		--color-on-surface: var(--color-ink);
+		--color-primary: var(--color-ink);
+		--color-primary-active: var(--color-ink);
+		--outline-focus: var(--color-ink);
+		--surface-container-high: var(--color-paper);
+
 		background: var(--color-signal);
 		color: var(--color-ink);
+		color-scheme: light;
 		font-size: var(--text-lead);
 		line-height: 1.7;
 		margin: var(--space-xl) 0;
@@ -416,7 +446,7 @@
 	}
 
 	.blog-content :global(.blog-content__code-frame) {
-		--blog-code-surface: var(--color-ink);
+		--blog-code-surface: light-dark(var(--color-ink), var(--surface-container-low));
 		--blog-code-scroll-thumb: var(--color-signal);
 		--outline-focus: var(--color-accent);
 
@@ -605,7 +635,7 @@
 	.blog-content :global(:not(pre) > code) {
 		background: var(--surface-container-high);
 		border-radius: var(--radius-square);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-size: var(--text-meta);
 		padding: var(--space-3xs) var(--space-2xs);
 	}
@@ -644,7 +674,7 @@
 
 	.blog-content :global(th) {
 		background: var(--surface-container-high);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		font-size: var(--text-micro);
 		font-weight: 700;
 		letter-spacing: 0.12em;
@@ -764,14 +794,10 @@
 
 	@media (min-width: 1024px) {
 		.blog-post-hero {
-			grid-template-columns: var(--layout-rail) minmax(0, 1fr);
+			grid-template-areas: 'back body theme';
+			grid-template-columns: var(--layout-rail) minmax(0, 1fr) auto;
 			column-gap: var(--layout-gap);
 			padding-top: var(--space-sm);
-		}
-
-		.blog-post-hero .ds-inline-link {
-			align-self: start;
-			margin-top: var(--space-sm);
 		}
 
 		.blog-post-layout {

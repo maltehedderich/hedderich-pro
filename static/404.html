@@ -8,7 +8,22 @@
 		<link rel="stylesheet" href="/fonts.css" />
 		<link rel="stylesheet" href="/design-tokens.css" />
 		<link rel="stylesheet" href="/error-page.css" />
-		<meta name="theme-color" content="#f5f5ee" />
+		<meta name="color-scheme" content="light dark" />
+		<meta name="theme-color" content="#f5f5ee" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#101817" media="(prefers-color-scheme: dark)" />
+		<script>
+			// Same pre-paint theme snippet as src/app.html.
+			(() => {
+				let theme;
+				try {
+					theme = localStorage.getItem('theme');
+				} catch {}
+				if (theme !== 'light' && theme !== 'dark') {
+					theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				}
+				document.documentElement.dataset.theme = theme;
+			})();
+		</script>
 		<style>
 			*,
 			*::before,
@@ -17,11 +32,10 @@
 			}
 
 			:root {
-				color-scheme: light;
 				font-family: var(--font-editorial);
 				font-weight: var(--weight-body);
 				background: var(--surface);
-				color: var(--color-ink);
+				color: var(--color-on-surface);
 				line-height: 1.5;
 			}
 
@@ -68,7 +82,7 @@
 
 			a[data-variant='secondary'] {
 				background: var(--surface-container-high);
-				color: var(--color-ink);
+				color: var(--color-on-surface);
 			}
 
 			a[data-variant='secondary']:hover {

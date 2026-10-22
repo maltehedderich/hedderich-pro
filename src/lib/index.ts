@@ -6,4 +6,5 @@ export { default as EditorialList } from './components/EditorialList.svelte';
 export { default as GhostInput } from './components/GhostInput.svelte';
 export { default as InsightBlock } from './components/InsightBlock.svelte';
 export { default as PostMeta } from './components/PostMeta.svelte';
+export { default as ThemeToggle } from './components/ThemeToggle.svelte';
 export { default as WritingLink } from './components/WritingLink.svelte';

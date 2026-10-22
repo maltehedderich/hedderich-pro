@@ -1,18 +1,46 @@
 /* Electric Press web tokens. Shared by the app and the standalone 404. */
+
+/* The OS setting picks the theme unless [data-theme] records the visitor's choice. */
 :root {
-	/* Electric Press: the three brand inks. Web neutrals derive from these. */
+	color-scheme: light dark;
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+}
+
+:root {
+	/* Electric Press: the three brand inks. They never change with the theme. */
 	--color-signal: #00f0cb;
 	--color-ink: #101817;
 	--color-paper: #f5f5ee;
-	--surface: var(--color-paper);
-	--surface-container-lowest: var(--color-paper);
-	--surface-container-low: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper));
-	--surface-container-high: color-mix(in srgb, var(--color-ink) 9%, var(--color-paper));
-	--surface-container-highest: color-mix(in srgb, var(--color-ink) 15%, var(--color-paper));
-	--color-muted: color-mix(in srgb, var(--color-ink) 72%, var(--color-paper));
-	/* Text links remain ink on paper; signal belongs on a fill or on ink. */
-	--color-primary: var(--color-ink);
-	--color-primary-active: var(--color-ink);
+
+	/* Theme roles. light-dark() resolves against the color-scheme of the element that uses
+	   the token, so a signal panel can pin `color-scheme: light` and keep ink text in either
+	   theme. Light: ink on paper. Dark: paper on ink, with surfaces lifted toward paper. */
+	--color-on-surface: light-dark(var(--color-ink), var(--color-paper));
+	--surface: light-dark(var(--color-paper), var(--color-ink));
+	--surface-container-lowest: var(--surface);
+	--surface-container-low: light-dark(
+		color-mix(in srgb, var(--color-ink) 4%, var(--color-paper)),
+		color-mix(in srgb, var(--color-paper) 6%, var(--color-ink))
+	);
+	--surface-container-high: light-dark(
+		color-mix(in srgb, var(--color-ink) 9%, var(--color-paper)),
+		color-mix(in srgb, var(--color-paper) 11%, var(--color-ink))
+	);
+	--surface-container-highest: light-dark(
+		color-mix(in srgb, var(--color-ink) 15%, var(--color-paper)),
+		color-mix(in srgb, var(--color-paper) 17%, var(--color-ink))
+	);
+	--color-muted: color-mix(in srgb, var(--color-on-surface) 72%, var(--surface));
+	/* Text links follow the page text; signal belongs on a fill or on ink. */
+	--color-primary: var(--color-on-surface);
+	--color-primary-active: var(--color-on-surface);
 	--color-on-primary: var(--color-ink);
 	--color-accent: var(--color-signal);
 	--color-signal-hover: color-mix(in srgb, var(--color-signal) 80%, var(--color-paper));
@@ -72,8 +100,9 @@
 	--radius-2xl: var(--radius-square);
 	--radius-full: var(--radius-square);
 
-	/* Focus — one ring, one offset, everywhere */
-	--outline-focus: var(--color-primary);
+	/* Focus — one ring, one offset, everywhere: ink on paper, signal on ink */
+	--focus-ring-color: light-dark(var(--color-ink), var(--color-signal));
+	--outline-focus: var(--focus-ring-color);
 	--focus-ring-width: 2px;
 	--focus-ring-offset: 3px;
 

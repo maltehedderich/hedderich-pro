@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ArrowDown from '~icons/lucide/arrow-down';
 	import ArrowRight from '~icons/lucide/arrow-right';
 	import ArrowUpRight from '~icons/lucide/arrow-up-right';
 	import Mail from '~icons/lucide/mail';
@@ -6,7 +7,7 @@
 	import Linkedin from '~icons/bxl/linkedin';
 	import TwitterX from '~icons/bxl/twitter-x';
 
-	import { Button, Card, EditorialList, EmailObfuscator, WritingLink } from '$lib';
+	import { Button, Card, EditorialList, EmailObfuscator, ThemeToggle, WritingLink } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
 	import {
@@ -27,9 +28,9 @@
 
 	type Project = {
 		description: string;
+		firstCommit: string;
 		id: string;
-		proof: string;
-		status: string;
+		launched?: string;
 		title: string;
 		url: string;
 	};
@@ -68,51 +69,66 @@
 		showAllPosts = !showAllPosts;
 	};
 
+	const projectDateFormat = new Intl.DateTimeFormat('en', {
+		day: 'numeric',
+		month: 'short',
+		timeZone: 'UTC',
+		year: 'numeric'
+	});
+	const formatProjectDate = (date: string) =>
+		projectDateFormat.format(new Date(`${date}T00:00:00.000Z`));
+
 	const navigation: NavItem[] = [
 		{ id: 'projects', href: '#projects', label: 'Projects' },
 		{ id: 'writing', href: '#writing', label: 'Writing' },
-		{ id: 'experience', href: '#experience', label: 'Experience' },
+		{ id: 'experience', href: '#experience', label: 'Background' },
 		{ id: 'contact', href: '#contact', label: 'Contact' }
 	];
 
 	const projects: Project[] = [
 		{
 			description:
-				'Describe a badge, choose an art direction, and get a transparent 1024 × 1024 PNG.',
+				'Generates sets of badges that share one art direction, so they look like they belong together.',
+			firstCommit: '2026-08-02',
 			id: 'emblemry',
-			proof: 'First commit August 2, 2026 · Launched August 10, 2026',
-			status: 'Active',
+			launched: '2026-08-10',
 			title: 'Emblemry',
 			url: 'https://emblemry.com'
 		},
 		{
 			description:
-				'Turns the countries and cities you visit into illustrated stamps, travel goals, and a shareable travel score. Built for iPhone.',
+				'Turns the countries and cities you visit into illustrated stamps, travel goals, and a score to share. For\u00a0iPhone.',
+			firstCommit: '2026-07-26',
 			id: 'stampstat',
-			proof: 'First commit July 26, 2026',
-			status: 'Active',
+			launched: '2026-09-14',
 			title: 'Stamp Stat',
 			url: 'https://stampstat.com'
 		},
 		{
 			description:
-				'Pressure-tests SaaS ideas before you spend months on one. Free trial, with signup and card on file.',
+				'Pressure-tests a SaaS idea before you spend months building it. The free trial needs an account and a card.',
+			firstCommit: '2026-01-11',
 			id: 'genhone',
-			proof: 'First commit January 11, 2026 · Launched April 21, 2026',
-			status: 'Active',
+			launched: '2026-04-21',
 			title: 'Genhone',
 			url: 'https://genhone.com'
 		},
 		{
 			description:
-				'Matches your profile to a job ad and writes a cover letter for that role. Not a template with your name pasted in.',
+				'Matches your profile to a job ad, then writes a cover letter that fits only that role.',
+			firstCommit: '2023-11-16',
 			id: 'genwriter',
-			proof: 'First commit November 16, 2023 · Launched August 14, 2024',
-			status: 'Active',
+			launched: '2024-08-14',
 			title: 'Genwriter',
 			url: 'https://genwriter.com'
 		}
 	];
+
+	// Derived from the project list, so the hero never needs a hand-written status update.
+	const latestLaunch = projects
+		.filter((project): project is Project & { launched: string } => Boolean(project.launched))
+		.toSorted((a, b) => b.launched.localeCompare(a.launched))
+		.at(0);
 
 	const emailChannel = {
 		icon: Mail,
@@ -265,8 +281,8 @@
 <main class="ds-page" id="main-content" tabindex="-1">
 	<div class="ds-page-frame ds-page-stack">
 		<header class="home-masthead">
-			<p class="ds-eyebrow">AI engineer &amp; product builder</p>
-			<nav aria-label="Section navigation">
+			<p class="ds-eyebrow home-masthead__eyebrow">AI engineer &amp; product builder</p>
+			<nav aria-label="Section navigation" class="home-masthead__nav">
 				<ul class="hero-nav">
 					{#each navigation as item (item.id)}
 						<li>
@@ -276,6 +292,7 @@
 					{/each}
 				</ul>
 			</nav>
+			<ThemeToggle class="home-masthead__theme" />
 		</header>
 
 		<section aria-describedby="hero-support" aria-labelledby="hero-name" class="home-hero">
@@ -297,31 +314,44 @@
 				<div class="space-y-5">
 					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
 					<p class="hero-thesis">
-						I build SaaS products that use LLMs and write about what holds up in production.
+						I lead teams that ship LLM applications. After hours, I build my own products.
 					</p>
 				</div>
+
+				<p class="hero-support" id="hero-support">
+					I write about what I learn from both: when you need an agent at all, how agents keep track
+					of long tasks, and how to tune prompts against a metric instead of by feel.
+				</p>
 
 				<div class="hero-actions">
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 					<a class="ds-button" data-variant="primary" href="/blog/">
 						<span class="ds-button__label">Read the blog</span>
 						<span aria-hidden="true" class="ds-button__icon">
-							<ArrowUpRight class="size-4" />
+							<ArrowRight class="size-4" />
 						</span>
 					</a>
 
 					<a class="ds-button" data-variant="secondary" href="#projects">
 						<span class="ds-button__label">See the projects</span>
 						<span aria-hidden="true" class="ds-button__icon">
-							<ArrowRight class="size-4" />
+							<ArrowDown class="size-4" />
 						</span>
 					</a>
 				</div>
-				<p class="hero-support" id="hero-support">
-					Right now I'm building Genhone, which pressure-tests SaaS ideas before you burn months on
-					the wrong one. By day I lead teams shipping LLM applications. I write about evaluation,
-					agent design, and the choices you regret at scale.
-				</p>
+
+				{#if latestLaunch}
+					<dl class="hero-latest">
+						<dt>Latest launch</dt>
+						<dd>
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+							<a href={latestLaunch.url}>{latestLaunch.title}</a>
+							<time datetime={latestLaunch.launched}
+								>{formatProjectDate(latestLaunch.launched)}</time
+							>
+						</dd>
+					</dl>
+				{/if}
 			</div>
 		</section>
 
@@ -334,24 +364,32 @@
 			<ul class="project-grid" role="list">
 				{#each projects as project (project.id)}
 					<li>
-						<Card
-							class="project-card"
-							eyebrow={project.status}
-							href={project.url}
-							title={project.title}
-						>
+						<Card class="project-card" href={project.url} title={project.title}>
 							{#snippet footer()}
 								<span class="project-url">{project.url.replace('https://', '')}</span>
-								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-ink)" />
+								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0" />
 							{/snippet}
 
 							<p>{project.description}</p>
 
-							<div class="space-y-2 pt-2">
-								<p class="text-(length:--text-meta) leading-6 text-(--color-muted)">
-									{project.proof}
-								</p>
-							</div>
+							<dl class="project-dates">
+								<div>
+									<dt>First commit</dt>
+									<dd>
+										<time datetime={project.firstCommit}>
+											{formatProjectDate(project.firstCommit)}
+										</time>
+									</dd>
+								</div>
+								{#if project.launched}
+									<div>
+										<dt>Launched</dt>
+										<dd>
+											<time datetime={project.launched}>{formatProjectDate(project.launched)}</time>
+										</dd>
+									</div>
+								{/if}
+							</dl>
 						</Card>
 					</li>
 				{/each}
@@ -399,13 +437,29 @@
 			</div>
 
 			<article class="background-panel ds-surface" data-mode="dark">
-				<h3 class="ds-heading background-title">ML Engineering Associate Manager at Accenture.</h3>
-				<p class="background-copy">
-					Leading teams that build production LLM applications. Before that, two years at
-					Serviceware, where I shipped intent recognition, semantic search, and a production LLM app
-					in 2023. I studied Business Informatics at TU Darmstadt, wrote my thesis on open-source
-					MLOps, and spent a year at Tongji University in Shanghai studying Software Engineering.
-				</p>
+				<div class="background-intro">
+					<h3 class="ds-heading background-title">
+						ML Engineering Associate Manager at Accenture.
+					</h3>
+					<p class="background-lead">Leading teams that build production LLM applications.</p>
+				</div>
+
+				<dl class="background-facts">
+					<div>
+						<dt>Before</dt>
+						<dd>
+							Two years at Serviceware, where I shipped intent recognition, semantic search, and a
+							production LLM app in 2023.
+						</dd>
+					</div>
+					<div>
+						<dt>Studied</dt>
+						<dd>
+							Business Informatics at TU Darmstadt, with a thesis on open-source MLOps, and a year
+							of Software Engineering at Tongji University in Shanghai.
+						</dd>
+					</div>
+				</dl>
 			</article>
 		</section>
 
@@ -441,13 +495,11 @@
 										<emailChannel.icon class="contact-link__glyph" />
 									</span>
 
-									<span class="contact-link__body">
-										<span class="contact-link__label">{emailChannel.label}</span>
-										<span aria-live="polite" class="contact-link__value">{state.text}</span>
-									</span>
+									<span class="contact-link__label">{emailChannel.label}</span>
+									<span aria-live="polite" class="contact-link__value">{state.text}</span>
 
 									<span aria-hidden="true" class="contact-link__arrow">
-										<ArrowUpRight class="size-4" />
+										<ArrowUpRight />
 									</span>
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -469,13 +521,11 @@
 									<channel.icon class="contact-link__glyph" />
 								</span>
 
-								<span class="contact-link__body">
-									<span class="contact-link__label">{channel.label}</span>
-									<span class="contact-link__value">{channel.value}</span>
-								</span>
+								<span class="contact-link__label">{channel.label}</span>
+								<span class="contact-link__value">{channel.value}</span>
 
 								<span aria-hidden="true" class="contact-link__arrow">
-									<ArrowUpRight class="size-4" />
+									<ArrowUpRight />
 								</span>
 							</a>
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -489,11 +539,22 @@
 
 <style>
 	.home-masthead {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-areas:
+			'eyebrow theme'
+			'nav nav';
+		grid-template-columns: minmax(0, 1fr) auto;
 		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-sm) var(--space-xl);
+		gap: var(--space-2xs) var(--space-md);
+	}
+	.home-masthead__eyebrow {
+		grid-area: eyebrow;
+	}
+	.home-masthead__nav {
+		grid-area: nav;
+	}
+	:global(.home-masthead__theme) {
+		grid-area: theme;
 	}
 	.home-masthead + .home-hero {
 		margin-top: calc(var(--section-gap) * -0.5);
@@ -552,6 +613,25 @@
 		line-height: 1.7;
 		max-width: var(--measure-prose);
 	}
+	.hero-latest {
+		color: var(--color-muted);
+		display: grid;
+		gap: var(--space-3xs);
+	}
+	.hero-latest dd {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-sm);
+	}
+	.hero-latest a {
+		text-decoration-line: underline;
+		text-decoration-thickness: 0.08em;
+		text-underline-offset: 0.24em;
+	}
+	.hero-latest a:focus-visible {
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
+	}
 	.hero-actions {
 		display: grid;
 		gap: var(--space-xs);
@@ -590,6 +670,36 @@
 	:global(.project-card) {
 		height: 100%;
 	}
+	/* Pin the dates to the foot of the body, on fixed columns, so they line up across a row
+	   however long each description runs. */
+	:global(.project-card .ds-card__body) {
+		display: flex;
+		flex-direction: column;
+	}
+	.project-dates {
+		display: grid;
+		gap: var(--space-xs) var(--space-md);
+		grid-template-columns: repeat(2, 8rem);
+		margin-top: auto;
+		padding-top: var(--space-md);
+	}
+	.project-dates dt,
+	.hero-latest dt {
+		font-size: var(--text-micro);
+		font-weight: var(--weight-label);
+		letter-spacing: 0.08em;
+		line-height: 1.5;
+		text-transform: uppercase;
+	}
+	.project-dates dd,
+	.hero-latest dd {
+		color: var(--color-on-surface);
+		font-size: var(--text-meta);
+		font-variant-numeric: tabular-nums;
+		font-weight: var(--weight-label);
+		line-height: 1.5;
+		margin: 0;
+	}
 	.writing-controls {
 		align-items: center;
 		display: flex;
@@ -607,16 +717,39 @@
 	}
 	.background-panel {
 		display: grid;
-		gap: var(--space-md);
+		gap: var(--space-xl);
 		padding: clamp(var(--space-md), 4vw, var(--space-xl));
+	}
+	.background-intro {
+		display: grid;
+		gap: var(--space-sm);
 	}
 	.background-title {
 		font-size: var(--text-title);
 		max-width: 28ch;
 	}
-	.background-copy {
+	.background-lead {
+		font-size: var(--text-lead);
+		line-height: 1.5;
+		max-width: var(--measure-prose);
+	}
+	.background-facts {
+		display: grid;
+		gap: var(--space-lg) var(--space-xl);
+		margin: 0;
+	}
+	.background-facts dt {
+		color: var(--panel-emphasis);
+		font-size: var(--text-micro);
+		font-weight: var(--weight-label);
+		letter-spacing: 0.08em;
+		line-height: 1.5;
+		text-transform: uppercase;
+	}
+	.background-facts dd {
 		font-size: var(--text-body);
-		line-height: 1.75;
+		line-height: 1.7;
+		margin: var(--space-2xs) 0 0;
 		max-width: var(--measure-prose);
 	}
 	.contact-panel {
@@ -627,16 +760,24 @@
 		display: grid;
 		gap: var(--space-sm) var(--space-md);
 		list-style: none;
-		margin: 0;
+		/* Hang the link padding outside the column so the icons align with the heading. */
+		margin: 0 calc(-1 * var(--space-sm));
 		padding: 0;
 	}
+	/* Icon and arrow share the label's row, so both centre on the label line; the handle
+	   sits beneath the label. */
 	.contact-link {
+		align-content: center;
 		align-items: center;
+		column-gap: var(--space-sm);
 		display: grid;
-		gap: var(--space-sm);
-		grid-template-columns: auto minmax(0, 1fr) auto;
+		grid-template-areas:
+			'icon label arrow'
+			'. value .';
+		grid-template-columns: var(--space-md) minmax(0, 1fr) auto;
 		min-height: 6rem;
 		padding: var(--space-sm);
+		row-gap: var(--space-3xs);
 		text-decoration: none;
 		transition: background-color var(--motion-fast) var(--motion-ease);
 	}
@@ -646,34 +787,40 @@
 	.contact-link:active {
 		background: var(--color-signal-active);
 	}
+	/* Barlow Condensed capitals sit 0.045em below the centre of the 1.08 line box, so the
+	   icon and arrow shift by that much to centre on the label's capitals. */
+	.contact-link__icon,
+	.contact-link__arrow {
+		translate: 0 calc(var(--text-title-sm) * 0.045);
+	}
 	.contact-link__icon {
 		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: var(--space-lg);
+		grid-area: icon;
 	}
 	:global(.contact-link__glyph) {
 		width: var(--space-md);
 		height: var(--space-md);
 	}
-	.contact-link__body {
-		display: grid;
-		gap: var(--space-3xs);
-		min-width: 0;
-	}
 	.contact-link__label {
+		grid-area: label;
 		font-family: var(--font-display);
 		font-size: var(--text-title-sm);
 		font-weight: var(--weight-display);
 		line-height: var(--leading-heading);
 	}
 	.contact-link__value {
+		grid-area: value;
 		font-size: var(--text-meta);
 		line-height: 1.5;
 		overflow-wrap: anywhere;
 	}
 	.contact-link__arrow {
 		display: inline-flex;
+		grid-area: arrow;
+	}
+	.contact-link__arrow :global(svg) {
+		width: 1.25rem;
+		height: 1.25rem;
 	}
 	@media (min-width: 640px) {
 		.hero-actions {
@@ -695,6 +842,14 @@
 		}
 	}
 	@media (min-width: 1024px) {
+		.home-masthead {
+			grid-template-areas: 'eyebrow nav theme';
+			grid-template-columns: minmax(0, 1fr) auto auto;
+			column-gap: var(--space-xl);
+		}
+		.background-facts {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
 		.home-hero {
 			grid-template-columns: minmax(0, 1fr) 19rem;
 			align-items: center;

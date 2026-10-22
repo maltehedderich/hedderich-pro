@@ -5,15 +5,14 @@
 
 html {
 	background-color: var(--surface);
-	color-scheme: light;
-	color: var(--color-ink);
+	color: var(--color-on-surface);
 	font-family: var(--font-editorial);
 }
 
 body {
 	min-height: 100vh;
 	background: var(--surface);
-	color: var(--color-ink);
+	color: var(--color-on-surface);
 	font-family: var(--font-editorial);
 	font-weight: var(--weight-body);
 	margin: 0;
@@ -23,7 +22,7 @@ body {
 .skip-link {
 	background: var(--surface-container-lowest);
 	border-radius: var(--radius-square);
-	color: var(--color-ink);
+	color: var(--color-on-surface);
 	font-size: var(--text-meta);
 	font-weight: 600;
 	left: var(--space-sm);
@@ -138,26 +137,43 @@ body {
 		line-height: var(--leading-display);
 	}
 
-	/* Flat brand panels; mode describes composition, not the OS color scheme. */
+	/* Flat brand panels. Paper follows the theme; signal is a light context in both themes;
+	   dark contrasts with paper and lifts off the page in the dark theme. */
 	.ds-surface {
-		--outline-focus: var(--color-ink);
-		--panel-surface: var(--color-paper);
-		--panel-ink: var(--color-ink);
+		--outline-focus: var(--focus-ring-color);
+		--panel-surface: var(--surface);
+		--panel-ink: var(--color-on-surface);
 		--panel-muted: var(--color-muted);
-		--panel-emphasis: var(--color-ink);
+		--panel-emphasis: var(--color-on-surface);
 		--strip-surface: var(--color-signal);
 		background: var(--panel-surface);
 		color: var(--panel-ink);
 	}
 
+	/* Signal stays a light context in both themes. The build lowers light-dark() into
+	   variables resolved on :root, so a nested color-scheme alone does not reach the theme
+	   roles; pin the text roles that content inside these surfaces may read. */
+	.ds-surface[data-mode='signal'],
+	.ds-insight-block {
+		--color-on-surface: var(--color-ink);
+		--color-primary: var(--color-ink);
+		--color-primary-active: var(--color-ink);
+		--color-muted: var(--color-ink);
+		--focus-ring-color: var(--color-ink);
+	}
+
 	.ds-surface[data-mode='signal'] {
+		--outline-focus: var(--color-ink);
 		--panel-surface: var(--color-signal);
+		--panel-ink: var(--color-ink);
 		--panel-muted: var(--color-ink);
+		--panel-emphasis: var(--color-ink);
 		--strip-surface: var(--color-paper);
+		color-scheme: light;
 	}
 
 	.ds-surface[data-mode='dark'] {
-		--panel-surface: var(--color-ink);
+		--panel-surface: light-dark(var(--color-ink), var(--surface-container-high));
 		--panel-ink: var(--color-paper);
 		--panel-muted: var(--color-paper);
 		--panel-emphasis: var(--color-signal);
@@ -185,7 +201,7 @@ body {
 
 	.ds-inline-link {
 		@apply inline-flex items-center gap-2 text-(length:--text-meta) font-semibold;
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		min-height: 2.75rem;
 		text-decoration: none;
 		text-underline-offset: var(--space-3xs);
@@ -199,7 +215,7 @@ body {
 	}
 
 	.ds-inline-link:hover {
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		text-decoration: underline;
 	}
 
@@ -208,7 +224,7 @@ body {
 	}
 
 	.ds-inline-link:active {
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 	}
 
 	.ds-inline-link:focus-visible {
@@ -251,7 +267,7 @@ body {
 
 	.ds-button[data-variant='secondary'] {
 		background: var(--surface-container-high);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 	}
 
 	.ds-button[data-variant='primary']:not(:disabled):hover {
@@ -274,7 +290,7 @@ body {
 
 	.ds-button[data-variant='tertiary'] {
 		background: transparent;
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		justify-content: flex-start;
 		padding-inline: 0;
 		text-decoration: none;
@@ -283,13 +299,13 @@ body {
 	}
 
 	.ds-button[data-variant='tertiary']:not(:disabled):hover {
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		text-decoration: underline;
 		text-decoration-color: currentColor;
 	}
 
 	.ds-button[data-variant='tertiary']:not(:disabled):active {
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		text-decoration: underline;
 		text-decoration-color: currentColor;
 		transform: translateY(1px);
@@ -306,15 +322,15 @@ body {
 	}
 
 	.ds-card {
-		--panel-ink: var(--color-ink);
+		--panel-ink: var(--color-on-surface);
 		--panel-muted: var(--color-muted);
-		--panel-emphasis: var(--color-ink);
+		--panel-emphasis: var(--color-on-surface);
 		--strip-surface: var(--color-signal);
-		--outline-focus: var(--color-ink);
+		--outline-focus: var(--focus-ring-color);
 		@apply p-6 sm:p-8;
 		background: var(--surface-container-low);
 		border-radius: var(--radius-square);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		display: flex;
 		flex-direction: column;
 		transition: background-color var(--motion-fast) var(--motion-ease);
@@ -375,7 +391,7 @@ body {
 		align-items: center;
 		background: var(--surface-container-high);
 		border-radius: var(--radius-square);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		display: inline-flex;
 		font-size: var(--text-micro);
 		font-weight: var(--weight-label);
@@ -396,14 +412,14 @@ body {
 	}
 
 	.ds-editorial-list-item {
-		--panel-ink: var(--color-ink);
+		--panel-ink: var(--color-on-surface);
 		--panel-muted: var(--color-muted);
-		--panel-emphasis: var(--color-ink);
+		--panel-emphasis: var(--color-on-surface);
 		--strip-surface: var(--color-signal);
-		--outline-focus: var(--color-ink);
+		--outline-focus: var(--focus-ring-color);
 		background: var(--surface-container-low);
 		border-radius: var(--radius-square);
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		padding: var(--space-md);
 		transition: background-color var(--motion-fast) var(--motion-ease);
 	}
@@ -427,7 +443,7 @@ body {
 
 	/* The row link focuses the complete editorial item. */
 	.ds-editorial-list-item:has(a:focus-visible) {
-		outline: var(--focus-ring-width) solid var(--color-ink);
+		outline: var(--focus-ring-width) solid var(--outline-focus);
 		outline-offset: var(--focus-ring-offset);
 	}
 
@@ -440,7 +456,7 @@ body {
 		border-bottom: 1px solid var(--panel-muted, var(--ghost-border));
 		border-radius: var(--radius-square);
 		caret-color: currentColor;
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 	}
 
 	.ds-ghost-input::placeholder {
@@ -476,6 +492,7 @@ body {
 		background: var(--color-signal);
 		border-radius: var(--radius-square);
 		color: var(--color-ink);
+		color-scheme: light;
 	}
 
 	@media (min-width: 1024px) {
@@ -496,7 +513,7 @@ body {
 	}
 
 	.ds-section__heading {
-		color: var(--panel-ink, var(--color-ink));
+		color: var(--panel-ink, var(--color-on-surface));
 		font-size: var(--text-section);
 		font-weight: var(--weight-display);
 		letter-spacing: var(--tracking-display);

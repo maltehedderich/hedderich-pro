@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ArrowLeft from '~icons/lucide/arrow-left';
 
-	import { EditorialList, WritingLink } from '$lib';
+	import { EditorialList, ThemeToggle, WritingLink } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import {
 		createAbsoluteUrl,
@@ -86,6 +86,7 @@
 				</span>
 				Back home
 			</a>
+			<ThemeToggle class="blog-index-hero__theme" />
 
 			<div class="blog-index-hero__body">
 				<p class="ds-eyebrow">Writing Archive</p>
@@ -112,10 +113,22 @@
 
 <style>
 	.blog-index-hero {
+		align-items: start;
 		display: grid;
-		gap: var(--space-lg);
+		gap: var(--space-lg) var(--space-md);
+		grid-template-areas:
+			'back theme'
+			'body body';
+		grid-template-columns: minmax(0, 1fr) auto;
 		margin-inline: calc(-1 * var(--page-gutter));
 		padding: var(--space-lg) var(--page-gutter) var(--space-xl);
+	}
+	.blog-index-hero .ds-inline-link {
+		grid-area: back;
+		justify-self: start;
+	}
+	:global(.blog-index-hero__theme) {
+		grid-area: theme;
 	}
 	.blog-index-hero__back-icon {
 		display: inline-flex;
@@ -123,6 +136,7 @@
 	.blog-index-hero__body {
 		display: grid;
 		gap: var(--space-md);
+		grid-area: body;
 	}
 	.blog-index-title {
 		font-size: var(--text-display);
@@ -135,13 +149,14 @@
 	}
 	@media (min-width: 1024px) {
 		.blog-index-hero {
-			gap: var(--layout-gap);
-			grid-template-columns: var(--layout-rail) minmax(0, 1fr);
+			column-gap: var(--layout-gap);
+			grid-template-areas: 'back body theme';
+			grid-template-columns: var(--layout-rail) minmax(0, 1fr) auto;
 			padding-block: var(--space-xl);
 		}
-		.blog-index-hero .ds-inline-link {
-			align-self: start;
-			justify-self: start;
+		/* Centre the eyebrow on the 44px back link and theme control. */
+		.blog-index-hero__body {
+			padding-top: var(--space-xs);
 		}
 	}
 </style>

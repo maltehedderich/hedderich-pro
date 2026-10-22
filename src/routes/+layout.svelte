@@ -1,7 +1,12 @@
 <script lang="ts">
 	import './layout.css';
+	import { onMount } from 'svelte';
+
+	import { initTheme } from '$lib/theme';
 
 	let { children } = $props();
+
+	onMount(initTheme);
 </script>
 
 <svelte:head>
@@ -13,8 +18,9 @@
 	<link rel="manifest" href="/site.webmanifest" />
 	<meta name="application-name" content="Malte Hedderich" />
 	<meta name="apple-mobile-web-app-title" content="Malte Hedderich" />
-	<meta name="color-scheme" content="light" />
-	<meta name="theme-color" content="#f5f5ee" />
+	<meta name="color-scheme" content="light dark" />
+	<meta name="theme-color" content="#f5f5ee" media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content="#101817" media="(prefers-color-scheme: dark)" />
 	<meta name="msapplication-TileColor" content="#f5f5ee" />
 </svelte:head>
 

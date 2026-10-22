@@ -38,7 +38,7 @@
 
 <style>
 	.writing-link {
-		color: var(--color-ink);
+		color: var(--color-on-surface);
 		position: relative;
 		text-decoration: none;
 	}
