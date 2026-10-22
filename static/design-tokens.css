@@ -45,6 +45,11 @@
 
 	/* Shared reading edge; figures and code may use the wider article frame. */
 	--measure-prose: 38rem;
+	--layout-max: 76rem;
+	--layout-rail: 15rem;
+	--layout-gap: var(--space-xl);
+	--page-gutter: clamp(var(--space-md), 4vw, var(--space-xl));
+	--section-gap: clamp(var(--space-2xl), 8vw, var(--space-3xl));
 
 	/* Spacing scale — 4px grid */
 	--space-3xs: 0.25rem; /* 4 */

@@ -22,39 +22,43 @@
 </script>
 
 {#if title || intro}
-	<section class={['space-y-10', className]}>
+	<section class={['space-y-8', className]}>
 		<header class="max-w-2xl space-y-4">
 			{#if title}
-				<h2 class="ds-heading text-(length:--text-title) text-(--color-ink)">
+				<h2 class="ds-heading text-(length:--text-section) text-inherit">
 					{title}
 				</h2>
 			{/if}
 
 			{#if intro}
-				<p
-					class="max-w-(--measure-prose) text-(length:--text-lead) leading-[1.75] text-(--color-muted)"
-				>
+				<p class="ds-muted max-w-(--measure-prose) text-(length:--text-lead) leading-[1.75]">
 					{intro}
 				</p>
 			{/if}
 		</header>
 
-		<div class="space-y-5 sm:space-y-6">
-			{#each items as item (getKey(item))}
-				<article class="ds-editorial-list-item">
-					{@render row(item)}
-				</article>
-			{/each}
-		</div>
+		{@render list()}
 	</section>
 {:else}
 	<div class={['space-y-10', className]}>
-		<div class="space-y-5 sm:space-y-6">
-			{#each items as item (getKey(item))}
-				<article class="ds-editorial-list-item">
-					{@render row(item)}
-				</article>
-			{/each}
-		</div>
+		{@render list()}
 	</div>
 {/if}
+
+{#snippet list()}
+	<ul class="editorial-list" role="list">
+		{#each items as item (getKey(item))}
+			<li class="ds-editorial-list-item">{@render row(item)}</li>
+		{/each}
+	</ul>
+{/snippet}
+
+<style>
+	.editorial-list {
+		display: grid;
+		gap: var(--space-md);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+</style>

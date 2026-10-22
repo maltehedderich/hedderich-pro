@@ -5,13 +5,12 @@
 
 	import ArrowLeft from '~icons/lucide/arrow-left';
 	import ArrowRight from '~icons/lucide/arrow-right';
-	import CalendarDays from '~icons/lucide/calendar-days';
-	import Clock3 from '~icons/lucide/clock-3';
 	import CopyIcon from '~icons/lucide/copy';
 	import House from '~icons/lucide/house';
 
 	import type { Attachment } from 'svelte/attachments';
 
+	import { PostMeta } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE, SITE_URL } from '$lib/site';
 	import type { PageProps } from './$types';
@@ -115,12 +114,16 @@
 			activeTimeouts.delete(existingTimeout);
 		}
 
+		const visibleLabel = button.querySelector('[data-copy-label]');
+		if (visibleLabel) visibleLabel.textContent = label;
+
 		button.dataset.copyState = state;
 		button.setAttribute('aria-label', `${label} code`);
 		button.title = `${label} code`;
 
 		const resetTimeout = window.setTimeout(() => {
 			delete button.dataset.copyState;
+			if (visibleLabel) visibleLabel.textContent = 'Copy';
 			button.setAttribute('aria-label', 'Copy code');
 			button.title = 'Copy code';
 			activeTimeouts.delete(resetTimeout);
@@ -168,12 +171,8 @@
 	<svelte:element this={'script'} type="application/ld+json">{post.structuredData}</svelte:element>
 </svelte:head>
 
-<main
-	class="blog-post-page px-5 pt-8 pb-28 sm:px-8 sm:pt-10 lg:px-12 lg:pb-40"
-	id="main-content"
-	tabindex="-1"
->
-	<article class="mx-auto max-w-304 space-y-14 sm:space-y-22 lg:space-y-28">
+<main class="ds-page" id="main-content" tabindex="-1">
+	<article class="ds-page-frame ds-page-stack">
 		<header class="blog-post-hero">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 			<a class="ds-inline-link" href="/blog/">
@@ -184,21 +183,12 @@
 			</a>
 
 			<div class="blog-post-hero__body">
-				<div class="flex flex-wrap items-center gap-3">
-					<span class="ds-chip">{post.tag}</span>
-					<span class="ds-chip" data-tone="quiet">
-						<CalendarDays aria-hidden="true" class="size-3 shrink-0" />
-						<time datetime={post.publishedAt}>{post.dateLabel}</time>
-					</span>
-					<span class="ds-chip" data-tone="quiet">
-						<Clock3 aria-hidden="true" class="size-3 shrink-0" />
-						{post.readTime}
-					</span>
-				</div>
+				<PostMeta {post} />
 
 				<div class="space-y-6">
 					<h1 class="blog-post-title">{post.title}</h1>
 					<p class="blog-post-deck">{post.summary}</p>
+					<p class="blog-post-byline">By {post.frontmatter.author}</p>
 				</div>
 			</div>
 		</header>
@@ -250,13 +240,9 @@
 </main>
 
 <style>
-	.blog-post-page {
-		overflow-x: clip;
-	}
-
 	.blog-post-hero {
 		display: grid;
-		gap: var(--space-xl);
+		gap: var(--layout-gap);
 	}
 
 	.blog-post-hero__back-icon {
@@ -269,8 +255,8 @@
 
 	.blog-post-hero__body {
 		display: grid;
-		gap: var(--space-md);
-		max-width: 52rem;
+		gap: var(--space-lg);
+		max-width: 58rem;
 	}
 
 	.blog-post-title {
@@ -279,7 +265,7 @@
 		font-weight: var(--weight-display);
 		letter-spacing: var(--tracking-display);
 		line-height: var(--leading-heading);
-		max-width: 24ch;
+		text-wrap: balance;
 	}
 
 	.blog-post-deck {
@@ -287,6 +273,11 @@
 		font-size: var(--text-lead);
 		line-height: 1.75;
 		max-width: var(--measure-prose);
+	}
+
+	.blog-post-byline {
+		font-size: var(--text-meta);
+		font-weight: var(--weight-label);
 	}
 
 	.blog-post-layout {
@@ -297,7 +288,8 @@
 	.blog-content {
 		color: var(--color-ink);
 		font-size: var(--text-body);
-		line-height: 1.85;
+		line-height: 1.8;
+		overflow-wrap: anywhere;
 		max-width: 52rem;
 		min-width: 0;
 	}
@@ -325,7 +317,7 @@
 	.blog-content :global(h2) {
 		font-size: var(--text-title);
 		margin-top: var(--space-2xl);
-		max-width: 18ch;
+		max-width: var(--measure-prose);
 	}
 
 	.blog-content :global(h3) {
@@ -346,6 +338,7 @@
 	.blog-content :global(a) {
 		color: var(--color-primary);
 		font-weight: 600;
+		text-decoration-line: underline;
 		text-decoration-color: currentColor;
 		text-decoration-thickness: 0.08em;
 		text-underline-offset: 0.24em;
@@ -396,38 +389,27 @@
 	}
 
 	.blog-content :global(blockquote) {
-		background: var(--surface-container-low);
-		border-radius: var(--radius-xl);
+		background: var(--color-signal);
 		color: var(--color-ink);
 		font-size: var(--text-lead);
-		font-weight: 500;
-		letter-spacing: -0.025em;
-		line-height: 1.65;
+		line-height: 1.7;
 		margin: var(--space-xl) 0;
-		padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
-		position: relative;
+		padding: var(--space-md);
 	}
 
-	.blog-content :global(blockquote::before) {
-		background: var(--color-accent);
-		border-radius: var(--radius-full);
-		bottom: var(--space-md);
-		content: '';
-		left: 0;
-		position: absolute;
-		top: var(--space-md);
-		width: 0.18rem;
+	.blog-content :global(blockquote > * + *) {
+		margin-top: var(--space-sm);
 	}
 
 	.blog-content :global(.blog-content__figure) {
-		background: color-mix(in srgb, var(--surface-container-low) 76%, var(--color-paper) 24%);
-		border-radius: var(--radius-xl);
+		background: var(--surface-container-low);
+		border-radius: var(--radius-square);
 		margin: var(--space-xl) 0;
 		padding: var(--space-xs);
 	}
 
 	.blog-content :global(.blog-content__figure img) {
-		border-radius: var(--radius-md);
+		border-radius: var(--radius-square);
 		display: block;
 		height: auto;
 		width: 100%;
@@ -435,11 +417,11 @@
 
 	.blog-content :global(.blog-content__code-frame) {
 		--blog-code-surface: var(--color-ink);
-		--blog-code-scroll-thumb: color-mix(in srgb, var(--color-accent) 70%, var(--color-paper) 10%);
+		--blog-code-scroll-thumb: var(--color-signal);
 		--outline-focus: var(--color-accent);
 
 		background: var(--blog-code-surface);
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-square);
 		color: var(--color-paper);
 		font-size: var(--text-meta);
 		line-height: 1.75;
@@ -454,7 +436,7 @@
 		display: flex;
 		gap: var(--space-sm);
 		justify-content: space-between;
-		min-height: 3.15rem;
+		min-height: var(--space-xl);
 		padding: var(--space-xs) var(--space-xs) 0 var(--space-sm);
 	}
 
@@ -491,22 +473,25 @@
 
 	.blog-content :global(.blog-content__copy-button) {
 		align-items: center;
-		background: color-mix(in srgb, var(--surface-container-lowest) 14%, transparent);
+		background: var(--color-paper);
 		border: 0;
-		border-radius: var(--radius-full);
-		color: var(--color-paper);
+		border-radius: var(--radius-square);
+		color: var(--color-ink);
 		cursor: pointer;
 		display: inline-flex;
-		height: 2.35rem;
+		min-height: 2.75rem;
 		justify-content: center;
 		margin-left: auto;
-		padding: 0;
+		padding: var(--space-2xs) var(--space-xs);
+		gap: var(--space-2xs);
+		font-family: var(--font-editorial);
+		font-weight: var(--weight-label);
 		flex: 0 0 auto;
 		transition:
 			background var(--motion-fast) var(--motion-ease),
 			color var(--motion-fast) var(--motion-ease),
 			transform var(--motion-fast) var(--motion-ease);
-		width: 2.35rem;
+		min-width: 6rem;
 		z-index: 1;
 	}
 
@@ -515,13 +500,13 @@
 	}
 
 	.blog-content :global(.blog-content__copy-button:hover) {
-		background: color-mix(in srgb, var(--surface-container-lowest) 22%, transparent);
-		color: var(--color-paper);
+		background: var(--color-signal-hover);
+		color: var(--color-ink);
 	}
 
 	.blog-content :global(.blog-content__copy-button:active) {
-		background: color-mix(in srgb, var(--surface-container-lowest) 30%, transparent);
-		color: var(--color-paper);
+		background: var(--color-signal-active);
+		color: var(--color-ink);
 		transform: translateY(1px);
 	}
 
@@ -531,13 +516,13 @@
 	}
 
 	.blog-content :global(.blog-content__copy-button[data-copy-state='copied']) {
-		background: color-mix(in srgb, var(--color-accent) 32%, transparent);
-		color: var(--color-paper);
+		background: var(--color-signal);
+		color: var(--color-ink);
 	}
 
 	.blog-content :global(.blog-content__copy-button[data-copy-state='failed']) {
-		background: color-mix(in srgb, #ff9f80 28%, transparent);
-		color: var(--color-paper);
+		background: var(--color-paper);
+		color: var(--color-ink);
 	}
 
 	.blog-content :global(.blog-content__code-scroll) {
@@ -547,6 +532,12 @@
 		-webkit-overflow-scrolling: touch;
 		scrollbar-color: var(--blog-code-scroll-thumb) var(--blog-code-surface);
 		scrollbar-width: thin;
+	}
+
+	.blog-content :global(.blog-content__code-scroll:focus-visible),
+	.blog-content :global(.blog-content__table-scroll:focus-visible) {
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: calc(-1 * var(--focus-ring-width));
 	}
 
 	.blog-content :global(.blog-content__code) {
@@ -612,10 +603,10 @@
 	}
 
 	.blog-content :global(:not(pre) > code) {
-		background: color-mix(in srgb, var(--surface-container-high) 72%, var(--color-paper) 28%);
-		border-radius: var(--radius-xs);
+		background: var(--surface-container-high);
+		border-radius: var(--radius-square);
 		color: var(--color-ink);
-		font-size: 0.92em;
+		font-size: var(--text-meta);
 		padding: var(--space-3xs) var(--space-2xs);
 	}
 
@@ -644,17 +635,15 @@
 
 	.blog-content :global(th),
 	.blog-content :global(td) {
-		background: color-mix(
-			in srgb,
-			var(--surface-container-lowest) 84%,
-			var(--surface-container-low) 16%
-		);
+		background: var(--surface-container-low);
+		font-variant-numeric: tabular-nums;
 		padding: var(--space-xs) var(--space-sm);
 		text-align: left;
 		vertical-align: top;
 	}
 
 	.blog-content :global(th) {
+		background: var(--surface-container-high);
 		color: var(--color-ink);
 		font-size: var(--text-micro);
 		font-weight: 700;
@@ -710,27 +699,19 @@
 	}
 
 	.blog-post-nav__link {
-		background: color-mix(
-			in srgb,
-			var(--surface-container-lowest) 78%,
-			var(--surface-container-low) 22%
-		);
-		border-radius: var(--radius-lg);
+		background: var(--surface-container-low);
+		border-radius: var(--radius-square);
 		display: grid;
 		gap: var(--space-xs);
 		min-height: 8.5rem;
-		padding: var(--space-sm);
+		padding: var(--space-md);
 		transition:
 			background-color var(--motion-base) var(--motion-ease),
 			color var(--motion-base) var(--motion-ease);
 	}
 
 	.blog-post-nav__link:hover {
-		background: color-mix(
-			in srgb,
-			var(--surface-container-high) 52%,
-			var(--surface-container-lowest) 48%
-		);
+		background: var(--surface-container-high);
 	}
 
 	.blog-post-nav__link:active {
@@ -756,12 +737,11 @@
 	}
 
 	.blog-post-nav__title {
-		color: var(--color-ink);
-		font-size: var(--text-body);
-		font-weight: 600;
-		letter-spacing: 0;
-		line-height: 1.18;
-		max-width: 22ch;
+		font-family: var(--font-display);
+		font-size: var(--text-title-sm);
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 	}
 
 	@media (min-width: 640px) {
@@ -784,7 +764,8 @@
 
 	@media (min-width: 1024px) {
 		.blog-post-hero {
-			grid-template-columns: minmax(9rem, 0.3fr) minmax(0, 1fr);
+			grid-template-columns: var(--layout-rail) minmax(0, 1fr);
+			column-gap: var(--layout-gap);
 			padding-top: var(--space-sm);
 		}
 
@@ -794,7 +775,8 @@
 		}
 
 		.blog-post-layout {
-			grid-template-columns: minmax(9rem, 0.3fr) minmax(0, 1fr);
+			grid-template-columns: var(--layout-rail) minmax(0, 1fr);
+			column-gap: var(--layout-gap);
 		}
 
 		.blog-content {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../../static/error-page.css';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import type { Pathname } from '$app/types';
@@ -29,97 +30,31 @@
 	<meta name="robots" content="noindex,follow" />
 </svelte:head>
 
-<main class="error-page" id="main-content">
-	<section aria-labelledby="error-title">
-		<p class="ds-eyebrow error-kicker">{status}</p>
+<main class="error-page" id="main-content" tabindex="-1">
+	<section class="error-layout" aria-labelledby="error-title">
+		<p class="error-status">{status}</p>
+		<div class="error-body">
+			<h1 class="error-title" id="error-title">{heading}</h1>
 
-		<h1 class="error-title" id="error-title">{heading}</h1>
+			<p class="error-copy">{detail}</p>
 
-		<p class="error-copy">{detail}</p>
+			<nav class="error-nav" aria-label="Useful links">
+				<a class="ds-button" data-variant="primary" href={resolve('/' as Pathname)}>
+					<span aria-hidden="true" class="ds-button__icon">
+						<House />
+					</span>
 
-		<nav class="error-nav" aria-label="Useful links">
-			<a class="ds-button" data-variant="primary" href={resolve('/' as Pathname)}>
-				<span aria-hidden="true" class="ds-button__icon">
-					<House />
-				</span>
+					<span class="ds-button__label">Home</span>
+				</a>
 
-				<span class="ds-button__label">Home</span>
-			</a>
+				<a class="ds-button" data-variant="secondary" href={resolve('/blog/' as Pathname)}>
+					<span class="ds-button__label">Blog</span>
 
-			<a class="ds-button" data-variant="secondary" href={resolve('/blog/' as Pathname)}>
-				<span class="ds-button__label">Blog</span>
-
-				<span aria-hidden="true" class="ds-button__icon">
-					<ArrowRight />
-				</span>
-			</a>
-		</nav>
+					<span aria-hidden="true" class="ds-button__icon">
+						<ArrowRight />
+					</span>
+				</a>
+			</nav>
+		</div>
 	</section>
 </main>
-
-<style>
-	.error-page {
-		box-sizing: border-box;
-		display: grid;
-		min-height: 100svh;
-		padding: clamp(2rem, 6vw, 5rem);
-		place-items: center;
-	}
-
-	section {
-		margin-inline: auto;
-		max-width: 58rem;
-		padding-block-end: clamp(2rem, 10vh, 7rem);
-		width: 100%;
-	}
-
-	.error-kicker {
-		color: var(--color-primary);
-		font-weight: 700;
-		margin: 0 0 var(--space-sm);
-	}
-
-	.error-title {
-		font-size: var(--text-display);
-		font-weight: var(--weight-display);
-		letter-spacing: var(--tracking-display);
-		line-height: var(--leading-heading);
-		margin: 0;
-		max-width: 8ch;
-	}
-
-	.error-copy {
-		color: var(--color-muted);
-		font-size: var(--text-lead);
-		/* House values for --text-lead prose, same as .blog-index-intro / .blog-post-deck.
-		   The 1.7 and 39rem this replaces were both a hair off the system. */
-		line-height: 1.75;
-		margin: var(--space-md) 0 0;
-		max-width: var(--measure-prose);
-	}
-
-	.error-nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-sm);
-		margin-top: var(--space-lg);
-	}
-
-	@media (min-width: 64rem) {
-		section {
-			padding-inline-end: 16rem;
-		}
-	}
-
-	@media (max-width: 30rem) {
-		.error-nav {
-			align-items: stretch;
-			flex-direction: column;
-		}
-
-		.error-nav :global(.ds-button) {
-			justify-content: flex-start;
-			width: 100%;
-		}
-	}
-</style>

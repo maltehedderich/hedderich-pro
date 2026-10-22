@@ -1,16 +1,12 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import type { Pathname } from '$app/types';
 	import ArrowRight from '~icons/lucide/arrow-right';
 	import ArrowUpRight from '~icons/lucide/arrow-up-right';
 	import Mail from '~icons/lucide/mail';
 	import Github from '~icons/bxl/github';
 	import Linkedin from '~icons/bxl/linkedin';
 	import TwitterX from '~icons/bxl/twitter-x';
-	import Clock3 from '~icons/lucide/clock-3';
-	import ExternalLink from '~icons/lucide/external-link';
 
-	import { Button, Card, EditorialList, EmailObfuscator } from '$lib';
+	import { Button, Card, EditorialList, EmailObfuscator, WritingLink } from '$lib';
 	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
 	import {
@@ -266,18 +262,24 @@
 	<svelte:element this={'script'} type="application/ld+json">{structuredData}</svelte:element>
 </svelte:head>
 
-<main
-	class="brand-page px-5 pt-8 pb-28 sm:px-8 sm:pt-10 lg:px-12 lg:pb-40"
-	id="main-content"
-	tabindex="-1"
->
-	<div class="mx-auto max-w-304 space-y-24 sm:space-y-28 lg:space-y-36">
-		<section
-			aria-describedby="hero-support"
-			aria-labelledby="hero-name"
-			class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-14"
-		>
-			<figure class="portrait-shell order-first self-start lg:order-last lg:justify-self-end">
+<main class="ds-page" id="main-content" tabindex="-1">
+	<div class="ds-page-frame ds-page-stack">
+		<header class="home-masthead">
+			<p class="ds-eyebrow">AI engineer &amp; product builder</p>
+			<nav aria-label="Section navigation">
+				<ul class="hero-nav">
+					{#each navigation as item (item.id)}
+						<li>
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+							<a href={item.href}>{item.label}</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		</header>
+
+		<section aria-describedby="hero-support" aria-labelledby="hero-name" class="home-hero">
+			<figure class="portrait-shell">
 				<div class="portrait-frame">
 					<enhanced:img
 						alt="Portrait of Malte Hedderich"
@@ -285,39 +287,19 @@
 						decoding="async"
 						fetchpriority="high"
 						loading="eager"
-						sizes="(min-width: 1280px) 248px, (min-width: 1024px) 232px, (min-width: 640px) 128px, 96px"
-						src="../lib/assets/malte-hedderich.png?w=496;248;192;128;96"
+						sizes="(min-width: 1280px) 320px, (min-width: 1024px) 272px, 128px"
+						src="../lib/assets/malte-hedderich.png?w=640;320;272;256;128"
 					/>
 				</div>
 			</figure>
 
-			<div class="space-y-8 lg:max-w-176 xl:max-w-184">
+			<div class="hero-copy">
 				<div class="space-y-5">
 					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
 					<p class="hero-thesis">
 						I build SaaS products that use LLMs and write about what holds up in production.
 					</p>
-					<p class="hero-support" id="hero-support">
-						Right now I'm building Genhone, which pressure-tests SaaS ideas before you burn months
-						on the wrong one. By day I lead teams shipping LLM applications. I write about
-						evaluation, agent design, and the choices you regret at scale.
-					</p>
 				</div>
-
-				<nav aria-label="Section navigation">
-					<ul class="hero-nav">
-						{#each navigation as item, index (item.id)}
-							<li>
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-								<a href={item.href}>{item.label}</a>
-
-								{#if index < navigation.length - 1}
-									<span aria-hidden="true">·</span>
-								{/if}
-							</li>
-						{/each}
-					</ul>
-				</nav>
 
 				<div class="hero-actions">
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
@@ -335,32 +317,37 @@
 						</span>
 					</a>
 				</div>
+				<p class="hero-support" id="hero-support">
+					Right now I'm building Genhone, which pressure-tests SaaS ideas before you burn months on
+					the wrong one. By day I lead teams shipping LLM applications. I write about evaluation,
+					agent design, and the choices you regret at scale.
+				</p>
 			</div>
 		</section>
 
 		<section aria-labelledby="projects-title" class="ds-section scroll-mt-24" id="projects">
-			<div class="ds-section__rail space-y-4 lg:pt-3">
+			<div class="ds-section__rail space-y-4">
 				<h2 class="ds-section__heading" id="projects-title">Projects</h2>
 				<p class="ds-section__copy">Four products built after hours. All are live.</p>
 			</div>
 
-			<ul class="project-grid grid gap-6 xl:grid-cols-2" role="list">
+			<ul class="project-grid" role="list">
 				{#each projects as project (project.id)}
-					<li class="min-h-full">
+					<li>
 						<Card
-							class="project-card h-full min-h-64 sm:min-h-72 xl:min-h-80"
+							class="project-card"
+							eyebrow={project.status}
 							href={project.url}
 							title={project.title}
 						>
 							{#snippet footer()}
-								<span class="project-url min-w-0 leading-6 break-all">{project.url}</span>
+								<span class="project-url">{project.url.replace('https://', '')}</span>
 								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-ink)" />
 							{/snippet}
 
 							<p>{project.description}</p>
 
 							<div class="space-y-2 pt-2">
-								<span class="ds-chip">{project.status}</span>
 								<p class="text-(length:--text-meta) leading-6 text-(--color-muted)">
 									{project.proof}
 								</p>
@@ -372,7 +359,7 @@
 		</section>
 
 		<section aria-labelledby="writing-title" class="ds-section scroll-mt-24" id="writing">
-			<div class="ds-section__rail space-y-4 lg:pt-3">
+			<div class="ds-section__rail space-y-4">
 				<h2 class="ds-section__heading" id="writing-title">Writing</h2>
 				<p class="ds-section__copy">
 					Essays published here and elsewhere, with the latest pieces visible first.
@@ -382,63 +369,7 @@
 			<div class="space-y-5">
 				<div id="writing-post-list">
 					<EditorialList items={visiblePosts}>
-						{#snippet row(post)}
-							{#snippet writingLinkContent()}
-								<div class="space-y-5">
-									<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-										<div class="min-w-0 flex-1 space-y-4">
-											<div class="flex flex-wrap items-center gap-3">
-												<span class="ds-chip">{post.tag}</span>
-												{#if post.sourceLabel}
-													<span class="ds-chip" data-tone="quiet">{post.sourceLabel}</span>
-												{/if}
-												<span class="ds-chip" data-tone="quiet">
-													<Clock3 aria-hidden="true" class="size-3 shrink-0" />
-													{post.readTime}
-												</span>
-											</div>
-
-											<div class="writing-link__header">
-												<h3 class="writing-title">{post.title}</h3>
-												<span aria-hidden="true" class="writing-link__arrow">
-													{#if post.isExternal}
-														<ExternalLink class="size-4" />
-													{:else}
-														<ArrowUpRight class="size-4" />
-													{/if}
-												</span>
-											</div>
-										</div>
-									</div>
-
-									<p
-										class="max-w-(--measure-prose) text-(length:--text-body) leading-[1.65] text-(--color-muted)"
-									>
-										{post.summary}
-									</p>
-								</div>
-							{/snippet}
-
-							{#if post.isExternal}
-								<a
-									aria-label={`Read ${post.title} on ${post.sourceLabel ?? 'external site'}`}
-									class="writing-link"
-									href={post.href}
-									rel="external noreferrer noopener"
-									target="_blank"
-								>
-									{@render writingLinkContent()}
-								</a>
-							{:else}
-								<a
-									aria-label={`Read ${post.title}`}
-									class="writing-link"
-									href={resolve(post.href as Pathname)}
-								>
-									{@render writingLinkContent()}
-								</a>
-							{/if}
-						{/snippet}
+						{#snippet row(post)}<WritingLink {post} showDate={false} />{/snippet}
 					</EditorialList>
 				</div>
 
@@ -463,23 +394,28 @@
 		</section>
 
 		<section aria-labelledby="experience-title" class="ds-section scroll-mt-24" id="experience">
-			<div class="ds-section__rail space-y-4 lg:pt-3">
+			<div class="ds-section__rail space-y-4">
 				<h2 class="ds-section__heading" id="experience-title">Background</h2>
 			</div>
 
-			<article class="background-panel">
+			<article class="background-panel ds-surface" data-mode="dark">
+				<h3 class="ds-heading background-title">ML Engineering Associate Manager at Accenture.</h3>
 				<p class="background-copy">
-					ML Engineering Associate Manager at Accenture, leading teams that build production LLM
-					applications. Before that, two years at Serviceware, where I shipped intent recognition,
-					semantic search, and a production LLM app in 2023. I studied Business Informatics at TU
-					Darmstadt, wrote my thesis on open-source MLOps, and spent a year at Tongji University in
-					Shanghai studying Software Engineering.
+					Leading teams that build production LLM applications. Before that, two years at
+					Serviceware, where I shipped intent recognition, semantic search, and a production LLM app
+					in 2023. I studied Business Informatics at TU Darmstadt, wrote my thesis on open-source
+					MLOps, and spent a year at Tongji University in Shanghai studying Software Engineering.
 				</p>
 			</article>
 		</section>
 
-		<section aria-labelledby="contact-title" class="ds-section scroll-mt-24" id="contact">
-			<div class="ds-section__rail space-y-4 lg:pt-3">
+		<section
+			aria-labelledby="contact-title"
+			class="ds-section contact-panel ds-surface"
+			data-mode="signal"
+			id="contact"
+		>
+			<div class="ds-section__rail space-y-4">
 				<h2 class="ds-section__heading" id="contact-title">Reach me</h2>
 			</div>
 
@@ -552,10 +488,51 @@
 </main>
 
 <style>
-	.brand-page {
-		overflow-x: clip;
+	.home-masthead {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm) var(--space-xl);
 	}
-
+	.home-masthead + .home-hero {
+		margin-top: calc(var(--section-gap) * -0.5);
+	}
+	.hero-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2xs) var(--space-md);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.hero-nav a {
+		align-items: center;
+		display: inline-flex;
+		min-height: 2.75rem;
+		font-size: var(--text-meta);
+		font-weight: var(--weight-label);
+		text-decoration: none;
+		text-underline-offset: var(--space-3xs);
+	}
+	.hero-nav a:hover,
+	.hero-nav a:active {
+		text-decoration: underline;
+	}
+	.hero-nav a:focus-visible,
+	.contact-link:focus-visible {
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
+	}
+	.home-hero {
+		display: grid;
+		gap: var(--space-lg);
+	}
+	.hero-copy {
+		display: grid;
+		gap: var(--space-lg);
+		min-width: 0;
+	}
 	.hero-name {
 		font-size: var(--text-hero);
 		font-weight: var(--weight-display);
@@ -564,365 +541,185 @@
 		text-transform: uppercase;
 		max-width: 14ch;
 	}
-
 	.hero-thesis {
-		color: var(--color-ink);
 		font-size: var(--text-hero-thesis);
-		font-weight: 500;
-		letter-spacing: -0.015em;
-		line-height: 1.15;
-		max-width: 28ch;
+		line-height: 1.2;
+		max-width: 30ch;
 	}
-
 	.hero-support {
 		color: var(--color-muted);
 		font-size: var(--text-body);
-		line-height: 1.8;
-		max-width: 37rem;
+		line-height: 1.7;
+		max-width: var(--measure-prose);
 	}
-
-	.hero-nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-xs) var(--space-sm);
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.hero-nav li {
-		align-items: center;
-		color: var(--color-muted);
-		display: inline-flex;
-		/* On the li, not the a — the "·" separators are siblings of the link, so sizing the
-		   link alone left them inheriting the root 16px next to 14px labels. */
-		font-size: var(--text-meta);
-		gap: var(--space-sm);
-	}
-
-	.hero-nav a {
-		align-items: center;
-		color: inherit;
-		display: inline-flex;
-		font-weight: 500;
-		letter-spacing: -0.01em;
-		min-height: 1.5rem;
-		text-decoration: none;
-		transition: color var(--motion-fast) var(--motion-ease);
-	}
-
-	.hero-nav a:hover {
-		color: var(--color-ink);
-	}
-
-	.hero-nav a:active {
-		color: var(--color-primary-active);
-	}
-
-	.hero-nav a:focus-visible {
-		outline: var(--focus-ring-width) solid var(--outline-focus);
-		outline-offset: var(--focus-ring-offset);
-	}
-
 	.hero-actions {
 		display: grid;
 		gap: var(--space-xs);
-		max-width: 24rem;
 	}
-
 	.hero-actions .ds-button {
-		gap: var(--space-xs);
-		justify-content: center;
-		min-width: 11.75rem;
-		width: 100%;
+		justify-content: space-between;
 	}
-
 	.portrait-shell {
-		position: relative;
-		width: clamp(5.75rem, 26vw, 8rem);
+		width: 9rem;
 	}
-
 	.portrait-frame {
 		background: var(--color-signal);
-		border-radius: var(--radius-full);
-		box-shadow: var(--shadow-floating);
 		padding: var(--space-2xs);
-		position: relative;
 	}
-
 	.portrait-frame :global(picture) {
 		display: block;
 	}
-
 	.portrait-image {
-		aspect-ratio: 1;
-		border-radius: var(--radius-full);
 		display: block;
+		width: 100%;
+		aspect-ratio: 1;
 		object-fit: cover;
 		object-position: center 20%;
-		position: relative;
-		width: 100%;
 	}
-
-	:global(.project-card h3) {
-		max-width: 14ch;
-	}
-
 	.project-grid {
+		display: grid;
+		gap: var(--space-md);
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-
 	.project-url {
 		font-size: var(--text-meta);
+		overflow-wrap: anywhere;
 	}
-
-	.writing-link {
-		display: block;
-		text-decoration: none;
+	:global(.project-card) {
+		height: 100%;
 	}
-
-	/* Ring is drawn by .ds-editorial-list-item:has(a:focus-visible) so it traces the card. */
-	.writing-link:focus-visible {
-		outline: none;
-	}
-
-	.writing-link__header {
-		align-items: start;
-		display: flex;
-		gap: var(--space-sm);
-		justify-content: space-between;
-	}
-
-	.writing-link__arrow {
-		color: currentColor;
-		flex: 0 0 auto;
-		transition: transform var(--motion-base) var(--motion-ease);
-	}
-
-	.writing-link:hover .writing-title {
-		color: var(--color-primary);
-	}
-
-	.writing-link:hover .writing-link__arrow {
-		transform: translate(0.14rem, -0.14rem);
-	}
-
-	.writing-link:active .writing-title {
-		color: var(--color-primary-active);
-	}
-
-	.writing-link:active .writing-link__arrow {
-		transform: none;
-	}
-
-	.writing-title {
-		color: var(--color-ink);
-		font-size: var(--text-title);
-		font-weight: var(--weight-display);
-		letter-spacing: var(--tracking-display);
-		line-height: var(--leading-heading);
-		max-width: var(--measure-prose);
-	}
-
 	.writing-controls {
 		align-items: center;
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-sm);
 		justify-content: space-between;
+		gap: var(--space-sm);
 	}
-
 	.writing-count {
 		color: var(--color-muted);
 		font-size: var(--text-meta);
-		line-height: 1.6;
+		line-height: 1.5;
 	}
-
 	:global(.writing-toggle) {
 		min-width: 12rem;
 	}
-
 	.background-panel {
-		background: var(--surface-container-low);
-		border-radius: var(--radius-2xl);
-		box-shadow: var(--shadow-floating);
-		/* Fluid, but both endpoints land on the spacing scale — 2.75rem was the last
-		   fractional-rem value left in the app. */
+		display: grid;
+		gap: var(--space-md);
 		padding: clamp(var(--space-md), 4vw, var(--space-xl));
 	}
-
-	.background-copy {
-		color: var(--color-ink);
-		font-size: var(--text-lead);
-		letter-spacing: 0;
-		line-height: 1.55;
-		max-width: 54rem;
+	.background-title {
+		font-size: var(--text-title);
+		max-width: 28ch;
 	}
-
+	.background-copy {
+		font-size: var(--text-body);
+		line-height: 1.75;
+		max-width: var(--measure-prose);
+	}
+	.contact-panel {
+		padding: var(--space-lg) var(--page-gutter);
+		margin-inline: calc(-1 * var(--page-gutter));
+	}
 	.contact-links {
 		display: grid;
-		gap: var(--space-sm);
+		gap: var(--space-sm) var(--space-md);
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-
 	.contact-link {
 		align-items: center;
-		background: var(--surface-container-low);
-		border-radius: var(--radius-lg);
 		display: grid;
 		gap: var(--space-sm);
 		grid-template-columns: auto minmax(0, 1fr) auto;
-		min-height: 4.5rem;
+		min-height: 6rem;
 		padding: var(--space-sm);
 		text-decoration: none;
-		transition:
-			background-color var(--motion-base) var(--motion-ease),
-			transform var(--motion-base) var(--motion-ease);
+		transition: background-color var(--motion-fast) var(--motion-ease);
 	}
-
 	.contact-link:hover {
-		background: var(--surface-container-high);
-		transform: translateY(-0.08rem);
+		background: var(--color-paper);
 	}
-
 	.contact-link:active {
-		background: var(--surface-container-low);
-		transform: none;
+		background: var(--color-signal-active);
 	}
-
-	.contact-link:focus-visible {
-		outline: var(--focus-ring-width) solid var(--outline-focus);
-		outline-offset: var(--focus-ring-offset);
-	}
-
 	.contact-link__icon {
-		align-items: center;
-		color: var(--color-ink);
 		display: inline-flex;
+		align-items: center;
 		justify-content: center;
-		line-height: 1;
-		width: 2rem;
+		width: var(--space-lg);
 	}
-
 	:global(.contact-link__glyph) {
-		height: 1.75rem;
-		width: 1.75rem;
+		width: var(--space-md);
+		height: var(--space-md);
 	}
-
-	.contact-link[data-channel='email'] :global(.contact-link__glyph) {
-		height: 1.85rem;
-		width: 1.85rem;
-	}
-
-	.contact-link[data-channel='x'] :global(.contact-link__glyph) {
-		height: 1.7rem;
-		width: 1.7rem;
-	}
-
 	.contact-link__body {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
+		display: grid;
 		gap: var(--space-3xs);
 		min-width: 0;
 	}
-
 	.contact-link__label {
-		color: var(--color-muted);
-		font-size: var(--text-micro);
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
+		font-family: var(--font-display);
+		font-size: var(--text-title-sm);
+		font-weight: var(--weight-display);
+		line-height: var(--leading-heading);
 	}
-
 	.contact-link__value {
-		color: var(--color-ink);
-		font-size: var(--text-body);
-		font-weight: 500;
-		line-height: 1.45;
+		font-size: var(--text-meta);
+		line-height: 1.5;
 		overflow-wrap: anywhere;
 	}
-
 	.contact-link__arrow {
-		color: currentColor;
-		flex: 0 0 auto;
-		transition: transform var(--motion-base) var(--motion-ease);
+		display: inline-flex;
 	}
-
-	.contact-link:hover .contact-link__arrow {
-		transform: translate(0.14rem, -0.14rem);
-	}
-
-	.contact-link:active .contact-link__arrow {
-		transform: none;
-	}
-
 	@media (min-width: 640px) {
 		.hero-actions {
-			align-items: center;
 			display: flex;
 			flex-wrap: wrap;
 			gap: var(--space-sm);
-			max-width: none;
 		}
-
 		.hero-actions .ds-button {
-			width: auto;
+			min-width: 12rem;
 		}
-
-		.portrait-frame {
-			padding: var(--space-xs);
+		.project-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
-	}
-
-	@media (min-width: 768px) {
 		.contact-links {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
+		.contact-panel {
+			padding-block: var(--space-xl);
+		}
 	}
-
 	@media (min-width: 1024px) {
-		.portrait-shell {
-			width: 14.5rem;
+		.home-hero {
+			grid-template-columns: minmax(0, 1fr) 19rem;
+			align-items: center;
+			gap: var(--space-xl);
 		}
-
+		.portrait-shell {
+			order: 2;
+			width: 100%;
+		}
 		.portrait-frame {
-			padding: var(--space-sm);
-		}
-
-		.contact-links {
-			gap: var(--space-md);
+			padding: var(--space-sm) var(--space-sm) var(--space-xl);
 		}
 	}
-
 	@media (min-width: 1280px) {
-		.portrait-shell {
-			width: 15.5rem;
+		.home-hero {
+			grid-template-columns: minmax(0, 1fr) 23rem;
+			gap: var(--space-2xl);
+		}
+		.portrait-frame {
+			padding: var(--space-md) var(--space-md) var(--space-2xl);
 		}
 	}
-
 	@media (prefers-reduced-motion: reduce) {
-		.hero-nav a,
-		.writing-link__arrow,
-		.contact-link,
-		.contact-link__arrow {
+		.contact-link {
 			transition-duration: 0.01ms;
-		}
-
-		.contact-link:hover,
-		.contact-link:active {
-			transform: none;
-		}
-
-		.writing-link:hover .writing-link__arrow,
-		.writing-link:active .writing-link__arrow,
-		.contact-link:hover .contact-link__arrow,
-		.contact-link:active .contact-link__arrow {
-			transform: none;
 		}
 	}
 </style>

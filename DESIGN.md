@@ -8,6 +8,7 @@ This guide defines the Electric Press design system for hedderich.pro: Malte Hed
 - [static/fonts.css](static/fonts.css) loads the locally hosted Barlow fonts. The Latin WOFF2 files in [static/fonts](static/fonts) come from Fontsource 5.3.0; their license is [OFL.txt](static/fonts/OFL.txt).
 - [src/routes/layout.css](src/routes/layout.css) imports those files and implements shared `ds-*` treatments.
 - [src/lib/components](src/lib/components) owns the Svelte component APIs. Page styles handle composition, using the shared tokens.
+- [static/error-page.css](static/error-page.css) shares the error layout between Svelte and the standalone hosting fallback.
 
 ## Character and reading order
 
@@ -27,7 +28,7 @@ The three brand inks are `--color-signal` (turquoise), `--color-ink` (near-black
 | Signal | A key statement, result or primary action    | Ink text; paper evidence strip                         |
 | Dark   | Code, data or a deliberate contrasting panel | Paper text; signal emphasis; paper evidence strip      |
 
-Use `.ds-surface` with `data-mode="paper"`, `"signal"` or `"dark"` for a flat panel. Its `--panel-ink` and `--panel-emphasis` roles provide the appropriate text colors. This is a composition choice; the site has no automatic dark theme. Text in these panels should inherit the panel color. Components with their own filled surfaces retain their own foreground/background pairing.
+Use `.ds-surface` with `data-mode="paper"`, `"signal"` or `"dark"` for a flat panel. Its `--panel-ink`, `--panel-muted` and `--panel-emphasis` roles provide the appropriate text colors. This is a composition choice; the site has no automatic dark theme. Text in these panels should inherit the panel color. Components with their own filled surfaces retain their own foreground/background pairing.
 
 `--surface-container-*` and `--color-muted` derive from ink and paper for quieter web surfaces and metadata. They are neutral roles, not extra brand accents. Prefer the lightest useful surface shift. Avoid nested panels.
 
@@ -57,13 +58,15 @@ For data, use tabular numerals and align comparable values and units. Keep preci
 
 ## Layout, spacing and shape
 
-Reuse the `--space-*` scale. Gaps between sections should exceed gaps within a group. The current page shell provides a centered content frame with growing side gutters; the section rail aligns with the main text edge.
+Reuse the `--space-*` scale. Gaps between sections should exceed gaps within a group. `.ds-page`, `.ds-page-frame` and `.ds-page-stack` share the page gutters, content width and section rhythm. Their values live in `--page-gutter`, `--layout-max` and `--section-gap`. Section rails use `--layout-rail` and `--layout-gap` so the home page, archive and articles share an alignment.
 
 - Below the desktop rail breakpoint, section labels move above their content. At desktop widths, the label rail sits beside the content.
 - The home portrait precedes the introduction on narrow screens and moves right on desktop. Its frame is a flat signal rectangle.
-- Home actions stack on narrow screens and sit side by side when space permits. Keep their labels intact.
+- Home actions follow the main introduction, before the supporting biography. They stack on narrow screens and sit side by side when space permits. Keep their labels intact.
 - Project cards and contact links become one column on narrow screens. Preserve their reading order.
 - Articles keep one reading column. Wide code and tables scroll inside their own frames; the page must not scroll sideways.
+
+The home masthead holds the section navigation. The archive introduction and home contact section use signal surfaces; the background statement uses a dark panel. Keep these panels aligned with the page content. Article titles use the full header column with balanced wrapping; paragraph width remains limited by `--measure-prose`.
 
 All structural surfaces and controls have square corners. The existing `--radius-*` names alias `--radius-square` for compatibility. Use the square token for new components.
 
@@ -71,19 +74,22 @@ The website keeps its no-line rule for layout separation: use space and surface 
 
 ## Components and states
 
-| Component               | Rule                                                                                                                                                                                         |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button` / `.ds-button` | Primary: signal fill with ink text. Secondary: neutral fill with ink text. Tertiary: text with an underline on hover. All retain a visible focus outline and a distinct pressed state.       |
-| `Card`                  | Flat neutral rectangle. A linked card changes surface on hover/press and focuses as a whole. Avoid making its title, footer and entire card separate competing links.                        |
-| `Chip`                  | Compact rectangular label in sentence case. Neutral fills carry category information. Allow long labels to wrap.                                                                             |
-| `EditorialList`         | Open vertical rhythm with flat item surfaces. Focus outlines the whole linked item. Keep titles, summaries and metadata in a consistent order.                                               |
-| `GhostInput`            | Retains its API and an ink-derived bottom boundary. The ink focus bar remains visible on paper. Pair the field with a real label; native disabled and validation semantics remain available. |
-| `InsightBlock`          | Signal rectangle with ink text and a condensed statement. Keep supporting context readable; use it only for an actual takeaway.                                                              |
-| `.ds-evidence-strip`    | Level rectangular strip carrying concise scope or evidence. Use the parent panel’s contrasting strip color. Keep all qualifications visible.                                                 |
+| Component                  | Rule                                                                                                                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button` / `.ds-button`    | Primary: signal fill with ink text. Secondary: neutral fill with ink text. Tertiary: text with an underline on hover. All retain a visible focus outline and a distinct pressed state.       |
+| `Card`                     | Flat neutral rectangle with content-driven height. Only the project grid stretches cards to match a row. A linked card changes surface on hover/press and focuses as a whole.                |
+| `Chip`                     | Compact rectangular label in sentence case. Neutral fills carry category information. Allow long labels to wrap.                                                                             |
+| `EditorialList`            | Open vertical rhythm with flat item surfaces. Focus outlines the whole linked item. Keep titles, summaries and metadata in a consistent order.                                               |
+| `WritingLink` / `PostMeta` | Shared by the home writing list, archive and article metadata. Keep the category in a chip; dates, reading time and publication stay plain. The entire writing row is one link.              |
+| `GhostInput`               | Retains its API and an ink-derived bottom boundary. The ink focus bar remains visible on paper. Pair the field with a real label; native disabled and validation semantics remain available. |
+| `InsightBlock`             | Signal rectangle with ink text and a condensed statement. Split into columns only when supporting context exists. Keep the panel level with its parent grid. Use it for an actual takeaway.  |
+| `.ds-evidence-strip`       | Level rectangular strip carrying concise scope or evidence. Use the parent panel’s contrasting strip color. Keep all qualifications visible.                                                 |
 
 Buttons have a generous minimum height. Disabled buttons keep native disabled behavior and visibly reduce emphasis. For any new asynchronous control, keep its dimensions stable, name the pending action and expose completion or failure in text. Do not invent a form backend for a visual state.
 
 Keep controls, article blocks, evidence strips and data panels level and aligned with the content grid.
+
+Article quotations use a signal surface without an accent line. Code copy buttons show `Copy`, `Copied` or `Failed` in a stable-width control. Code and table frames accept keyboard focus for horizontal scrolling. Input labels and hints inherit the panel palette; hints describe the input without becoming part of its accessible name.
 
 ## Accessibility, assets and motion
 
@@ -105,6 +111,6 @@ Review these cases with loaded fonts:
 - Shared controls: default, hover, pressed, keyboard focus and disabled; input focus; all three panel modes.
 - Around the section-rail breakpoint and with reduced motion enabled: no clipped content or lost actions.
 
-The foundation was visually reviewed on October 22, 2026: home, archive and a long article at desktop and 390 px, both error views at 390 px, and a temporary shared-component fixture. Home reflow was checked at 320, 390, 1023, 1024 and 1440 px without page overflow. Keyboard navigation, the skip link, writing expansion, code scrolling, button states and reduced motion were exercised. The measured ink/paper and ink/signal text contrast ratios were 16.46:1 and 12.30:1. These checks do not constitute a full accessibility audit.
+The page migration was reviewed on October 22, 2026. Visual checks covered the home page, archive and longest article at desktop and 390 px, the other four article headers at 390 px, both error views, and a temporary fixture for shared controls in all three panel modes. All nine routes were checked for overflow at 320, 390, 768, 1023, 1024 and 1440 px. Keyboard focus, the skip link, writing expansion, email resolution, code scrolling, copy success and failure, button states and reduced motion were exercised. The palette retains the foundation's measured ink/paper and ink/signal contrast ratios of 16.46:1 and 12.30:1. These checks do not constitute a full accessibility audit.
 
 Keep exact values in the token file and load the same fonts in the app and standalone 404. Browser theme metadata in the layout and manifest must match the paper token. Update this contract when a shared role or rule changes. Record visual checks actually performed; a successful build alone does not establish visual quality.

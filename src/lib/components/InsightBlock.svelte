@@ -15,14 +15,14 @@
 		attribution,
 		children,
 		class: className,
-		eyebrow = 'Insight Block',
+		eyebrow = 'Takeaway',
 		eyebrowIcon,
 		quote
 	}: Props = $props();
 </script>
 
-<aside class={['ds-insight-block', className]}>
-	<div class="space-y-6 lg:col-span-7">
+<aside class={['ds-insight-block', className]} data-support={Boolean(children)}>
+	<div class="space-y-6">
 		<p class="ds-eyebrow">
 			{#if eyebrowIcon}
 				<span aria-hidden="true" class="ds-eyebrow__icon">
@@ -38,18 +38,14 @@
 		</blockquote>
 
 		{#if attribution}
-			<p
-				class="text-(length:--text-micro) font-medium tracking-[0.14em] text-(--color-ink) uppercase"
-			>
+			<p class="text-(length:--text-meta) font-semibold text-(--color-ink)">
 				{attribution}
 			</p>
 		{/if}
 	</div>
 
 	{#if children}
-		<div
-			class="max-w-xl text-(length:--text-body) leading-7 text-(--color-ink) lg:col-span-5 lg:pt-10"
-		>
+		<div class="max-w-xl text-(length:--text-body) leading-7 text-(--color-ink)">
 			{@render children()}
 		</div>
 	{/if}

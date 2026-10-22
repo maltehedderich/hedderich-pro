@@ -91,7 +91,8 @@ describe('blog content registry', () => {
 		expect(html).toContain('<div class="blog-content__code-frame" data-language="python">');
 		expect(html).toContain('data-copy-code');
 		expect(html).toContain('data-copy-icon');
-		expect(html).toContain('<span class="sr-only">Copy code</span>');
+		expect(html).toContain('aria-label="Copy code"');
+		expect(html).toContain('<span data-copy-label aria-live="polite">Copy</span>');
 		expect(html).toContain('blog-content__code-reference-placeholder');
 		expect(html).toContain('<pre class="blog-content__code">');
 		expect(html).toContain('class="hljs language-python"');

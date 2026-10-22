@@ -235,7 +235,7 @@ export function renderBlogMarkdown(markdown: string): string {
 			codeClassNames.push(`language-${normalizedLanguage}`);
 		}
 
-		return `<div class="blog-content__code-frame"${languageAttribute}><div class="blog-content__code-header">${renderCodeReference(codeReference)}<button type="button" class="blog-content__copy-button" data-copy-code aria-label="Copy code" title="Copy code"><span class="blog-content__copy-icon" data-copy-icon aria-hidden="true"></span><span class="sr-only">Copy code</span></button></div><div class="blog-content__code-scroll"><pre class="blog-content__code"><code class="${escapeAttribute(codeClassNames.join(' '))}">${highlightedCode}</code></pre></div></div>`;
+		return `<div class="blog-content__code-frame"${languageAttribute}><div class="blog-content__code-header">${renderCodeReference(codeReference)}<button type="button" class="blog-content__copy-button" data-copy-code aria-label="Copy code" title="Copy code"><span class="blog-content__copy-icon" data-copy-icon aria-hidden="true"></span><span data-copy-label aria-live="polite">Copy</span></button></div><div class="blog-content__code-scroll" tabindex="0" role="region" aria-label="Code sample"><pre class="blog-content__code"><code class="${escapeAttribute(codeClassNames.join(' '))}">${highlightedCode}</code></pre></div></div>`;
 	};
 
 	renderer.table = function table(this: Renderer, token: Tokens.Table): string {
@@ -244,7 +244,7 @@ export function renderBlogMarkdown(markdown: string): string {
 			.map((row) => `<tr>${row.map((cell) => renderTableCell.call(this, cell)).join('')}</tr>`)
 			.join('');
 
-		return `<div class="blog-content__table-scroll"><table><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table></div>`;
+		return `<div class="blog-content__table-scroll" tabindex="0" role="region" aria-label="Data table"><table><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table></div>`;
 	};
 
 	marked.use({ renderer });

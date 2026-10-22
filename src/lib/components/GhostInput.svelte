@@ -22,10 +22,10 @@
 	let hintId = $derived(`${id}-hint`);
 </script>
 
-<label class={['block space-y-3', className]} for={id}>
-	<span class="block text-(length:--text-meta) font-semibold text-(--color-ink)">
+<div class={['block space-y-3', className]}>
+	<label class="block text-(length:--text-meta) font-semibold text-inherit" for={id}>
 		{label}
-	</span>
+	</label>
 
 	<span class="ds-ghost-input-shell">
 		<input
@@ -39,8 +39,8 @@
 	</span>
 
 	{#if hint}
-		<span id={hintId} class="block text-(length:--text-meta) leading-6 text-(--color-muted)">
+		<span id={hintId} class="ds-muted block text-(length:--text-meta) leading-6">
 			{hint}
 		</span>
 	{/if}
-</label>
+</div>

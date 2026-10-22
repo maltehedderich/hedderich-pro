@@ -15,69 +15,23 @@
 	let { children, class: className, eyebrow, eyebrowIcon, footer, href, title }: Props = $props();
 </script>
 
+{#snippet content()}
+	{#if eyebrow}
+		<p class="ds-eyebrow tracking-normal normal-case">
+			{#if eyebrowIcon}
+				<span aria-hidden="true" class="ds-eyebrow__icon">{@render eyebrowIcon()}</span>
+			{/if}
+			{eyebrow}
+		</p>
+	{/if}
+	{#if title}<h3 class="ds-heading ds-card__title">{title}</h3>{/if}
+	<div class="ds-card__body">{@render children?.()}</div>
+	{#if footer}<div class="ds-card__footer">{@render footer()}</div>{/if}
+{/snippet}
+
 {#if href}
 	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-	<a class={['ds-card', className]} data-linked="true" {href}>
-		{#if eyebrow}
-			<p class="ds-eyebrow">
-				{#if eyebrowIcon}
-					<span aria-hidden="true" class="ds-eyebrow__icon">
-						{@render eyebrowIcon()}
-					</span>
-				{/if}
-
-				{eyebrow}
-			</p>
-		{/if}
-
-		{#if title}
-			<h3 class="ds-heading mt-4 max-w-[18ch] text-(length:--text-title-sm) text-(--color-ink)">
-				{title}
-			</h3>
-		{/if}
-
-		<div class="mt-4 flex-1 space-y-4 text-(length:--text-body) leading-7 text-(--color-muted)">
-			{@render children?.()}
-		</div>
-
-		{#if footer}
-			<div
-				class="mt-8 flex items-center justify-between gap-3 text-(length:--text-meta) font-medium text-(--color-ink)"
-			>
-				{@render footer()}
-			</div>
-		{/if}
-	</a>
+	<a class={['ds-card', className]} data-linked="true" {href}>{@render content()}</a>
 {:else}
-	<article class={['ds-card', className]}>
-		{#if eyebrow}
-			<p class="ds-eyebrow">
-				{#if eyebrowIcon}
-					<span aria-hidden="true" class="ds-eyebrow__icon">
-						{@render eyebrowIcon()}
-					</span>
-				{/if}
-
-				{eyebrow}
-			</p>
-		{/if}
-
-		{#if title}
-			<h3 class="ds-heading mt-4 max-w-[18ch] text-(length:--text-title-sm) text-(--color-ink)">
-				{title}
-			</h3>
-		{/if}
-
-		<div class="mt-4 flex-1 space-y-4 text-(length:--text-body) leading-7 text-(--color-muted)">
-			{@render children?.()}
-		</div>
-
-		{#if footer}
-			<div
-				class="mt-8 flex items-center justify-between gap-3 text-(length:--text-meta) font-medium text-(--color-ink)"
-			>
-				{@render footer()}
-			</div>
-		{/if}
-	</article>
+	<article class={['ds-card', className]}>{@render content()}</article>
 {/if}
