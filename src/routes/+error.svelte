@@ -80,12 +80,10 @@
 	}
 
 	.error-title {
-		/* Matches .blog-index-title / .blog-post-title — 600 at -0.08em. The 700/0 this
-		   was inherited from was part of the 404's drift from the system, not a variant. */
 		font-size: var(--text-display);
-		font-weight: 600;
-		letter-spacing: -0.08em;
-		line-height: 0.9;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 		margin: 0;
 		max-width: 8ch;
 	}

@@ -1,101 +1,110 @@
-# Design System Documentation
+# hedderich.pro design system
 
-## 1. Overview & Creative North Star
+## Scope and authority
 
-This design system is built for the SaaS founder who believes that clarity is a competitive advantage. Inspired by the "substance over style" ethos of Derek Sivers and the functional brutalism of 37signals, the system rejects ornamental noise in favor of editorial precision.
+This guide defines the Electric Press design system for hedderich.pro: Malte Hedderich’s projects, writing and contact pages. It covers the visual rules, shared components and responsive behavior of this static website.
 
-**Creative North Star: The Digital Curator**
-The aesthetic is rooted in the concept of a high-end gallery or a modern architectural blueprint. It moves beyond the "standard SaaS template" by utilizing intentional asymmetry, extreme typographic scales, and a "No-Line" philosophy. The goal is to make the founder’s thoughts feel like a definitive record—credible, personal, and intellectually sharp. We achieve this not through shadows and borders, but through the mastery of whitespace and tonal depth.
+- [static/design-tokens.css](static/design-tokens.css) owns the exact palette, type scale, spacing, radii, focus and motion values.
+- [static/fonts.css](static/fonts.css) loads the locally hosted Barlow fonts. The Latin WOFF2 files in [static/fonts](static/fonts) come from Fontsource 5.3.0; their license is [OFL.txt](static/fonts/OFL.txt).
+- [src/routes/layout.css](src/routes/layout.css) imports those files and implements shared `ds-*` treatments.
+- [src/lib/components](src/lib/components) owns the Svelte component APIs. Page styles handle composition, using the shared tokens.
 
----
+## Character and reading order
 
-## 2. Colors
+The site should feel bold, direct and graphic. Visitors should quickly understand what Malte builds, inspect his work, read an article or find a contact channel.
 
-The palette is intentionally restrained to maintain focus on the content. We use a high-contrast monochromatic base with a single, sophisticated accent color (`#FBC75D`) to denote value and interaction.
+Use heavy condensed headings, flat color and straight edges. Keep paragraphs in the regular-width face. Align text to a clear left edge; use whitespace and flat surfaces to group related content. A section heading should clearly outrank its item titles.
 
-### The Palette
+Use an asymmetric section rail on wide screens. Avoid adding containers around every sentence. Articles need a steady reading rhythm; project summaries need enough density to compare them.
 
-- **Primary/Accent:** `#7b5900` (Primary) and `#fbc75d` (Container). This is used surgically for calls to action or to highlight key insights.
-- **Neutral Base:** `#0A141F` (On-Surface) for authoritative text and `#f8f9ff` (Background) for a crisp, airy environment.
-- **Surface Hierarchy:** We utilize the `surface-container` tiers to define information density.
+## Color and modes
 
-### The "No-Line" Rule
+The three brand inks are `--color-signal` (turquoise), `--color-ink` (near-black) and `--color-paper` (off-white). Exact values live only in the token file.
 
-**Explicit Instruction:** Prohibit the use of 1px solid borders for sectioning or containment. Boundaries must be defined solely through background color shifts. For example, a "Related Articles" section should be placed on a `surface-container-low` background to distinguish it from the `surface` main body. This creates a seamless, modern flow that feels designed, not "assembled."
+| Mode   | Purpose                                      | Approved treatment                                     |
+| ------ | -------------------------------------------- | ------------------------------------------------------ |
+| Paper  | Default pages, articles, explanations        | Ink text; signal fills for an action or evidence strip |
+| Signal | A key statement, result or primary action    | Ink text; paper evidence strip                         |
+| Dark   | Code, data or a deliberate contrasting panel | Paper text; signal emphasis; paper evidence strip      |
 
-### Signature Textures
+Use `.ds-surface` with `data-mode="paper"`, `"signal"` or `"dark"` for a flat panel. Its `--panel-ink` and `--panel-emphasis` roles provide the appropriate text colors. This is a composition choice; the site has no automatic dark theme. Text in these panels should inherit the panel color. Components with their own filled surfaces retain their own foreground/background pairing.
 
-To avoid a "flat" or clinical feel, use subtle gradients for primary CTAs, transitioning from `primary` to `primary_container`. For hero sections, a very faint radial gradient starting from `surface_container_low` at the top left to `surface` at the bottom right adds "soul" and professional polish.
+`--surface-container-*` and `--color-muted` derive from ink and paper for quieter web surfaces and metadata. They are neutral roles, not extra brand accents. Prefer the lightest useful surface shift. Avoid nested panels.
 
----
+Use ink on paper and signal; use paper or signal on ink. Do not use turquoise text or essential icons on paper, or paper text on turquoise. `--color-primary` remains an ink text-link alias; the primary button’s fill uses `--color-signal`. Turquoise attracts attention and does not itself mean success or approval. State labels and icons must explain outcomes.
 
-## 3. Typography
+Real screenshots retain their product colors. Article syntax highlighting can retain its functional colors; code frames, toolbar controls and links use the brand palette.
 
-Typography is the backbone of this system. We use **Inter**—a sophisticated system font—but we treat it with editorial intent.
+## Typography
 
-- **Display (Large/Medium):** Used for big ideas and provocative statements. Set with tight letter-spacing (-0.02em) to feel like a premium broadsheet.
-- **Headline & Title:** These levels establish the voice. Use `headline-lg` for section headers with generous top-padding to let the subject breathe.
-- **Body (Large/Medium):** The workhorse. We prioritize legibility with a generous line-height (1.6) to mimic the reading experience of a well-designed book.
-- **Label (Small/Medium):** Used for metadata, tags, and micro-copy. These are often set in `on_surface_variant` to recede visually, ensuring they don't compete with primary thoughts.
+| Role                 | Face and weight                                | Use                                                              |
+| -------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+| Display and headings | Barlow Condensed ExtraBold, `--weight-display` | Page titles, section headings, article headings and card titles  |
+| Large numerals       | Barlow Condensed Black, `--weight-numeral`     | Results and comparable metrics through `.ds-numeral`             |
+| Body                 | Barlow Medium, `--weight-body`                 | Paragraphs, summaries and introductions                          |
+| Labels and emphasis  | Barlow SemiBold, `--weight-label`              | Controls and short labels; bold article text may use Barlow Bold |
+| Code and mathematics | Existing monospace and KaTeX faces             | Technical content only                                           |
 
-**The Hierarchy Goal:** The scale should be dramatic. A jump from a `display-lg` quote to a `body-md` explanation creates a rhythmic cadence that guides the reader through the founder's narrative.
+The display family falls back to Arial Narrow and sans-serif; body falls back to Helvetica Neue and sans-serif. Fonts use `font-display: swap`. Body italic has a real font file.
 
----
+Use the `--text-*` roles rather than new local font sizes. `--text-hero` is reserved for the home name. `--text-display` covers page titles; `--text-section`, `--text-title` and `--text-title-sm` distinguish section headings, article/list headings and smaller item titles. Metadata uses `--text-meta`; short labels use `--text-micro`.
 
-## 4. Elevation & Depth
+`.ds-heading` supplies condensed heading weight, tracking and leading. Use uppercase for the short home name and section labels. Keep long article titles, project names, labels and body copy in their natural case. Never stretch letters; use the shared tracking tokens.
 
-In this system, depth is a product of **Tonal Layering**, not structural lines.
+Keep display lines tight using the heading tokens. Paragraphs use roughly 1.65–1.85 line height for sustained reading. Prose caps at `--measure-prose`; figures, tables and code may use the wider article frame. Let long titles wrap, and check the longest real article title at narrow widths.
 
-- **The Layering Principle:** Stacking is the new bordering. Place a `surface-container-lowest` card (pure white) on a `surface-container-low` section to create a soft, natural lift. This mimics the physical layering of fine paper.
-- **Ambient Shadows:** When a floating effect is required (e.g., a mobile navigation menu), use an extra-diffused shadow.
-  - _Specs:_ `0px 20px 40px rgba(10, 20, 31, 0.05)`.
-  - The shadow color must be a tinted version of `on-surface` at 5% opacity, never a generic grey.
-- **The "Ghost Border" Fallback:** If a border is required for accessibility in input fields, use the `outline_variant` token at **20% opacity**. 100% opaque borders are strictly forbidden.
-- **Glassmorphism:** For persistent elements like a "Back to Top" button or a floating Header, use `surface` colors with a 70% opacity and a `20px` backdrop-blur. This allows the founder's content to bleed through, making the UI feel integrated and premium.
+For data, use tabular numerals and align comparable values and units. Keep precision consistent. A large number still needs a visible label, scope and comparison period where relevant.
 
----
+## Layout, spacing and shape
 
-## 5. Components
+Reuse the `--space-*` scale. Gaps between sections should exceed gaps within a group. The current page shell provides a centered content frame with growing side gutters; the section rail aligns with the main text edge.
 
-### Buttons
+- Below the desktop rail breakpoint, section labels move above their content. At desktop widths, the label rail sits beside the content.
+- The home portrait precedes the introduction on narrow screens and moves right on desktop. Its frame is a flat signal rectangle.
+- Home actions stack on narrow screens and sit side by side when space permits. Keep their labels intact.
+- Project cards and contact links become one column on narrow screens. Preserve their reading order.
+- Articles keep one reading column. Wide code and tables scroll inside their own frames; the page must not scroll sideways.
 
-- **Primary:** High-contrast `primary` background with `on_primary` text. No border. Fully rounded (`9999px`) for a pill silhouette that still reads as deliberate rather than decorative.
-- **Secondary:** `surface_container_high` background. This variant is for secondary actions that shouldn't distract from the main narrative.
-- **Tertiary:** Text-only with an underline appearing only on hover. Use for "Read More" links within body text.
+All structural surfaces and controls have square corners. The existing `--radius-*` names alias `--radius-square` for compatibility. Use the square token for new components.
 
-### Chips (Labels)
+The website keeps its no-line rule for layout separation: use space and surface shifts instead of decorative borders or dividers. Focus outlines, input boundaries and lines that explain a real diagram are allowed. Surfaces are flat. Do not add gradients, glows, glass, paper distress or decorative shadows.
 
-- Used for categorizing blog posts or projects.
-- **Style:** `surface_container_highest` with `on_surface_variant` text. Use the `full` roundedness scale to distinguish them from structural buttons.
+## Components and states
 
-### Lists & Cards
+| Component               | Rule                                                                                                                                                                                         |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button` / `.ds-button` | Primary: signal fill with ink text. Secondary: neutral fill with ink text. Tertiary: text with an underline on hover. All retain a visible focus outline and a distinct pressed state.       |
+| `Card`                  | Flat neutral rectangle. A linked card changes surface on hover/press and focuses as a whole. Avoid making its title, footer and entire card separate competing links.                        |
+| `Chip`                  | Compact rectangular label in sentence case. Neutral fills carry category information. Allow long labels to wrap.                                                                             |
+| `EditorialList`         | Open vertical rhythm with flat item surfaces. Focus outlines the whole linked item. Keep titles, summaries and metadata in a consistent order.                                               |
+| `GhostInput`            | Retains its API and an ink-derived bottom boundary. The ink focus bar remains visible on paper. Pair the field with a real label; native disabled and validation semantics remain available. |
+| `InsightBlock`          | Signal rectangle with ink text and a condensed statement. Keep supporting context readable; use it only for an actual takeaway.                                                              |
+| `.ds-evidence-strip`    | Level rectangular strip carrying concise scope or evidence. Use the parent panel’s contrasting strip color. Keep all qualifications visible.                                                 |
 
-- **Strict Rule:** No divider lines. Separate list items using `body-md` spacing (vertical whitespace).
-- For cards, use a `surface-container-lowest` background. To indicate interactivity, shift the background to `surface-container-high` on hover.
+Buttons have a generous minimum height. Disabled buttons keep native disabled behavior and visibly reduce emphasis. For any new asynchronous control, keep its dimensions stable, name the pending action and expose completion or failure in text. Do not invent a form backend for a visual state.
 
-### Input Fields
+Keep controls, article blocks, evidence strips and data panels level and aligned with the content grid.
 
-- **Style:** Minimalist. Only a bottom "Ghost Border" (low opacity `outline_variant`). When focused, the accent color (`primary`) should animate in from the center.
+## Accessibility, assets and motion
 
-### Signature Component: The "Insight Block"
+Use WCAG 2.2 AA as the working baseline. Check actual foreground/background pairs, including hover and focus. Focus uses the shared ring width and offset: ink on paper or signal, signal within dark panels. Keep the skip link, native links and buttons, document heading order and descriptive labels.
 
-A custom component for this system. A large-scale quote or key takeaway using `headline-md`, positioned asymmetrically (e.g., 60% width, pulled to the left) with a `primary` vertical accent bar on the far left.
+Body links stay underlined. Essential icons inherit `currentColor`. Use Lucide for interface icons; the existing social platform marks are an explicit identity exception and keep their proportions and ink treatment. Keep the portrait natural and preserve the original content of screenshots.
 
----
+Motion uses the shared short durations and easing. Restrict it to state feedback and small directional cues. Respect `prefers-reduced-motion`: remove spatial movement while retaining clear color and focus feedback. Do not add ambient animation.
 
-## 6. Do's and Don'ts
+## Verification and maintenance
 
-### Do
+Run `bun run dev` for the local preview, then `bun run check`, `bun run lint` and `bun run build` after a shared-system change. Run the Svelte autofixer on changed Svelte components.
 
-- **Use Asymmetry:** Place your main text column slightly off-center to the left to create a sophisticated, editorial layout.
-- **Embrace Whitespace:** If you think there is enough space between sections, double it. Space is what makes the design feel "premium."
-- **Focus on Typography:** Let the font do the heavy lifting. Use bold weights for emphasis instead of colors or boxes.
+Review these cases with loaded fonts:
 
-### Don't
+- Home at desktop and narrow widths: name, portrait, actions, project cards, writing expansion and contact links.
+- `/blog/` and a long article: title wrapping, metadata, reading width, code toolbar and horizontal scrolling.
+- Svelte error view and `/404.html`: matching type, palette, square controls and keyboard focus.
+- Shared controls: default, hover, pressed, keyboard focus and disabled; input focus; all three panel modes.
+- Around the section-rail breakpoint and with reduced motion enabled: no clipped content or lost actions.
 
-- **Don't Use Dividers:** Never use a horizontal rule (`
-`) or 1px border to separate content. Use a change in background tone or increased vertical padding.
+The foundation was visually reviewed on October 22, 2026: home, archive and a long article at desktop and 390 px, both error views at 390 px, and a temporary shared-component fixture. Home reflow was checked at 320, 390, 1023, 1024 and 1440 px without page overflow. Keyboard navigation, the skip link, writing expansion, code scrolling, button states and reduced motion were exercised. The measured ink/paper and ink/signal text contrast ratios were 16.46:1 and 12.30:1. These checks do not constitute a full accessibility audit.
 
-- **Don't Use Pure Black Shadows:** Shadows should always be a faint, tinted reflection of the dark navy `on-surface` color.
-- **Don't Overuse the Accent:** The gold/amber color (`#FBC75D`) is a high-potency tool. Use it only for things that require immediate action or represent a core insight.
-- **Don't Center-Align Large Blocks of Text:** For intellectual clarity, keep body text left-aligned for better readability. Only center-align `display` type for poetic emphasis.
+Keep exact values in the token file and load the same fonts in the app and standalone 404. Browser theme metadata in the layout and manifest must match the paper token. Update this contract when a shared role or rule changes. Record visual checks actually performed; a successful build alone does not establish visual quality.

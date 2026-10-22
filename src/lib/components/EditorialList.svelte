@@ -25,7 +25,7 @@
 	<section class={['space-y-10', className]}>
 		<header class="max-w-2xl space-y-4">
 			{#if title}
-				<h2 class="text-(length:--text-title) font-semibold tracking-[-0.05em] text-(--color-ink)">
+				<h2 class="ds-heading text-(length:--text-title) text-(--color-ink)">
 					{title}
 				</h2>
 			{/if}

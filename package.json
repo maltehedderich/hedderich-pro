@@ -45,7 +45,6 @@
 		"vitest": "^4.1.6"
 	},
 	"dependencies": {
-		"@fontsource/inter": "^5.2.8",
 		"highlight.js": "^11.11.1",
 		"katex": "^0.16.45",
 		"marked": "^18.0.3",

@@ -1,0 +1,48 @@
+/* Self-hosted Latin subsets from Fontsource 5.3.0. License: /fonts/OFL.txt. */
+@font-face {
+	font-family: 'Barlow';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 500;
+	src: url('/fonts/barlow-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Barlow';
+	font-style: italic;
+	font-display: swap;
+	font-weight: 500;
+	src: url('/fonts/barlow-latin-500-italic.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Barlow';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 600;
+	src: url('/fonts/barlow-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Barlow';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 700;
+	src: url('/fonts/barlow-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Barlow Condensed';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 800;
+	src: url('/fonts/barlow-condensed-latin-800-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Barlow Condensed';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 900;
+	src: url('/fonts/barlow-condensed-latin-900-normal.woff2') format('woff2');
+}

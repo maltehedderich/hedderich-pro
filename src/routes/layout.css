@@ -1,93 +1,7 @@
-@import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-500.css';
-@import '@fontsource/inter/latin-600.css';
-@import '@fontsource/inter/latin-700.css';
+@import '../../static/fonts.css';
+@import '../../static/design-tokens.css';
 @import 'katex/dist/katex.min.css';
 @import 'tailwindcss';
-
-:root {
-	/* Brand */
-	--font-editorial: 'Inter', 'Helvetica Neue', sans-serif;
-	--surface: #f6f4ee;
-	--surface-container-low: #ece8de;
-	--surface-container-lowest: #fbfaf6;
-	--surface-container-high: #e2dccf;
-	--surface-container-highest: #d5cebfd9;
-	--color-ink: #0a141f;
-	--color-muted: color-mix(in srgb, var(--color-ink) 68%, white 32%);
-	--color-primary: #7b5900;
-	--color-primary-active: color-mix(in srgb, var(--color-primary) 86%, black 14%);
-	--color-on-primary: #f8f6ef;
-	--color-accent: #fbc75d;
-	--ghost-border: color-mix(in srgb, var(--color-ink) 14%, transparent);
-	--shadow-floating: 0 20px 40px rgba(10, 20, 31, 0.05);
-
-	/* Type scale — every font-size in the app maps to one of these roles */
-	--text-micro: 0.6875rem; /* 11px — uppercase micro labels: chips, eyebrows, kickers, table th, nav labels */
-	--text-meta: 0.875rem; /* 14px — metadata, counts, URLs, button/nav labels, code */
-	--text-body: 1.0625rem; /* 17px — reading text: article body, card copy, summaries, section copy */
-	--text-lead: 1.25rem; /* 20px — decks, page intros, h4, blockquote */
-	/* Fluid so it stays under --text-title at every width. Flat 1.5rem collided with
-	   --text-title's own floor, which rendered article h3 at or above its own h2 below
-	   1200px. Its floor meets --text-lead at 20px, which is fine: the two never sit
-	   adjacent (heading rank vs. body emphasis) and they separate as the viewport grows. */
-	--text-title-sm: clamp(1.25rem, 1.5vw, 1.5rem); /* 20→24px — article h3, card titles */
-	/* These two are locked in a constant 1.25 ratio — min, slope and max all scale
-	   together (30/24, 2.5vw/2vw, 40/32), so both clamps break at the same viewports
-	   and a section heading out-ranks its item titles by exactly 1.25x at every width.
-	   Picking the two independently lets the slopes cross: an earlier pair collapsed to
-	   1.08x at 1280px, which is the hierarchy defect this scale exists to fix. */
-	--text-title: clamp(1.5rem, 2vw, 2rem); /* 24→32px — item titles, article h2 */
-	--text-section: clamp(1.875rem, 2.5vw, 2.5rem); /* 30→40px — section headings */
-	--text-display: clamp(
-		2.75rem,
-		7.5vw,
-		5.5rem
-	); /* 44→88px — page titles: blog index h1, post h1, 404 h1 */
-	--text-hero: clamp(3rem, 11vw, 6.75rem); /* 48→108px — home hero name only */
-	--text-hero-thesis: clamp(1.45rem, 5vw, 3rem); /* 23→48px — home hero thesis only */
-
-	/* The site's text edge. Every run of prose caps here — article deck and body, card
-	   titles and summaries — so a post has one text edge and a card has one text edge.
-	   Figures, code frames and the table scroller keep the wider .blog-content frame.
-	   608px measures ~69 characters at --text-body, sampled over 110 rendered lines rather
-	   than estimated. The 42rem this replaces was derived from a glyph width of 9.67px;
-	   Inter actually averages ~9.1px at --text-body, so 42rem ran to 76 and overshot the
-	   45–75 target it was picked to hit. A title capped here runs ~39 characters at
-	   --text-title, which is a headline measure and keeps it from being set narrower than
-	   the summary underneath it. */
-	--measure-prose: 38rem;
-
-	/* Spacing scale — 4px grid */
-	--space-3xs: 0.25rem; /* 4 */
-	--space-2xs: 0.5rem; /* 8 */
-	--space-xs: 0.75rem; /* 12 */
-	--space-sm: 1rem; /* 16 */
-	--space-md: 1.5rem; /* 24 */
-	--space-lg: 2rem; /* 32 */
-	--space-xl: 3rem; /* 48 */
-	--space-2xl: 4rem; /* 64 */
-	--space-3xl: 6rem; /* 96 */
-
-	/* Radius scale */
-	--radius-xs: 0.5rem; /* 8  — inline code */
-	--radius-sm: 0.75rem; /* 12 — small interactive surfaces */
-	--radius-md: 1rem; /* 16 — media inside frames */
-	--radius-lg: 1.25rem; /* 20 — editorial list items, code frames, post-nav cards */
-	--radius-xl: 1.5rem; /* 24 — cards, blockquote, figure */
-	--radius-2xl: 1.75rem; /* 28 — panels, insight block */
-	--radius-full: 9999px; /* pills, avatars, chips, buttons */
-
-	/* Focus — one ring, one offset, everywhere */
-	--outline-focus: var(--color-primary);
-	--focus-ring-width: 2px;
-	--focus-ring-offset: 3px;
-
-	/* Motion */
-	--motion-fast: 160ms;
-	--motion-base: 200ms;
-	--motion-ease: cubic-bezier(0.2, 0, 0, 1);
-}
 
 html {
 	background-color: var(--surface);
@@ -98,12 +12,10 @@ html {
 
 body {
 	min-height: 100vh;
-	background:
-		radial-gradient(circle at 8% 0%, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 30%),
-		radial-gradient(circle at 86% 12%, rgba(216, 175, 79, 0.04) 0%, rgba(216, 175, 79, 0) 22%),
-		var(--surface);
+	background: var(--surface);
 	color: var(--color-ink);
 	font-family: var(--font-editorial);
+	font-weight: var(--weight-body);
 	margin: 0;
 	text-rendering: optimizeLegibility;
 }
@@ -151,7 +63,7 @@ body {
 }
 
 ::selection {
-	background: color-mix(in srgb, var(--color-accent) 52%, white 48%);
+	background: var(--color-signal);
 	color: var(--color-ink);
 }
 
@@ -164,7 +76,15 @@ body {
 @layer base {
 	a {
 		color: inherit;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+		text-decoration-color: currentColor;
+	}
+
+	h1,
+	h2,
+	h3 {
+		font-family: var(--font-display);
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
 	}
 
 	button,
@@ -176,10 +96,57 @@ body {
 }
 
 @layer components {
+	.ds-heading {
+		font-family: var(--font-display);
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
+	}
+
+	.ds-numeral {
+		font-family: var(--font-display);
+		font-weight: var(--weight-numeral);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-display);
+	}
+
+	/* Flat brand panels; mode describes composition, not the OS color scheme. */
+	.ds-surface {
+		--outline-focus: var(--color-ink);
+		--panel-surface: var(--color-paper);
+		--panel-ink: var(--color-ink);
+		--panel-emphasis: var(--color-ink);
+		--strip-surface: var(--color-signal);
+		background: var(--panel-surface);
+		color: var(--panel-ink);
+	}
+
+	.ds-surface[data-mode='signal'] {
+		--panel-surface: var(--color-signal);
+		--strip-surface: var(--color-paper);
+	}
+
+	.ds-surface[data-mode='dark'] {
+		--panel-surface: var(--color-ink);
+		--panel-ink: var(--color-paper);
+		--panel-emphasis: var(--color-signal);
+		--strip-surface: var(--color-paper);
+		--outline-focus: var(--color-signal);
+	}
+
+	.ds-evidence-strip {
+		background: var(--strip-surface, var(--color-signal));
+		color: var(--color-ink);
+		display: inline-block;
+		font-weight: var(--weight-label);
+		padding: var(--space-2xs) var(--space-sm);
+	}
+
 	.ds-eyebrow {
 		@apply inline-flex items-center gap-2 text-(length:--text-micro) font-semibold uppercase;
 		color: var(--color-muted);
-		letter-spacing: 0.18em;
+		letter-spacing: 0.08em;
 	}
 
 	.ds-eyebrow__icon {
@@ -189,7 +156,7 @@ body {
 	.ds-inline-link {
 		@apply inline-flex items-center gap-2 text-(length:--text-micro) font-semibold uppercase;
 		color: var(--color-muted);
-		letter-spacing: 0.18em;
+		letter-spacing: 0.08em;
 		min-height: 1.5rem;
 		text-decoration: none;
 		transition: color var(--motion-fast) var(--motion-ease);
@@ -197,7 +164,7 @@ body {
 
 	.ds-inline-link__icon {
 		@apply size-4 shrink-0;
-		color: var(--color-accent);
+		color: currentColor;
 		transition: transform var(--motion-base) var(--motion-ease);
 	}
 
@@ -229,7 +196,8 @@ body {
 			background-color var(--motion-fast) var(--motion-ease),
 			color var(--motion-fast) var(--motion-ease),
 			transform var(--motion-fast) var(--motion-ease);
-		white-space: nowrap;
+		white-space: normal;
+		text-align: center;
 	}
 
 	.ds-button:focus-visible {
@@ -246,38 +214,26 @@ body {
 	}
 
 	.ds-button[data-variant='primary'] {
-		background: linear-gradient(
-			135deg,
-			var(--color-primary) 0%,
-			color-mix(in srgb, var(--color-primary) 84%, var(--color-accent) 16%) 100%
-		);
+		background: var(--color-signal);
 		color: var(--color-on-primary);
 	}
 
 	.ds-button[data-variant='secondary'] {
-		background: color-mix(in srgb, var(--surface-container-low) 76%, white 24%);
+		background: var(--surface-container-high);
 		color: var(--color-ink);
 	}
 
 	.ds-button[data-variant='primary']:hover {
-		background: linear-gradient(
-			135deg,
-			var(--color-primary-active) 0%,
-			color-mix(in srgb, var(--color-primary-active) 82%, var(--color-accent) 18%) 100%
-		);
+		background: var(--color-signal-hover);
 	}
 
 	.ds-button[data-variant='primary']:active {
-		background: linear-gradient(
-			135deg,
-			color-mix(in srgb, var(--color-primary-active) 88%, black 12%) 0%,
-			var(--color-primary-active) 100%
-		);
+		background: var(--color-signal-active);
 		transform: translateY(1px);
 	}
 
 	.ds-button[data-variant='secondary']:hover {
-		background: color-mix(in srgb, var(--surface-container-high) 82%, white 18%);
+		background: var(--surface-container-highest);
 	}
 
 	.ds-button[data-variant='secondary']:active {
@@ -287,7 +243,7 @@ body {
 
 	.ds-button[data-variant='tertiary'] {
 		background: transparent;
-		color: var(--color-ink);
+		color: var(--panel-ink, var(--color-ink));
 		justify-content: flex-start;
 		padding-inline: 0;
 		text-decoration: none;
@@ -296,15 +252,15 @@ body {
 	}
 
 	.ds-button[data-variant='tertiary']:hover {
-		color: var(--color-primary);
+		color: var(--panel-ink, var(--color-ink));
 		text-decoration: underline;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+		text-decoration-color: currentColor;
 	}
 
 	.ds-button[data-variant='tertiary']:active {
-		color: var(--color-primary-active);
+		color: var(--panel-ink, var(--color-ink));
 		text-decoration: underline;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+		text-decoration-color: currentColor;
 		transform: translateY(1px);
 	}
 
@@ -319,8 +275,9 @@ body {
 	}
 
 	.ds-card {
+		--panel-ink: var(--color-ink);
 		@apply p-6 sm:p-8;
-		background: var(--surface-container-lowest);
+		background: var(--surface-container-low);
 		border-radius: var(--radius-xl);
 		display: flex;
 		flex-direction: column;
@@ -354,13 +311,12 @@ body {
 		color: var(--color-muted);
 		display: inline-flex;
 		font-size: var(--text-micro);
-		font-weight: 700;
+		font-weight: var(--weight-label);
 		gap: var(--space-2xs);
-		letter-spacing: 0.14em;
-		line-height: 1.1;
+		letter-spacing: 0;
+		line-height: 1.25;
 		padding: var(--space-2xs) var(--space-xs);
-		text-transform: uppercase;
-		white-space: nowrap;
+		white-space: normal;
 	}
 
 	.ds-chip[data-tone='quiet'] {
@@ -378,14 +334,11 @@ body {
 
 	.ds-editorial-list-item {
 		@apply space-y-6 px-5 py-6 sm:px-6 sm:py-7;
-		background: var(--surface-container-lowest);
+		background: var(--surface-container-low);
 		border-radius: var(--radius-lg);
 	}
 
-	/* The row link fills this item's content box, so a ring on the link drew a second
-	   rounded rect just inside the card edge — 16px corners against the card's 20px on
-	   home, square corners on the archive. The card is the thing being focused, so the
-	   ring traces the card and inherits its radius. Links inside keep no ring of their own. */
+	/* The row link focuses the complete editorial item. */
 	.ds-editorial-list-item:has(a:focus-visible) {
 		outline: var(--focus-ring-width) solid var(--outline-focus);
 		outline-offset: var(--focus-ring-offset);
@@ -402,10 +355,13 @@ body {
 		color: var(--color-ink);
 	}
 
+	.ds-ghost-input:disabled {
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+
 	.ds-ghost-input-accent {
-		/* This bar is the input's only focus indicator (the field sets outline-none), so it
-		   carries the 3:1 non-text minimum on its own. --color-accent measured 1.7:1 here;
-		   --color-primary is 5.84:1 and is what DESIGN.md's input spec actually names. */
+		/* Ink keeps the input focus indicator visible on paper. */
 		@apply pointer-events-none absolute bottom-0 h-0.5;
 		background: var(--color-primary);
 		inset-inline: 0;
@@ -419,20 +375,10 @@ body {
 	}
 
 	.ds-insight-block {
+		--panel-ink: var(--color-ink);
 		@apply relative grid gap-7 px-6 py-8 sm:px-8 sm:py-10 lg:max-w-[70ch] lg:px-10;
-		background: var(--surface-container-low);
+		background: var(--color-signal);
 		border-radius: var(--radius-2xl);
-	}
-
-	.ds-insight-block::before {
-		background: var(--color-accent);
-		border-radius: var(--radius-full);
-		bottom: var(--space-md);
-		content: '';
-		left: 0;
-		position: absolute;
-		top: var(--space-md);
-		width: 0.2rem;
 	}
 
 	@media (min-width: 1024px) {
@@ -455,9 +401,10 @@ body {
 	.ds-section__heading {
 		color: var(--color-ink);
 		font-size: var(--text-section);
-		font-weight: 600;
-		letter-spacing: -0.055em;
-		line-height: 0.96;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
+		text-transform: uppercase;
 	}
 
 	.ds-section__copy {

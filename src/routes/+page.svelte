@@ -278,7 +278,6 @@
 			class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center lg:gap-12 xl:grid-cols-[minmax(0,1fr)_19rem] xl:gap-14"
 		>
 			<figure class="portrait-shell order-first self-start lg:order-last lg:justify-self-end">
-				<div aria-hidden="true" class="portrait-halo"></div>
 				<div class="portrait-frame">
 					<enhanced:img
 						alt="Portrait of Malte Hedderich"
@@ -355,7 +354,7 @@
 						>
 							{#snippet footer()}
 								<span class="project-url min-w-0 leading-6 break-all">{project.url}</span>
-								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-accent)" />
+								<ArrowUpRight aria-hidden="true" class="size-4 shrink-0 text-(--color-ink)" />
 							{/snippet}
 
 							<p>{project.description}</p>
@@ -559,23 +558,24 @@
 
 	.hero-name {
 		font-size: var(--text-hero);
-		font-weight: 600;
-		letter-spacing: -0.08em;
-		line-height: 0.9;
-		max-width: 10.5ch;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-display);
+		text-transform: uppercase;
+		max-width: 14ch;
 	}
 
 	.hero-thesis {
 		color: var(--color-ink);
 		font-size: var(--text-hero-thesis);
 		font-weight: 500;
-		letter-spacing: -0.055em;
-		line-height: 1.04;
-		max-width: 16ch;
+		letter-spacing: -0.015em;
+		line-height: 1.15;
+		max-width: 28ch;
 	}
 
 	.hero-support {
-		color: color-mix(in srgb, var(--color-ink) 70%, white 30%);
+		color: var(--color-muted);
 		font-size: var(--text-body);
 		line-height: 1.8;
 		max-width: 37rem;
@@ -642,21 +642,8 @@
 		width: clamp(5.75rem, 26vw, 8rem);
 	}
 
-	.portrait-halo {
-		aspect-ratio: 1;
-		background: radial-gradient(circle, rgba(216, 175, 79, 0.12) 0%, rgba(216, 175, 79, 0) 72%);
-		border-radius: var(--radius-full);
-		filter: blur(10px);
-		inset: auto -4% -4% -4%;
-		position: absolute;
-	}
-
 	.portrait-frame {
-		background: linear-gradient(
-			145deg,
-			color-mix(in srgb, var(--surface-container-low) 82%, white 18%) 0%,
-			var(--surface-container-lowest) 100%
-		);
+		background: var(--color-signal);
 		border-radius: var(--radius-full);
 		box-shadow: var(--shadow-floating);
 		padding: var(--space-2xs);
@@ -709,7 +696,7 @@
 	}
 
 	.writing-link__arrow {
-		color: var(--color-accent);
+		color: currentColor;
 		flex: 0 0 auto;
 		transition: transform var(--motion-base) var(--motion-ease);
 	}
@@ -733,9 +720,9 @@
 	.writing-title {
 		color: var(--color-ink);
 		font-size: var(--text-title);
-		font-weight: 600;
-		letter-spacing: -0.045em;
-		line-height: 0.98;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 		max-width: var(--measure-prose);
 	}
 
@@ -758,11 +745,7 @@
 	}
 
 	.background-panel {
-		background: linear-gradient(
-			145deg,
-			var(--surface-container-low) 0%,
-			color-mix(in srgb, var(--surface-container-low) 78%, white 22%) 100%
-		);
+		background: var(--surface-container-low);
 		border-radius: var(--radius-2xl);
 		box-shadow: var(--shadow-floating);
 		/* Fluid, but both endpoints land on the spacing scale — 2.75rem was the last
@@ -771,9 +754,9 @@
 	}
 
 	.background-copy {
-		color: color-mix(in srgb, var(--color-ink) 82%, white 18%);
-		font-size: var(--text-title-sm);
-		letter-spacing: -0.03em;
+		color: var(--color-ink);
+		font-size: var(--text-lead);
+		letter-spacing: 0;
 		line-height: 1.55;
 		max-width: 54rem;
 	}
@@ -788,7 +771,7 @@
 
 	.contact-link {
 		align-items: center;
-		background: color-mix(in srgb, var(--surface-container-lowest) 84%, white 16%);
+		background: var(--surface-container-low);
 		border-radius: var(--radius-lg);
 		display: grid;
 		gap: var(--space-sm);
@@ -802,7 +785,7 @@
 	}
 
 	.contact-link:hover {
-		background: color-mix(in srgb, var(--surface-container-low) 86%, white 14%);
+		background: var(--surface-container-high);
 		transform: translateY(-0.08rem);
 	}
 
@@ -865,7 +848,7 @@
 	}
 
 	.contact-link__arrow {
-		color: var(--color-accent);
+		color: currentColor;
 		flex: 0 0 auto;
 		transition: transform var(--motion-base) var(--motion-ease);
 	}

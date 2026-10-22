@@ -184,7 +184,7 @@
 
 	.blog-index-hero__back-icon {
 		align-items: center;
-		color: var(--color-accent);
+		color: currentColor;
 		display: inline-flex;
 		flex: 0 0 auto;
 		justify-content: center;
@@ -198,13 +198,13 @@
 
 	.blog-index-title {
 		font-size: var(--text-display);
-		font-weight: 600;
-		letter-spacing: -0.08em;
-		line-height: 0.9;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 	}
 
 	.blog-index-intro {
-		color: color-mix(in srgb, var(--color-ink) 70%, white 30%);
+		color: var(--color-muted);
 		font-size: var(--text-lead);
 		line-height: 1.75;
 		max-width: var(--measure-prose);
@@ -231,9 +231,9 @@
 	.blog-index-link__title {
 		color: var(--color-ink);
 		font-size: var(--text-title);
-		font-weight: 600;
-		letter-spacing: -0.055em;
-		line-height: 1.05;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 		/* Shares the summary's edge. At 24ch this headline was set 40% narrower than its
 		   own body copy and wrapped to three lines against a half-empty card. */
 		max-width: var(--measure-prose);
@@ -255,7 +255,7 @@
 	}
 
 	.blog-index-link:hover .blog-index-link__arrow {
-		background: color-mix(in srgb, var(--surface-container-high) 82%, white 18%);
+		background: color-mix(in srgb, var(--surface-container-high) 82%, var(--color-paper) 18%);
 		transform: translateX(var(--space-3xs));
 	}
 

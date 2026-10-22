@@ -31,9 +31,7 @@
 		{/if}
 
 		{#if title}
-			<h3
-				class="mt-4 max-w-[18ch] text-(length:--text-title-sm) leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
-			>
+			<h3 class="ds-heading mt-4 max-w-[18ch] text-(length:--text-title-sm) text-(--color-ink)">
 				{title}
 			</h3>
 		{/if}
@@ -65,9 +63,7 @@
 		{/if}
 
 		{#if title}
-			<h3
-				class="mt-4 max-w-[18ch] text-(length:--text-title-sm) leading-tight font-semibold tracking-[-0.04em] text-(--color-ink)"
-			>
+			<h3 class="ds-heading mt-4 max-w-[18ch] text-(length:--text-title-sm) text-(--color-ink)">
 				{title}
 			</h3>
 		{/if}

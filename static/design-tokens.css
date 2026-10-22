@@ -1,0 +1,79 @@
+/* Electric Press web tokens. Shared by the app and the standalone 404. */
+:root {
+	/* Electric Press: the three brand inks. Web neutrals derive from these. */
+	--color-signal: #00f0cb;
+	--color-ink: #101817;
+	--color-paper: #f5f5ee;
+	--surface: var(--color-paper);
+	--surface-container-lowest: var(--color-paper);
+	--surface-container-low: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper));
+	--surface-container-high: color-mix(in srgb, var(--color-ink) 9%, var(--color-paper));
+	--surface-container-highest: color-mix(in srgb, var(--color-ink) 15%, var(--color-paper));
+	--color-muted: color-mix(in srgb, var(--color-ink) 72%, var(--color-paper));
+	/* Text links remain ink on paper; signal belongs on a fill or on ink. */
+	--color-primary: var(--color-ink);
+	--color-primary-active: var(--color-ink);
+	--color-on-primary: var(--color-ink);
+	--color-accent: var(--color-signal);
+	--color-signal-hover: color-mix(in srgb, var(--color-signal) 80%, var(--color-paper));
+	--color-signal-active: color-mix(in srgb, var(--color-signal) 88%, var(--color-ink));
+	--ghost-border: var(--color-muted);
+	--shadow-floating: none;
+
+	/* Regular-width body copy; condensed, heavy display type. */
+	--font-editorial: 'Barlow', 'Helvetica Neue', sans-serif;
+	--font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+	--weight-body: 500;
+	--weight-label: 600;
+	--weight-display: 800;
+	--weight-numeral: 900;
+	--tracking-display: -0.015em;
+	--leading-display: 0.95;
+	--leading-heading: 1.08;
+
+	/* Type scale — every font-size in the app maps to one of these roles */
+	--text-micro: 0.75rem; /* 12px — short labels, chips and eyebrows */
+	--text-meta: 0.875rem; /* 14px — metadata, counts, URLs, button/nav labels, code */
+	--text-body: 1.125rem; /* 18px — reading text, card copy and summaries */
+	--text-lead: 1.25rem; /* 20px — decks, page intros, h4, blockquote */
+	--text-title-sm: clamp(1.5rem, 2vw, 1.875rem); /* 24→30px — article h3, card titles */
+	--text-title: clamp(1.875rem, 2.5vw, 2.5rem); /* 30→40px — item titles, article h2 */
+	--text-section: clamp(2.25rem, 3vw, 3rem); /* 36→48px — section headings */
+	--text-display: clamp(3rem, 7.5vw, 5.5rem); /* 48→88px — page titles */
+	--text-hero: clamp(4rem, 11vw, 8rem); /* 64→128px — home hero name */
+	--text-hero-thesis: clamp(1.5rem, 3.5vw, 2.5rem); /* 24→40px — regular-width home intro */
+
+	/* Shared reading edge; figures and code may use the wider article frame. */
+	--measure-prose: 38rem;
+
+	/* Spacing scale — 4px grid */
+	--space-3xs: 0.25rem; /* 4 */
+	--space-2xs: 0.5rem; /* 8 */
+	--space-xs: 0.75rem; /* 12 */
+	--space-sm: 1rem; /* 16 */
+	--space-md: 1.5rem; /* 24 */
+	--space-lg: 2rem; /* 32 */
+	--space-xl: 3rem; /* 48 */
+	--space-2xl: 4rem; /* 64 */
+	--space-3xl: 6rem; /* 96 */
+
+	/* Existing radius names remain aliases so every shared surface stays square. */
+	--radius-square: 0;
+	--radius-xs: var(--radius-square);
+	--radius-sm: var(--radius-square);
+	--radius-md: var(--radius-square);
+	--radius-lg: var(--radius-square);
+	--radius-xl: var(--radius-square);
+	--radius-2xl: var(--radius-square);
+	--radius-full: var(--radius-square);
+
+	/* Focus — one ring, one offset, everywhere */
+	--outline-focus: var(--color-primary);
+	--focus-ring-width: 2px;
+	--focus-ring-offset: 3px;
+
+	/* Motion */
+	--motion-fast: 160ms;
+	--motion-base: 200ms;
+	--motion-ease: cubic-bezier(0.2, 0, 0, 1);
+}

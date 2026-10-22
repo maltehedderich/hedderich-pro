@@ -261,7 +261,7 @@
 
 	.blog-post-hero__back-icon {
 		align-items: center;
-		color: var(--color-accent);
+		color: currentColor;
 		display: inline-flex;
 		flex: 0 0 auto;
 		justify-content: center;
@@ -276,14 +276,14 @@
 	.blog-post-title {
 		color: var(--color-ink);
 		font-size: var(--text-display);
-		font-weight: 600;
-		letter-spacing: -0.075em;
-		line-height: 0.94;
-		max-width: 16ch;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
+		max-width: 24ch;
 	}
 
 	.blog-post-deck {
-		color: color-mix(in srgb, var(--color-ink) 70%, white 30%);
+		color: var(--color-muted);
 		font-size: var(--text-lead);
 		line-height: 1.75;
 		max-width: var(--measure-prose);
@@ -295,7 +295,7 @@
 	}
 
 	.blog-content {
-		color: color-mix(in srgb, var(--color-ink) 82%, white 18%);
+		color: var(--color-ink);
 		font-size: var(--text-body);
 		line-height: 1.85;
 		max-width: 52rem;
@@ -316,9 +316,9 @@
 	.blog-content :global(h3),
 	.blog-content :global(h4) {
 		color: var(--color-ink);
-		font-weight: 600;
-		letter-spacing: -0.045em;
-		line-height: 1.08;
+		font-weight: var(--weight-display);
+		letter-spacing: var(--tracking-display);
+		line-height: var(--leading-heading);
 		scroll-margin-top: 6rem;
 	}
 
@@ -335,18 +335,18 @@
 	}
 
 	.blog-content :global(h4) {
-		/* Body size at 700 rather than a fourth display step: --text-lead would tie h4 to
-		   h3's floor at narrow widths. A run-in weight change is the clearer rank here. */
+		/* Regular-width body emphasis for the deepest heading level. */
+		font-family: var(--font-editorial);
 		font-size: var(--text-body);
-		font-weight: 700;
-		letter-spacing: -0.02em;
+		font-weight: 600;
+		letter-spacing: 0;
 		margin-top: var(--space-lg);
 	}
 
 	.blog-content :global(a) {
 		color: var(--color-primary);
 		font-weight: 600;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+		text-decoration-color: currentColor;
 		text-decoration-thickness: 0.08em;
 		text-underline-offset: 0.24em;
 	}
@@ -420,7 +420,7 @@
 	}
 
 	.blog-content :global(.blog-content__figure) {
-		background: color-mix(in srgb, var(--surface-container-low) 76%, white 24%);
+		background: color-mix(in srgb, var(--surface-container-low) 76%, var(--color-paper) 24%);
 		border-radius: var(--radius-xl);
 		margin: var(--space-xl) 0;
 		padding: var(--space-xs);
@@ -435,12 +435,12 @@
 
 	.blog-content :global(.blog-content__code-frame) {
 		--blog-code-surface: var(--color-ink);
-		--blog-code-scroll-thumb: color-mix(in srgb, var(--color-accent) 70%, #f5efe2 10%);
+		--blog-code-scroll-thumb: color-mix(in srgb, var(--color-accent) 70%, var(--color-paper) 10%);
 		--outline-focus: var(--color-accent);
 
 		background: var(--blog-code-surface);
 		border-radius: var(--radius-lg);
-		color: #f5efe2;
+		color: var(--color-paper);
 		font-size: var(--text-meta);
 		line-height: 1.75;
 		margin: var(--space-lg) 0;
@@ -464,7 +464,7 @@
 	}
 
 	.blog-content :global(.blog-content__code-reference) {
-		color: color-mix(in srgb, var(--color-accent) 84%, white 16%);
+		color: var(--color-signal);
 		display: inline-block;
 		font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 		font-size: var(--text-meta);
@@ -478,7 +478,7 @@
 	}
 
 	.blog-content :global(.blog-content__code-reference:hover) {
-		color: #fff1b8;
+		color: var(--color-paper);
 		text-decoration: underline;
 		text-decoration-thickness: 0.08em;
 		text-underline-offset: 0.25em;
@@ -494,7 +494,7 @@
 		background: color-mix(in srgb, var(--surface-container-lowest) 14%, transparent);
 		border: 0;
 		border-radius: var(--radius-full);
-		color: color-mix(in srgb, #f5efe2 88%, var(--color-accent) 12%);
+		color: var(--color-paper);
 		cursor: pointer;
 		display: inline-flex;
 		height: 2.35rem;
@@ -516,12 +516,12 @@
 
 	.blog-content :global(.blog-content__copy-button:hover) {
 		background: color-mix(in srgb, var(--surface-container-lowest) 22%, transparent);
-		color: #fffaf0;
+		color: var(--color-paper);
 	}
 
 	.blog-content :global(.blog-content__copy-button:active) {
 		background: color-mix(in srgb, var(--surface-container-lowest) 30%, transparent);
-		color: #fffaf0;
+		color: var(--color-paper);
 		transform: translateY(1px);
 	}
 
@@ -532,12 +532,12 @@
 
 	.blog-content :global(.blog-content__copy-button[data-copy-state='copied']) {
 		background: color-mix(in srgb, var(--color-accent) 32%, transparent);
-		color: #fffaf0;
+		color: var(--color-paper);
 	}
 
 	.blog-content :global(.blog-content__copy-button[data-copy-state='failed']) {
 		background: color-mix(in srgb, #ff9f80 28%, transparent);
-		color: #fffaf0;
+		color: var(--color-paper);
 	}
 
 	.blog-content :global(.blog-content__code-scroll) {
@@ -612,7 +612,7 @@
 	}
 
 	.blog-content :global(:not(pre) > code) {
-		background: color-mix(in srgb, var(--surface-container-high) 72%, white 28%);
+		background: color-mix(in srgb, var(--surface-container-high) 72%, var(--color-paper) 28%);
 		border-radius: var(--radius-xs);
 		color: var(--color-ink);
 		font-size: 0.92em;
@@ -759,7 +759,7 @@
 		color: var(--color-ink);
 		font-size: var(--text-body);
 		font-weight: 600;
-		letter-spacing: -0.045em;
+		letter-spacing: 0;
 		line-height: 1.18;
 		max-width: 22ch;
 	}

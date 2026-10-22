@@ -23,9 +23,7 @@
 </script>
 
 <label class={['block space-y-3', className]} for={id}>
-	<span
-		class="block text-(length:--text-micro) font-semibold tracking-[0.18em] text-(--color-muted) uppercase"
-	>
+	<span class="block text-(length:--text-meta) font-semibold text-(--color-ink)">
 		{label}
 	</span>
 
