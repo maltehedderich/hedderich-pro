@@ -11,17 +11,23 @@
 	import type { Attachment } from 'svelte/attachments';
 
 	import { PostMeta, ThemeToggle } from '$lib';
-	import profileImageAsset from '$lib/assets/malte-hedderich.png';
-	import { createAbsoluteUrl, SITE_NAME, SITE_SOCIAL_HANDLE, SITE_URL } from '$lib/site';
+	import {
+		createAbsoluteUrl,
+		createSocialImageUrl,
+		SITE_NAME,
+		SITE_SOCIAL_HANDLE,
+		SOCIAL_IMAGE_HEIGHT,
+		SOCIAL_IMAGE_WIDTH
+	} from '$lib/site';
 	import type { PageProps } from './$types';
 
 	const copyFeedbackDuration = 1800;
 	const authorUrl = createAbsoluteUrl('/');
-	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
-	const pageImageAlt = 'Portrait of Malte Hedderich';
 
 	let { data }: PageProps = $props();
 	let post = $derived(data.post);
+	let pageImage = $derived(createSocialImageUrl(`blog/${post.routeSlug}.png`));
+	let pageImageAlt = $derived(`"${post.title}" by Malte Hedderich`);
 	let newerPost = $derived(data.newerPost);
 	let olderPost = $derived(data.olderPost);
 
@@ -149,8 +155,8 @@
 	<meta property="og:image" content={pageImage} />
 	<meta property="og:image:secure_url" content={pageImage} />
 	<meta property="og:image:type" content="image/png" />
-	<meta property="og:image:width" content="1250" />
-	<meta property="og:image:height" content="1250" />
+	<meta property="og:image:width" content={String(SOCIAL_IMAGE_WIDTH)} />
+	<meta property="og:image:height" content={String(SOCIAL_IMAGE_HEIGHT)} />
 	<meta property="og:image:alt" content={pageImageAlt} />
 	<meta property="article:published_time" content={post.publishedAt} />
 	<meta property="article:author" content={authorUrl} />

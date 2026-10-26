@@ -7,7 +7,14 @@ import { renderToString as renderKatexToString } from 'katex';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 
-import { createAbsoluteUrl, SITE_LANGUAGE, SITE_NAME } from '$lib/site';
+import {
+	createAbsoluteUrl,
+	createSocialImageUrl,
+	SITE_LANGUAGE,
+	SITE_NAME,
+	SOCIAL_IMAGE_HEIGHT,
+	SOCIAL_IMAGE_WIDTH
+} from '$lib/site';
 
 const BLOG_PATH_PREFIX = '/blog/';
 const BLOG_IMAGE_PATH_PREFIX = '/blog/images/';
@@ -355,6 +362,12 @@ function createBlogPostStructuredData(
 		datePublished: frontmatter.date,
 		description: frontmatter.metaDescription,
 		headline: frontmatter.title,
+		image: {
+			'@type': 'ImageObject',
+			url: createSocialImageUrl(`blog/${frontmatter.slug}.png`),
+			width: SOCIAL_IMAGE_WIDTH,
+			height: SOCIAL_IMAGE_HEIGHT
+		},
 		inLanguage: SITE_LANGUAGE,
 		isPartOf: {
 			'@type': 'Blog',

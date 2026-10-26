@@ -113,6 +113,18 @@ Body links stay underlined. Essential icons inherit `currentColor`. Use Lucide f
 
 Motion uses the shared short durations and easing. Restrict it to state feedback and small directional cues. Respect `prefers-reduced-motion`: remove spatial movement while retaining clear color and focus feedback. Do not add ambient animation.
 
+### Share cards and icons
+
+Every indexable page has a 1200×630 share card for `og:image` and `twitter:image`. [src/lib/server/social-image.ts](src/lib/server/social-image.ts) draws the cards with Satori and the self-hosted Barlow fonts, and the prerendered routes under [src/routes/og](src/routes/og) write them to `/og/` at build time. A new post gets its card without extra work.
+
+- The home card mirrors the hero: name, thesis and eyebrow in ink on paper, with the portrait in a flat signal frame. It is a JPEG because of the photo.
+- The archive and article cards use a signal surface with ink text under a paper masthead strip that carries the name and domain. Articles repeat the `PostMeta` row (category chip, date, reading time) above the title. The title steps down in size as it gets longer, so the longest title still fits on three lines.
+- X lays its own domain label over the bottom-left corner of the image, so keep essential text out of the bottom 100 px on the left.
+- Keep each card under 300 KB (a test enforces this). WhatsApp reportedly drops previews above about 600 KB.
+- The portrait stays the `Person` image in the home page's structured data. Article structured data points at the article card.
+
+The favicon and app icons show the Lucide cat in ink on a full-bleed signal square. [scripts/generate-icons.ts](scripts/generate-icons.ts) is their source: run `bun run icons:generate` to rewrite `icon.svg`, `favicon.ico` (16, 32 and 48 px only) and the PNG icons in `static/`. Favicons use a heavier stroke so they still read at 16 px, and maskable icons keep the cat inside the 80% safe zone.
+
 ## Verification and maintenance
 
 Run `bun run dev` for the local preview, then `bun run check`, `bun run lint` and `bun run build` after a shared-system change. Run the Svelte autofixer on changed Svelte components.

@@ -2,14 +2,15 @@
 	import ArrowLeft from '~icons/lucide/arrow-left';
 
 	import { EditorialList, ThemeToggle, WritingLink } from '$lib';
-	import profileImageAsset from '$lib/assets/malte-hedderich.png';
 	import {
 		createAbsoluteUrl,
+		createSocialImageUrl,
 		SITE_AUTHOR,
 		SITE_LANGUAGE,
 		SITE_NAME,
 		SITE_SOCIAL_HANDLE,
-		SITE_URL
+		SOCIAL_IMAGE_HEIGHT,
+		SOCIAL_IMAGE_WIDTH
 	} from '$lib/site';
 	import type { PageProps } from './$types';
 
@@ -17,8 +18,8 @@
 	const pageTitle = 'Blog | Malte Hedderich';
 	const pageDescription =
 		'Essays by Malte Hedderich on LLM applications, AI agents, evaluation, prompt optimization, and machine learning engineering.';
-	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
-	const pageImageAlt = 'Portrait of Malte Hedderich';
+	const pageImage = createSocialImageUrl('blog.png');
+	const pageImageAlt = 'Blog by Malte Hedderich on hedderich.pro';
 
 	let { data }: PageProps = $props();
 
@@ -62,8 +63,8 @@
 	<meta property="og:image" content={pageImage} />
 	<meta property="og:image:secure_url" content={pageImage} />
 	<meta property="og:image:type" content="image/png" />
-	<meta property="og:image:width" content="1250" />
-	<meta property="og:image:height" content="1250" />
+	<meta property="og:image:width" content={String(SOCIAL_IMAGE_WIDTH)} />
+	<meta property="og:image:height" content={String(SOCIAL_IMAGE_HEIGHT)} />
 	<meta property="og:image:alt" content={pageImageAlt} />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content={SITE_SOCIAL_HANDLE} />

@@ -12,11 +12,14 @@
 	import type { EncryptedEmailData } from '$lib/email-obfuscation';
 	import {
 		createAbsoluteUrl,
+		createSocialImageUrl,
 		SITE_AUTHOR,
 		SITE_LANGUAGE,
 		SITE_NAME,
 		SITE_SOCIAL_HANDLE,
-		SITE_URL
+		SITE_URL,
+		SOCIAL_IMAGE_HEIGHT,
+		SOCIAL_IMAGE_WIDTH
 	} from '$lib/site';
 	import type { PageProps } from './$types';
 
@@ -49,6 +52,8 @@
 	const pageDescription =
 		'AI engineer Malte Hedderich builds LLM SaaS products, production AI systems, evaluation workflows, and practical AI agents.';
 	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
+	const shareImage = createSocialImageUrl('home.jpg');
+	const shareImageAlt = 'Malte Hedderich, AI engineer and product builder, beside his portrait';
 	const initialVisiblePosts = 3;
 
 	const obfuscatedEmail: EncryptedEmailData = {
@@ -259,12 +264,12 @@
 	<meta property="og:title" content={pageTitle} />
 	<meta property="og:description" content={pageDescription} />
 	<meta property="og:url" content={pageUrl} />
-	<meta property="og:image" content={pageImage} />
-	<meta property="og:image:secure_url" content={pageImage} />
-	<meta property="og:image:type" content="image/png" />
-	<meta property="og:image:width" content="1250" />
-	<meta property="og:image:height" content="1250" />
-	<meta property="og:image:alt" content="Portrait of Malte Hedderich" />
+	<meta property="og:image" content={shareImage} />
+	<meta property="og:image:secure_url" content={shareImage} />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta property="og:image:width" content={String(SOCIAL_IMAGE_WIDTH)} />
+	<meta property="og:image:height" content={String(SOCIAL_IMAGE_HEIGHT)} />
+	<meta property="og:image:alt" content={shareImageAlt} />
 	<meta property="profile:first_name" content="Malte" />
 	<meta property="profile:last_name" content="Hedderich" />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -273,8 +278,8 @@
 	<meta name="twitter:url" content={pageUrl} />
 	<meta name="twitter:title" content={pageTitle} />
 	<meta name="twitter:description" content={pageDescription} />
-	<meta name="twitter:image" content={pageImage} />
-	<meta name="twitter:image:alt" content="Portrait of Malte Hedderich" />
+	<meta name="twitter:image" content={shareImage} />
+	<meta name="twitter:image:alt" content={shareImageAlt} />
 	<svelte:element this={'script'} type="application/ld+json">{structuredData}</svelte:element>
 </svelte:head>
 
