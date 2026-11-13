@@ -72,9 +72,10 @@ For data, use tabular numerals and align comparable values and units. Keep preci
 Reuse the `--space-*` scale. Gaps between sections should exceed gaps within a group. `.ds-page`, `.ds-page-frame` and `.ds-page-stack` share the page gutters, content width and section rhythm. Their values live in `--page-gutter`, `--layout-max` and `--section-gap`. Section rails use `--layout-rail` and `--layout-gap` so the home page, archive and articles share an alignment.
 
 - Below the desktop rail breakpoint, section labels move above their content. At desktop widths, the label rail sits beside the content.
-- The home portrait precedes the introduction on narrow screens and moves right on desktop. Its frame is a flat signal rectangle.
-- Home actions follow the main introduction, before the supporting biography. They stack on narrow screens and sit side by side when space permits. Keep their labels intact.
-- The hero ends with the latest launch, derived from the project list in [src/routes/+page.svelte](src/routes/+page.svelte). Avoid hand-written “right now” status lines on the home page; they go stale. Adding a `launched` date to a project updates the hero.
+- The home portrait precedes the introduction on narrow screens and moves right on desktop, where its top sits at the cap height of the name. Its frame is a flat signal rectangle.
+- The latest launch is the portrait's caption: inside the signal card on desktop, in ink, and beside the small photo on narrow screens. It is derived from the project list in [src/routes/+page.svelte](src/routes/+page.svelte). Avoid hand-written “right now” status lines on the home page; they go stale. Adding a `launched` date to a project updates the hero.
+- The biography is one sentence and three learnings, one per theme of the thesis (building, selling, running), each under a micro label. A miss goes last, so it reads as one of the learnings. The words come from `profile.md` in the social-media repo.
+- The hero's only actions are the two follow buttons under the follow prompt: LinkedIn as primary, X as secondary, taken from the contact channels so handles live in one place. They stack on narrow screens and sit side by side when space permits. The blog and the projects are reached through the masthead navigation.
 - Project cards and contact links become one column on narrow screens. Preserve their reading order.
 - Contact links put the icon, label and arrow on one row, centred on the label's capitals, with the handle beneath the label. The icon's left edge meets the section's content edge; the link padding hangs outside it.
 - Articles keep one reading column. Wide code and tables scroll inside their own frames; the page must not scroll sideways.
@@ -123,11 +124,11 @@ Every indexable page has a 1200×630 share card for `og:image` and `twitter:imag
 - Keep each card under 300 KB (a test enforces this). WhatsApp reportedly drops previews above about 600 KB.
 - The portrait stays the `Person` image in the home page's structured data. Article structured data points at the article card.
 
-The favicon and app icons show the Lucide cat in ink on a full-bleed signal square. [scripts/generate-icons.ts](scripts/generate-icons.ts) is their source: run `bun run icons:generate` to rewrite `icon.svg`, `favicon.ico` (16, 32 and 48 px only) and the PNG icons in `static/`. Favicons use a heavier stroke so they still read at 16 px, and maskable icons keep the cat inside the 80% safe zone.
+The favicon and app icons show the Lucide cat in ink on a full-bleed signal square. [scripts/generate-icons.ts](scripts/generate-icons.ts) is their source: run `mise run icons:generate` to rewrite `icon.svg`, `favicon.ico` (16, 32 and 48 px only) and the PNG icons in `static/`. Favicons use a heavier stroke so they still read at 16 px, and maskable icons keep the cat inside the 80% safe zone.
 
 ## Verification and maintenance
 
-Run `bun run dev` for the local preview, then `bun run check`, `bun run lint` and `bun run build` after a shared-system change. Run the Svelte autofixer on changed Svelte components.
+Run `mise run dev` for the local preview, then `mise run check` and `mise run build` after a shared-system change. Run the Svelte autofixer on changed Svelte components.
 
 Review these cases with loaded fonts:
 
@@ -135,7 +136,7 @@ Review these cases with loaded fonts:
 - `/blog/` and a long article: title wrapping, metadata, reading width, code toolbar and horizontal scrolling.
 - Svelte error view and `/404.html`: matching type, palette, square controls and keyboard focus.
 - Shared controls: default, hover, pressed, keyboard focus and disabled; input focus; all three panel modes.
-- Both themes, with the OS set to light and to dark: toggling, reloading with a stored choice, and an OS change with no stored choice. Inspect signal surfaces in the dark theme in a production build (`bun run build && bun run preview`), because the development server does not lower `light-dark()`.
+- Both themes, with the OS set to light and to dark: toggling, reloading with a stored choice, and an OS change with no stored choice. Inspect signal surfaces in the dark theme in a production build (`mise run build && mise run preview`), because the development server does not lower `light-dark()`.
 - Around the section-rail breakpoint and with reduced motion enabled: no clipped content or lost actions.
 
 The page migration was reviewed on October 22, 2026. Visual checks covered the home page, archive and longest article at desktop and 390 px, the other four article headers at 390 px, both error views, and a temporary fixture for shared controls in all three panel modes. All nine routes were checked for overflow at 320, 390, 768, 1023, 1024 and 1440 px. Keyboard focus, the skip link, writing expansion, email resolution, code scrolling, copy success and failure, button states and reduced motion were exercised. The palette retains the foundation's measured ink/paper and ink/signal contrast ratios of 16.46:1 and 12.30:1. These checks do not constitute a full accessibility audit.

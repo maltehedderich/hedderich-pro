@@ -1,71 +1,48 @@
 # Deploy to Cloudflare Pages
 
-This repo is configured for a fully static Cloudflare Pages deployment through Git integration. It does not require Pages Functions, a custom `_worker.js`, the Cloudflare runtime adapter, or a committed Wrangler config.
+This site produces static files in `build/` with `@sveltejs/adapter-static`. Cloudflare Pages deploys them through its GitHub integration. No app secrets or build-time app variables are required.
 
-## What this repo already has
+## Dashboard settings
 
-- `@sveltejs/adapter-static` in `package.json`
-- `svelte.config.js` writing the production build to `build/`
-- `src/routes/+layout.ts` exporting `prerender = true` and `trailingSlash = 'always'`
-- `bun.lock` committed so the Cloudflare build can use the same dependency graph
-- no required build-time app environment variables
+Create a **Pages** project connected to this repository. Use these settings for production and preview builds:
 
-## What you need to do in Cloudflare
+| Setting                   | Value           |
+| ------------------------- | --------------- |
+| Production branch         | `main`          |
+| Build image               | v3              |
+| Root directory            | Repository root |
+| Build output directory    | `build`         |
+| `SKIP_DEPENDENCY_INSTALL` | `1`             |
+| `MISE_ENV` in Production  | `production`    |
+| `MISE_ENV` in Preview     | `staging`       |
 
-- Create a real `Pages` project, not a `Workers`/`Workers Builds` project
-- Connect that Pages project to this GitHub repository
-- Set `main` as the production branch
-- Set `bun run build:cloudflare` as the build command
-- Set `build` as the build output directory
-- Set `BUN_VERSION=1.3.9` in Pages environment variables to match the local Bun version used in this repo
-- Optionally set `WRANGLER_SEND_METRICS=false`, though Pages-only deployment should not require Wrangler in the repo
-
-## Step by step
-
-1. Push the current repository state to GitHub.
-2. In Cloudflare, open `Workers & Pages`.
-3. Select `Create application` and then the `Pages` tab.
-4. Select `Import an existing Git repository` or `Connect to Git`.
-5. Choose this GitHub repository and begin setup.
-6. If you already connected this repository to a Worker or Workers Build, do not reuse that deploy path. Create a separate Pages project for this repo.
-7. If Cloudflare suggests the default `SvelteKit` preset, override it. That preset expects `.svelte-kit/cloudflare`, which is only correct for the Cloudflare runtime adapter. This repo outputs static files to `build/`.
-8. Set the production branch to `main`.
-9. Set the build command to `bun run build:cloudflare`.
-10. Set the build output directory to `build`.
-11. Add the environment variable `BUN_VERSION` with the value `1.3.9`.
-12. Save and deploy.
-13. After the first deployment finishes, verify the generated `*.pages.dev` URL.
-14. Check the homepage, static assets, and direct navigation to any non-root route. With `trailingSlash = 'always'`, prerendered routes are emitted as `route/index.html`, which is the safest shape for static hosting.
-15. Add the production custom domain after the `pages.dev` deployment is working.
-
-## Preview deployments
-
-- Pushes to `main` should update production.
-- Pull requests should get preview deployments automatically through the GitHub integration.
-- Use preview deployments to verify layout, assets, and route loading before merging.
-
-## Important notes
-
-- This repo intentionally does not commit `wrangler.jsonc`. That avoids accidentally turning a Pages deployment into a Worker deployment path.
-- If your current Cloudflare deployment log shows `wrangler deploy`, you are not using a Pages-only deploy path yet.
-- The `build:cloudflare` script runs `bun install --frozen-lockfile` before `vite build`. Use it in Pages because your current build log shows Cloudflare is skipping automatic dependency installation.
-- If the build succeeds but Pages fails with `Output directory ".svelte-kit/cloudflare" not found`, your Pages project is still using Cloudflare's default SvelteKit preset output directory. Change the Pages build output directory in the dashboard to `build`.
-- If you already created a non-Pages Cloudflare project for this repo, the clean fix is to create a new Pages project and connect the same GitHub repository there.
-- Cloudflare documents that existing Direct Upload Pages apps cannot later add Git integration. If you need Git integration and do not already have a Git-integrated Pages project, create a new Pages app.
-- If Pages still skips dependency installation after using `bun run build:cloudflare`, reauthorize the Cloudflare Pages GitHub integration. Cloudflare calls out Git integration setup problems as a cause of build initialization failures.
-
-## Optional: local Wrangler use
-
-Add Wrangler only if you want local Pages emulation or manual Pages uploads later:
+Set the build command to this single line:
 
 ```sh
-bun add -d wrangler
+curl -fsSL https://mise.run -o /tmp/install-mise.sh && sh /tmp/install-mise.sh && export PATH="$HOME/.local/bin:$PATH" && mise trust && mise install --locked && mise run setup && mise run build
 ```
 
-Useful commands after that:
+The command installs mise using its [official installer](https://mise.jdx.dev/installing-mise.html), installs tools from `mise.lock`, then runs the same setup and build tasks used locally. Cloudflare supports [skipping automatic dependency installation](https://developers.cloudflare.com/pages/configuration/build-image/#skip-dependency-install), so `setup` owns dependency installation.
 
-```sh
-bun run build
-bunx wrangler pages dev build
-bunx wrangler pages deploy build --project-name <your-pages-project-name>
-```
+Remove any dashboard `BUN_VERSION` or `NODE_VERSION` overrides. Tool versions come from `mise.toml` and `mise.lock`. `MISE_ENV` loads the production or staging config for the build; keep it scoped to the Pages environment rather than exporting it in a local shell profile.
+
+If Cloudflare suggests the SvelteKit preset, override its output directory to `build`. `.svelte-kit/cloudflare` belongs to the runtime adapter and is not this site's output.
+
+## Verify the deployment
+
+1. Save the settings and deploy the branch containing the mise migration.
+2. Open the generated `*.pages.dev` URL.
+3. Check the homepage, static assets, and direct navigation to a blog post. Routes use trailing slashes and produce `route/index.html` files.
+4. Add the production custom domain once the Pages URL works.
+
+Pushes to `main` update production. Other enabled branches produce preview deployments. The staging mise config labels those preview builds; it does not create a separate Pages project.
+
+GitHub Actions checks the code and static build. Cloudflare's Git integration handles publishing; there is no deployment task or Cloudflare API token in this repository.
+
+## Troubleshooting
+
+- If the log runs `wrangler deploy`, check that the project uses Pages Git integration rather than Workers Builds.
+- If the output directory is missing, confirm it is set to `build`.
+- If mise reports an untrusted config, confirm the build command includes `mise trust` before installation and tasks.
+- If dependencies are missing, confirm `mise run setup` finishes before `mise run build`.
+- For local inspection, run `mise run build` followed by `mise run preview`.

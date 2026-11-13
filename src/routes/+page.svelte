@@ -1,6 +1,4 @@
 <script lang="ts">
-	import ArrowDown from '~icons/lucide/arrow-down';
-	import ArrowRight from '~icons/lucide/arrow-right';
 	import ArrowUpRight from '~icons/lucide/arrow-up-right';
 	import Mail from '~icons/lucide/mail';
 	import Github from '~icons/bxl/github';
@@ -38,6 +36,12 @@
 		url: string;
 	};
 
+	type Learning = {
+		id: string;
+		label: string;
+		text: string;
+	};
+
 	type Channel = {
 		href: string;
 		icon: typeof Mail;
@@ -48,9 +52,9 @@
 
 	const pageUrl = createAbsoluteUrl('/');
 	const blogUrl = createAbsoluteUrl('/blog/');
-	const pageTitle = 'Malte Hedderich | AI Engineer for LLM Products';
+	const pageTitle = 'Malte Hedderich | AI Engineer Building Products with AI';
 	const pageDescription =
-		'AI engineer Malte Hedderich builds LLM SaaS products, production AI systems, evaluation workflows, and practical AI agents.';
+		'AI engineer Malte Hedderich builds, sells and runs his own products with AI, four launched since August 2024, and writes up what he learns, misses included.';
 	const pageImage = new URL(profileImageAsset, SITE_URL).toString();
 	const shareImage = createSocialImageUrl('home.jpg');
 	const shareImageAlt = 'Malte Hedderich, AI engineer and product builder, beside his portrait';
@@ -165,6 +169,33 @@
 			value: '@hedderichpro'
 		}
 	];
+
+	// One learning per theme, in the order of the thesis. The words come from profile.md in the
+	// social-media repo; a miss goes last, so it reads as one of the learnings.
+	const learnings: Learning[] = [
+		{
+			id: 'building',
+			label: 'Building',
+			text: 'A ChatGPT plugin is mostly an MCP server with OAuth in front of it.'
+		},
+		{
+			id: 'selling',
+			label: 'Selling',
+			text: 'A Shorts ad impression counts when the video starts. Mine got 49,251 in a week, and the average play lasted 1 second.'
+		},
+		{
+			id: 'running',
+			label: 'Running',
+			text: 'Emblemry’s sign-in returned a 404 for 20 days, 10 of them with Google Ads running. My monitoring missed it.'
+		}
+	];
+
+	// The hero asks for follows on the two channels where new writing is posted. LinkedIn is
+	// the primary channel, so it comes first and gets the primary button.
+	const followChannelIds = ['linkedin', 'x'];
+	const followChannels = followChannelIds
+		.map((id) => channels.find((channel) => channel.id === id))
+		.filter((channel): channel is Channel => Boolean(channel));
 
 	const structuredData = JSON.stringify({
 		'@context': 'https://schema.org',
@@ -301,8 +332,8 @@
 		</header>
 
 		<section aria-describedby="hero-support" aria-labelledby="hero-name" class="home-hero">
-			<figure class="portrait-shell">
-				<div class="portrait-frame">
+			<div class="portrait-shell">
+				<figure class="portrait-frame">
 					<enhanced:img
 						alt="Portrait of Malte Hedderich"
 						class="portrait-image"
@@ -312,38 +343,7 @@
 						sizes="(min-width: 1280px) 320px, (min-width: 1024px) 272px, 128px"
 						src="../lib/assets/malte-hedderich.png?w=640;320;272;256;128"
 					/>
-				</div>
-			</figure>
-
-			<div class="hero-copy">
-				<div class="space-y-5">
-					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
-					<p class="hero-thesis">
-						I lead teams that ship LLM applications. After hours, I build my own products.
-					</p>
-				</div>
-
-				<p class="hero-support" id="hero-support">
-					I write about what I learn from both: when you need an agent at all, how agents keep track
-					of long tasks, and how to tune prompts against a metric instead of by feel.
-				</p>
-
-				<div class="hero-actions">
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-					<a class="ds-button" data-variant="primary" href="/blog/">
-						<span class="ds-button__label">Read the blog</span>
-						<span aria-hidden="true" class="ds-button__icon">
-							<ArrowRight class="size-4" />
-						</span>
-					</a>
-
-					<a class="ds-button" data-variant="secondary" href="#projects">
-						<span class="ds-button__label">See the projects</span>
-						<span aria-hidden="true" class="ds-button__icon">
-							<ArrowDown class="size-4" />
-						</span>
-					</a>
-				</div>
+				</figure>
 
 				{#if latestLaunch}
 					<dl class="hero-latest">
@@ -357,6 +357,57 @@
 						</dd>
 					</dl>
 				{/if}
+			</div>
+
+			<div class="hero-copy">
+				<div class="space-y-5">
+					<h1 class="hero-name" id="hero-name">Malte Hedderich</h1>
+					<p class="hero-thesis">
+						AI engineer. What I learn building, selling and running my own products with AI.
+					</p>
+				</div>
+
+				<div class="hero-support" id="hero-support">
+					<p>
+						I build and ship my own products with AI, four since August 2024, and share what I learn
+						from them, misses included.
+					</p>
+					<dl class="hero-learnings">
+						{#each learnings as learning (learning.id)}
+							<div>
+								<dt>{learning.label}</dt>
+								<dd>{learning.text}</dd>
+							</div>
+						{/each}
+					</dl>
+				</div>
+
+				<div class="hero-follow">
+					<p class="hero-follow__prompt">Follow if you want to build and own a product with AI.</p>
+					<ul class="hero-actions" role="list">
+						{#each followChannels as channel, index (channel.id)}
+							<li>
+								<!-- eslint-disable svelte/no-navigation-without-resolve -->
+								<a
+									aria-label={`Follow on ${channel.label}: ${channel.value}`}
+									class="ds-button"
+									data-variant={index === 0 ? 'primary' : 'secondary'}
+									href={channel.href}
+									rel="me"
+								>
+									<span class="ds-button__label hero-actions__label">
+										<channel.icon aria-hidden="true" class="size-5 shrink-0" />
+										Follow on {channel.label}
+									</span>
+									<span aria-hidden="true" class="ds-button__icon">
+										<ArrowUpRight class="size-4" />
+									</span>
+								</a>
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
+							</li>
+						{/each}
+					</ul>
+				</div>
 			</div>
 		</section>
 
@@ -613,42 +664,64 @@
 		max-width: 30ch;
 	}
 	.hero-support {
-		color: var(--color-muted);
+		display: grid;
+		gap: var(--space-md);
 		font-size: var(--text-body);
 		line-height: 1.7;
 		max-width: var(--measure-prose);
 	}
-	.hero-latest {
-		color: var(--color-muted);
+	.hero-learnings {
+		display: grid;
+		gap: var(--space-sm);
+		margin: 0;
+	}
+	.hero-learnings div {
 		display: grid;
 		gap: var(--space-3xs);
 	}
-	.hero-latest dd {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2xs) var(--space-sm);
+	.hero-learnings dt {
+		color: var(--color-muted);
 	}
-	.hero-latest a {
-		text-decoration-line: underline;
-		text-decoration-thickness: 0.08em;
-		text-underline-offset: 0.24em;
+	.hero-learnings dd {
+		line-height: 1.6;
+		margin: 0;
+		text-wrap: pretty;
 	}
-	.hero-latest a:focus-visible {
-		outline: var(--focus-ring-width) solid var(--outline-focus);
-		outline-offset: var(--focus-ring-offset);
+	.hero-follow {
+		display: grid;
+		gap: var(--space-sm);
+	}
+	.hero-follow__prompt {
+		font-size: var(--text-body);
+		font-weight: var(--weight-label);
+		line-height: 1.5;
+		max-width: var(--measure-prose);
 	}
 	.hero-actions {
 		display: grid;
 		gap: var(--space-xs);
+		list-style: none;
+		margin: 0;
+		padding: 0;
 	}
 	.hero-actions .ds-button {
 		justify-content: space-between;
+		width: 100%;
 	}
+	.hero-actions__label {
+		gap: var(--space-xs);
+	}
+	/* Narrow: a small framed photo with the latest launch beside it. Desktop: one signal card
+	   with the launch as its caption. */
 	.portrait-shell {
-		width: 9rem;
+		align-items: end;
+		display: grid;
+		gap: var(--space-sm);
+		grid-template-columns: 9rem minmax(0, 1fr);
 	}
 	.portrait-frame {
 		background: var(--color-signal);
+		margin: 0;
 		padding: var(--space-2xs);
 	}
 	.portrait-frame :global(picture) {
@@ -660,6 +733,26 @@
 		aspect-ratio: 1;
 		object-fit: cover;
 		object-position: center 20%;
+	}
+	.hero-latest {
+		color: var(--color-muted);
+		display: grid;
+		gap: var(--space-3xs);
+		margin: 0;
+	}
+	.hero-latest dd {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 var(--space-sm);
+	}
+	.hero-latest a {
+		text-decoration-line: underline;
+		text-decoration-thickness: 0.08em;
+		text-underline-offset: 0.24em;
+	}
+	.hero-latest a:focus-visible {
+		outline: var(--focus-ring-width) solid var(--outline-focus);
+		outline-offset: var(--focus-ring-offset);
 	}
 	.project-grid {
 		display: grid;
@@ -689,6 +782,7 @@
 		padding-top: var(--space-md);
 	}
 	.project-dates dt,
+	.hero-learnings dt,
 	.hero-latest dt {
 		font-size: var(--text-micro);
 		font-weight: var(--weight-label);
@@ -834,7 +928,12 @@
 			gap: var(--space-sm);
 		}
 		.hero-actions .ds-button {
-			min-width: 12rem;
+			min-width: 14rem;
+		}
+		.hero-learnings div {
+			align-items: baseline;
+			gap: var(--space-md);
+			grid-template-columns: 5rem minmax(0, 1fr);
 		}
 		.project-grid {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -857,15 +956,28 @@
 		}
 		.home-hero {
 			grid-template-columns: minmax(0, 1fr) 19rem;
-			align-items: center;
+			align-items: start;
 			gap: var(--space-xl);
 		}
+		/* The card is a signal surface in both themes, so its text and focus ring pin to ink. */
 		.portrait-shell {
+			background: var(--color-signal);
+			gap: var(--space-sm);
+			grid-template-columns: minmax(0, 1fr);
+			/* Drop the card to the cap height of the name beside it. */
+			margin-top: calc(var(--text-hero) * 0.165);
 			order: 2;
-			width: 100%;
+			padding: var(--space-sm);
 		}
 		.portrait-frame {
-			padding: var(--space-sm) var(--space-sm) var(--space-xl);
+			padding: 0;
+		}
+		.hero-latest,
+		.hero-latest dd {
+			color: var(--color-ink);
+		}
+		.hero-latest a:focus-visible {
+			outline-color: var(--color-ink);
 		}
 	}
 	@media (min-width: 1280px) {
@@ -873,8 +985,9 @@
 			grid-template-columns: minmax(0, 1fr) 23rem;
 			gap: var(--space-2xl);
 		}
-		.portrait-frame {
-			padding: var(--space-md) var(--space-md) var(--space-2xl);
+		.portrait-shell {
+			gap: var(--space-md);
+			padding: var(--space-md);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {

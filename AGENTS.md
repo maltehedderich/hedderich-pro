@@ -10,7 +10,7 @@
 ## Stack And Workflow
 
 - Use TypeScript, Svelte 5, SvelteKit, Tailwind CSS v4, mdsvex, and bun.
-- Use `bun` for install and scripts.
+- Use `mise run <task>` for project commands. Tasks use Bun for dependency installation and scripts.
 - The project forces Svelte runes mode in [svelte.config.js](svelte.config.js). Write new Svelte app code in runes style.
 - Follow the existing composition and tone in [src/routes/+page.svelte](src/routes/+page.svelte) and the shared tokens and component classes in [src/routes/layout.css](src/routes/layout.css).
 - If a task touches build or deployment config, favor a static output that fits Cloudflare Pages rather than defaulting to environment-agnostic adapter behavior.
@@ -33,18 +33,18 @@
 
 ## Commands
 
-- `bun install`
-- `bun run dev`
-- `bun run check`
-- `bun run lint`
-- `bun run build`
-- `bun run format`
-- After non-trivial Svelte or styling changes, run at least `bun run check` and `bun run lint`.
+- `mise run setup`
+- `mise run dev`
+- `mise run check`
+- `mise run typecheck --watch`
+- `mise run build`
+- `mise run format`
+- After non-trivial Svelte or styling changes, run `mise run check` (lint, type checks, and tests).
 
 ## References
 
 - Start with [README.md](README.md) for local setup.
-- Use [package.json](package.json) for the canonical script list.
+- Use [mise.toml](mise.toml) for tool versions and the canonical task list; keep exact tool versions in `mise.lock`.
 - Use [DESIGN.md](DESIGN.md) for design decisions instead of re-deriving the visual rules.
 
 ## Svelte MCP

@@ -19,6 +19,10 @@ Thumbs.db
 !.env.example
 !.env.test
 
+# Personal mise overrides
+mise.local.toml
+mise.*.local.toml
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

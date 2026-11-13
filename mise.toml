@@ -1,0 +1,66 @@
+min_version = "2026.11.2"
+
+[settings]
+lockfile = true
+
+[tools]
+bun = "1.4"
+# The framework and test CLIs use the Node runtime.
+node = "26.13"
+
+[env]
+DEPLOY_ENV = false
+
+[tasks.setup]
+description = "Install locked dependencies and generate SvelteKit types"
+run = ["bun install --frozen-lockfile", "bun run svelte-kit sync"]
+
+[tasks.dev]
+description = "Run the local development server"
+run = "bun run vite dev"
+
+[tasks.build]
+description = "Build the static site into build/"
+run = "bun run vite build"
+
+[tasks.preview]
+description = "Preview the built static site locally"
+run = "bun run vite preview"
+
+[tasks.typecheck]
+description = "Check Svelte and TypeScript types"
+usage = 'flag "--watch" help="Watch files and rerun type checks"'
+run = [
+  "bun run svelte-kit sync",
+  '''
+if [ "${usage_watch:-false}" = "true" ]; then
+  bun run svelte-check --tsconfig ./tsconfig.json --watch
+else
+  bun run svelte-check --tsconfig ./tsconfig.json
+fi
+''',
+]
+
+[tasks.lint]
+description = "Check formatting and lint the code"
+run = ["bun run prettier --check .", "bun run eslint ."]
+
+[tasks.test]
+description = "Run the test suite"
+run = "bun run vitest run"
+
+[tasks.check]
+description = "Run lint, type checks, and tests"
+depends = ["lint", "typecheck", "test"]
+
+[tasks.format]
+description = "Format project files"
+run = "bun run prettier --write ."
+
+[tasks."email:generate"]
+description = "Generate an obfuscated email payload"
+run = "bun run scripts/create-encrypted-email.ts"
+
+[tasks."icons:generate"]
+description = "Generate favicons and app icons"
+run = "bun run scripts/generate-icons.ts"

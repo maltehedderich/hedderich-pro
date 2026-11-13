@@ -80,7 +80,7 @@ export async function renderHomeCard(): Promise<Buffer> {
 						marginTop: 32,
 						maxWidth: 560
 					},
-					'I lead teams that ship LLM applications. After hours, I build my own products.'
+					'AI engineer. What I learn building, selling and running my own products with AI.'
 				)
 			]),
 			h(

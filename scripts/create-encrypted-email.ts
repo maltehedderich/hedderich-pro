@@ -6,7 +6,7 @@ const obfuscationKey =
 	explicitKey ?? process.env.PUBLIC_EMAIL_OBFUSCATION_KEY ?? EMAIL_OBFUSCATION_KEY;
 
 if (!email) {
-	console.error('Usage: bun run obfuscate:email -- you@example.com [base64AesKey]');
+	console.error('Usage: mise run email:generate you@example.com [base64AesKey]');
 	process.exit(1);
 }
 
